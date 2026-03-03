@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GGS APPLE STORE – iPhone Premium</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@300;400;500;600;700;900&family=Playfair+Display:ital,wght@1,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+
+  <!-- LOADER -->
+  <div id="loader">
+    <div class="loader-logo">
+      <span class="loader-geo">GGS</span>
+      <i class="fa-brands fa-apple loader-apple"></i>
+      <span class="loader-store">STORE</span>
+    </div>
+    <div class="loader-bar"><div class="loader-fill"></div></div>
+  </div>
+
+  <!-- CURSOR CUSTOM -->
+  <div class="cursor-dot"></div>
+  <div class="cursor-ring"></div>
+
+  <!-- HEADER / NAV -->
+  <header id="header">
+    <nav class="navbar">
+      <a href="#" class="nav-logo">
+        <i class="fa-brands fa-apple"></i>
+        <span>GGS <strong>APPLE</strong> STORE</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#hero">Accueil</a></li>
+        <li><a href="#products">iPhones Neufs</a></li>
+        <li><a href="occasions.html" style="color:#e8001d;font-weight:700;"><i class="fas fa-tag" style="margin-right:4px;font-size:0.75em;"></i>Occasions</a></li>
+        <li><a href="#features">Pourquoi nous</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="btn-cart" id="cartBtn">
+          <i class="fas fa-shopping-bag"></i>
+          <span class="cart-count" id="cartCount">0</span>
+        </button>
+        <button class="btn-order-now" onclick="scrollToProducts()">Commander</button>
+      </div>
+      <button class="hamburger" id="hamburger">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+    <div class="mobile-menu" id="mobileMenu">
+      <ul>
+        <li><a href="#hero" onclick="closeMobileMenu()">Accueil</a></li>
+        <li><a href="#products" onclick="closeMobileMenu()">iPhones Neufs</a></li>
+        <li><a href="occasions.html" onclick="closeMobileMenu()" style="color:#e8001d;font-weight:700;">🏷️ iPhones d'Occasion</a></li>
+        <li><a href="#features" onclick="closeMobileMenu()">Pourquoi nous</a></li>
+        <li><a href="#contact" onclick="closeMobileMenu()">Contact</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section id="hero">
+    <div class="hero-bg">
+      <div class="hero-grid"></div>
+      <div class="hero-glow glow-1"></div>
+      <div class="hero-glow glow-2"></div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-badge"><span class="badge-dot"></span> Livraison express disponible</div>
+      <h1 class="hero-title">
+        <span class="line-1">EXPÉRIENCE</span>
+        <span class="line-2"><em>Apple</em></span>
+        <span class="line-3">VENU ET SCELLE</span>
+      </h1>
+      <p class="hero-sub">Les derniers iPhones authentiques, au meilleur prix.<br />GGS APPLE STORE — votre référence premium.</p>
+      <div class="hero-actions">
+        <button class="btn-primary" onclick="scrollToProducts()">
+          <span>Découvrir les iPhones</span>
+          <i class="fas fa-arrow-right"></i>
+        </button>
+        <a href="tel:+22943924728" class="btn-ghost">
+          <i class="fab fa-whatsapp"></i>
+          <span>Nous appeler</span>
+        </a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><strong>500+</strong><span>Clients satisfaits</span></div>
+        <div class="stat-divider"></div>
+        <div class="stat"><strong>100%</strong><span>Produits authentiques</span></div>
+        <div class="stat-divider"></div>
+        <div class="stat"><strong>24h</strong><span>Livraison rapide</span></div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="phone-showcase">
+        <div class="phone-outer">
+          <div class="phone-screen">
+            <div class="phone-notch"></div>
+            <div class="phone-screen-content">
+              <div class="screen-time">09:41</div>
+              <div class="screen-date">Vendredi 27 Février</div>
+              <div class="screen-logo"><i class="fa-brands fa-apple"></i></div>
+            </div>
+          </div>
+          <div class="phone-btn-side left"></div>
+          <div class="phone-btn-side right-top"></div>
+          <div class="phone-btn-side right-bottom"></div>
+        </div>
+        <div class="phone-glow-circle"></div>
+        <div class="floating-badge fb-1">
+          <i class="fas fa-shield-halved"></i> Garantie 1 an
+        </div>
+        <div class="floating-badge fb-2">
+          <i class="fas fa-star"></i> 4.9/5
+        </div>
+      </div>
+    </div>
+    <div class="hero-scroll-hint">
+      <span>Scroll</span>
+      <div class="scroll-line"><div class="scroll-line-inner"></div></div>
+    </div>
+  </section>
+
+  <!-- TICKER BAND -->
+  <div class="ticker-band">
+    <div class="ticker-track">
+      <span>iPhone 17 Pro Max</span><span class="sep">✦</span>
+      <span>iPhone 17 Pro</span><span class="sep">✦</span>
+      <span>iPhone 16 Pro Max</span><span class="sep">✦</span>
+      <span>iPhone 15 Pro</span><span class="sep">✦</span>
+      <span>iPhone 14</span><span class="sep">✦</span>
+      <span>Livraison Express</span><span class="sep">✦</span>
+      <span>Garantie Officielle</span><span class="sep">✦</span>
+      <span>iPhone 17 Pro Max</span><span class="sep">✦</span>
+      <span>iPhone 17 Pro</span><span class="sep">✦</span>
+      <span>iPhone 16 Pro Max</span><span class="sep">✦</span>
+      <span>iPhone 15 Pro</span><span class="sep">✦</span>
+      <span>iPhone 14</span><span class="sep">✦</span>
+      <span>Livraison Express</span><span class="sep">✦</span>
+      <span>Garantie Officielle</span><span class="sep">✦</span>
+    </div>
+  </div>
+
+  <!-- PRODUCTS SECTION -->
+  <section id="products">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Notre Catalogue</span>
+        <h2 class="section-title">Tous les <em>iPhones</em></h2>
+        <p class="section-sub">Des modèles authentiques, neufs, garantis — livrés directement chez vous.</p>
+      </div>
+
+      <!-- FILTER TABS -->
+      <div class="filter-tabs">
+        <button class="filter-btn active" data-filter="all">Tous</button>
+        <button class="filter-btn" data-filter="serie-17">iPhone 17</button>
+        <button class="filter-btn" data-filter="serie-16">iPhone 16</button>
+        <button class="filter-btn" data-filter="serie-15">iPhone 15</button>
+        <button class="filter-btn" data-filter="serie-14">iPhone 14</button>
+        <button class="filter-btn" data-filter="serie-older">iPhone 11–13</button>
+      </div>
+
+      <!-- PRODUCTS GRID -->
+      <div class="products-grid" id="productsGrid">
+
+        <!-- iPhone 17 Pro Max -->
+        <div class="product-card featured" data-serie="serie-17">
+          <div class="card-badge">Nouveau</div>
+          <div class="card-image">
+            <img src="images\17pm.jpg" alt="iPhone 17 Pro Max" class="product-image">
+          </div>
+          <div class="card-info">
+            <div class="card-series">iPhone 17</div>
+            <h3 class="card-name">Pro Max</h3>
+            <div class="card-specs">
+              <span><i class="fas fa-hdd"></i> 128 Go</span>
+              <span><i class="fas fa-camera"></i> 200MP</span>
+              <span><i class="fas fa-battery-full"></i> 4685mAh</span>
+            </div>
+            <div class="card-colors">
+              <span class="color-dot" style="background:#1a1a1a" data-color="Titane Noir"></span>
+              <span class="color-dot" style="background:#d4c5b0" data-color="Titane Naturel"></span>
+              <span class="color-dot" style="background:#c8d5c5" data-color="Titane Vert"></span>
+              <span class="color-dot" style="background:#a8b5c5" data-color="Titane Bleu"></span>
+            </div>
+            <div class="card-price-row">
+              <div class="card-price"><span class="price-from">À partir de</span> <strong>750 000 FCFA</strong></div>
+              <button class="btn-add-cart" data-name="iPhone 17 Pro Max" data-price="750000">
+                <i class="fas fa-bag-shopping"></i>
+              </button>
+            </div>
+            <button class="btn-order" data-name="iPhone 17 Pro Max" data-price="750 000 FCFA" onclick="openOrderModal(this)">
+              Commander maintenant
+            </button>
+          </div>
+        </div>
+
+        <!-- iPhone 17 Pro -->
+        <div class="product-card" data-serie="serie-17">
+          <div class="card-badge new">Nouveau</div>
+          <div class="card-image">
+            <img src="images\17proo.jpg" alt="iPhone 17 Pro" class="product-image">
+          </div>
+          <div class="card-info">
+            <div class="card-series">iPhone 17</div>
+            <h3 class="card-name">Pro</h3>
+            <div class="card-specs">
+              <span><i class="fas fa-memory"></i> 8 Go RAM</span>
+              <span><i class="fas fa-camera"></i> 48MP</span>
+              <span><i class="fas fa-battery-full"></i> 4000mAh</span>
+            </div>
+            <div class="card-colors">
+              <span class="color-dot" style="background:#1a1a1a"></span>
+              <span class="color-dot" style="background:#d4c5b0"></span>
+              <span class="color-dot" style="background:#8b9dc3"></span>
+            </div>
+            <div class="card-price-row">
+              <div class="card-price"><span class="price-from">À partir de</span> <strong>680 000 FCFA</strong></div>
+              <button class="btn-add-cart" data-name="iPhone 17 Pro" data-price="680000"><i class="fas fa-bag-shopping"></i></button>
+            </div>
+            <button class="btn-order" data-name="iPhone 17 Pro" data-price="680 000 FCFA" onclick="openOrderModal(this)">Commander maintenant</button>
+          </div>
+        </div>
+
+        <!-- iPhone 17 -->
+        <div class="product-card" data-serie="serie-17">
+          <div class="card-badge new">Nouveau</div>
+          <div class="card-image">
+            <img src="images\17 simple.jpg" alt="iPhone 17" class="product-image">
+          </div>
+          <div class="card-info">
+            <div class="card-series">iPhone 17</div>
+            <h3 class="card-name">Standard</h3>
+            <div class="card-specs">
+              <span><i class="fas fa-memory"></i> 8 Go RAM</span>
+              <span><i class="fas fa-camera"></i> 48MP</span>
+              <span><i class="fas fa-battery-full"></i> 3700mAh</span>
+            </div>
+            <div class="card-colors">
+              <span class="color-dot" style="background:#1a1a1a"></span>
+              <span class="color-dot" style="background:#e8d5c0"></span>
+              <span class="color-dot" style="background:#c5d5e8"></span>
+              <span class="color-dot" style="background:#d5e8c5"></span>
+            </div>
+            <div class="card-price-row">
+              <div class="card-price"><span class="price-from">À partir de</span> <strong>560 000 FCFA</strong></div>
+              <button class="btn-add-cart" data-name="iPhone 17" data-price="560000"><i class="fas fa-bag-shopping"></i></button>
+            </div>
+            <button class="btn-order" data-name="iPhone 17" data-price="560 000 FCFA" onclick="openOrderModal(this)">Commander maintenant</button>
+          </div>
+        </div>
+
+        <!-- iPhone 16 Pro Max -->
+        <div class="product-card" data-serie="serie-16">
+          <div class="card-image">
+            <img src="images\16promax.jpg" alt="iPhone 16 Pro Max" class="product-image">
+          </div>
+          <div class="card-info">
+            <div class="card-series">iPhone 16</div>
+            <h3 class="card-name">Pro Max</h3>
+            <div class="card-specs">
+              <span><i class="fas fa-memory"></i> 8 Go RAM</span>
+              <span><i class="fas fa-camera"></i> 48MP</span>
+              <span><i class="fas fa-battery-full"></i> 4685mAh</span>
+            </div>
+            <div class="card-colors">
+              <span class="color-dot" style="background:#3d3731"></span>
+              <span class="color-dot" style="background:#d4c5b0"></span>
+              <span class="color-dot" style="background:#2c3e50"></span>
+            </div>
+            <div class="card-price-row">
+              <div class="card-price"><span class="price-from">À partir de</span> <strong>620 000 FCFA</strong></div>
+              <button class="btn-add-cart" data-name="iPhone 16 Pro Max" data-price="620000"><i class="fas fa-bag-shopping"></i></button>
+            </div>
+            <button class="btn-order" data-name="iPhone 16 Pro Max" data-price="620 000 FCFA" onclick="openOrderModal(this)">Commander maintenant</button>
+          </div>
+        </div>
+
+        <!-- iPhone 16 Pro -->
+        <div class="product-card" data-serie="serie-16">
+          <div class="card-image">
+            <img src="images\16prooo.jpg" alt="iPhone 16 Pro" class="product-image">
+          </div>
+          <div class="card-info">
+            <div class="card-series">iPhone 16</div>
+            <h3 class="card-name">Pro</h3>
+            <div class="card-specs">
+              <span><i class="fas fa-memory"></i> 8 Go RAM</span>
+              <span><i class="fas fa-camera"></i> 48MP</span>
+              <span><i class="fas fa-battery-full"></i> 3582mAh</span>
+            </div>
+            <div class="card-colors">
+              <span class="color-dot" style="background:#3d3731"></span>
+              <span class="color-dot" style="background:#d4c5b0"></span>
+              <span class="color-dot" style="background:#7a8c78"></span>
+            </div>
+            <div class="card-price-row">
+              <div class="card-price"><span class="price-from">À partir de</span> <strong>560 000 FCFA</strong></div>
+              <button class="btn-add-cart" data-name="iPhone 16 Pro" data-price="560000"><i class="fas fa-bag-shopping"></i></button>
+            </div>
+            <button class="btn-order" data-name="iPhone 16 Pro" data-price="560 000 FCFA" onclick="openOrderModal(this)">Commander maintenant</button>
+          </div>
+        </div>
+
+        <!-- iPhone 16 -->
+        <div class="product-card" data-serie="serie-16">
+          <div class="card-image">
+            <img src="images\16 simple.jpg" alt="iPhone 16" class="product-image">
+          </div>
+          <div class="card-info">
+            <div class="card-series">iPhone 16</div>
+            <h3 class="card-name">Standard</h3>
+            <div class="card-specs">
+              <span><i class="fas fa-memory"></i> 6 Go RAM</span>
+              <span><i class="fas fa-camera"></i> 48MP</span>
+              <span><i class="fas fa-battery-full"></i> 3561mAh</span>
+            </div>
+            <div class="card-colors">
+              <span class="color-dot" style="background:#1a1a1a"></span>
+              <span class="color-dot" style="background:#e8d5c0"></span>
+              <span class="color-dot" style="background:#c8a0b0"></span>
+              <span class="color-dot" style="background:#a8c0b8"></span>
+            </div>
+            <div class="card-price-row">
+              <div class="card-price"><span class="price-from">À partir de</span> <strong>440 000 FCFA</strong></div>
+              <button class="btn-add-cart" data-name="iPhone 16" data-price="440000"><i class="fas fa-bag-shopping"></i></button>
+            </div>
+            <button class="btn-order" data-name="iPhone 16" data-price="440 000 FCFA" onclick="openOrderModal(this)">Commander maintenant</button>
+          </div>
+        </div>
+
+        <!-- iPhone 15 Pro Max -->
+        <div class="product-card" data-serie="serie-15">
+          <div class="card-image">
+            <img src="images\15pmm.jpg" alt="iPhone 15 Pro Max" class="product-image">
+          </div>
+          <div class="card-info">
+            <div class="card-series">iPhone 15</div>
+            <h3 class="card-name">Pro Max</h3>
+            <div class="card-specs">
+              <span><i class="fas fa-memory"></i> 8 Go RAM</span>
+              <span><i class="fas fa-camera"></i> 48MP</span>
+              <span><i class="fas fa-battery-full"></i> 4422mAh</span>
+            </div>
+            <div class="card-colors">
+              <span class="color-dot" style="background:#3d3731"></span>
+              <span class="color-dot" style="background:#d4c5b0"></span>
+              <span class="color-dot" style="background:#4a7a6a"></span>
+            </div>
+            <div class="card-price-row">
+              <div class="card-price"><span class="price-from">À partir de</span> <strong>490 000 FCFA</strong></div>
+              <button class="btn-add-cart" data-name="iPhone 15 Pro Max" data-price="490000"><i class="fas fa-bag-shopping"></i></button>
+            </div>
+            <button class="btn-order" data-name="iPhone 15 Pro Max" data-price="490 000 FCFA" onclick="openOrderModal(this)">Commander maintenant</button>
+          </div>
+        </div>
+
+        <!-- iPhone 15 Pro -->
+        <div class="product-card" data-serie="serie-15">
+          <div class="card-image">
+            <img src="images\15 proo.jpg" alt="iPhone 15 Pro" class="product-image">
+          </div>
+          <div class="card-info">
+            <div class="card-series">iPhone 15</div>
+            <h3 class="card-name">Pro</h3>
+            <div class="card-specs">
+              <span><i class="fas fa-memory"></i> 8 Go RAM</span>
+              <span><i class="fas fa-camera"></i> 48MP</span>
+              <span><i class="fas fa-battery-full"></i> 3274mAh</span>
+            </div>
+            <div class="card-colors">
+              <span class="color-dot" style="background:#3d3731"></span>
+              <span class="color-dot" style="background:#d4c5b0"></span>
+              <span class="color-dot" style="background:#2c3e50"></span>
+            </div>
+            <div class="card-price-row">
+              <div class="card-price"><span class="price-from">À partir de</span> <strong>420 000 FCFA</strong></div>
+              <button class="btn-add-cart" data-name="iPhone 15 Pro" data-price="420000"><i class="fas fa-bag-shopping"></i></button>
+            </div>
+            <button class="btn-order" data-name="iPhone 15 Pro" data-price="420 000 FCFA" onclick="openOrderModal(this)">Commander maintenant</button>
+          </div>
+        </div>
+
+        <!-- iPhone 14 Pro Max -->
+        <div class="product-card" data-serie="serie-14">
+          <div class="card-image">
+            <img src="images\14 pm.jpg" alt="iPhone 14 Pro Max" class="product-image">
+          </div>
+          <div class="card-info">
+            <div class="card-series">iPhone 14</div>
+            <h3 class="card-name">Pro Max</h3>
+            <div class="card-specs">
+              <span><i class="fas fa-memory"></i> 6 Go RAM</span>
+              <span><i class="fas fa-camera"></i> 48MP</span>
+              <span><i class="fas fa-battery-full"></i> 4323mAh</span>
+            </div>
+            <div class="card-colors">
+              <span class="color-dot" style="background:#1a1a1a"></span>
+              <span class="color-dot" style="background:#e8d5c0"></span>
+              <span class="color-dot" style="background:#7b96a5"></span>
+            </div>
+            <div class="card-price-row">
+              <div class="card-price"><span class="price-from">À partir de</span> <strong>350 000 FCFA</strong></div>
+              <button class="btn-add-cart" data-name="iPhone 14 Pro Max" data-price="350000"><i class="fas fa-bag-shopping"></i></button>
+            </div>
+            <button class="btn-order" data-name="iPhone 14 Pro Max" data-price="350 000 FCFA" onclick="openOrderModal(this)">Commander maintenant</button>
+          </div>
+        </div>
+
+        <!-- iPhone 13 Pro Max -->
+        <div class="product-card" data-serie="serie-older">
+          <div class="card-image">
+            <img src="images\13pm.jpg" alt="iPhone 13 Pro Max" class="product-image">
+          </div>
+          <div class="card-info">
+            <div class="card-series">iPhone 13</div>
+            <h3 class="card-name">Pro Max</h3>
+            <div class="card-specs">
+              <span><i class="fas fa-memory"></i> 6 Go RAM</span>
+              <span><i class="fas fa-camera"></i> 12MP</span>
+              <span><i class="fas fa-battery-full"></i> 4352mAh</span>
+            </div>
+            <div class="card-colors">
+              <span class="color-dot" style="background:#1a1a1a"></span>
+              <span class="color-dot" style="background:#e8d5c0"></span>
+              <span class="color-dot" style="background:#4a7a6a"></span>
+            </div>
+            <div class="card-price-row">
+              <div class="card-price"><span class="price-from">À partir de</span> <strong>280 000 FCFA</strong></div>
+              <button class="btn-add-cart" data-name="iPhone 13 Pro Max" data-price="280000"><i class="fas fa-bag-shopping"></i></button>
+            </div>
+            <button class="btn-order" data-name="iPhone 13 Pro Max" data-price="280 000 FCFA" onclick="openOrderModal(this)">Commander maintenant</button>
+          </div>
+        </div>
+        <!-- iPhone 13 Pro -->
+        <div class="product-card" data-serie="serie-older">
+          <div class="card-image">
+            <img src="images\d5b4929524adc34f610d3b5408ac2326.jpg" alt="iPhone 13 Pro Max" class="product-image">
+          </div>
+          <div class="card-info">
+            <div class="card-series">iPhone 13</div>
+            <h3 class="card-name">Pro </h3>
+            <div class="card-specs">
+              <span><i class="fas fa-memory"></i> 6 Go RAM</span>
+              <span><i class="fas fa-camera"></i> 12MP</span>
+              <span><i class="fas fa-battery-full"></i> 4352mAh</span>
+            </div>
+            <div class="card-colors">
+              <span class="color-dot" style="background:#1a1a1a"></span>
+              <span class="color-dot" style="background:#e8d5c0"></span>
+              <span class="color-dot" style="background:#4a7a6a"></span>
+            </div>
+            <div class="card-price-row">
+              <div class="card-price"><span class="price-from">À partir de</span> <strong>280 000 FCFA</strong></div>
+              <button class="btn-add-cart" data-name="iPhone 13 Pro Max" data-price="280000"><i class="fas fa-bag-shopping"></i></button>
+            </div>
+            <button class="btn-order" data-name="iPhone 13 Pro Max" data-price="280 000 FCFA" onclick="openOrderModal(this)">Commander maintenant</button>
+          </div>
+        </div>
+
+        <!-- iPhone 12 -->
+        <div class="product-card" data-serie="serie-older">
+          <div class="card-image">
+            <img src="images\12pm.webp" alt="iPhone 12 Pro Max" class="product-image">
+          </div>
+          <div class="card-info">
+            <div class="card-series">iPhone 12</div>
+            <h3 class="card-name">Pro Max</h3>
+            <div class="card-specs">
+              <span><i class="fas fa-memory"></i> 6 Go RAM</span>
+              <span><i class="fas fa-camera"></i> 12MP</span>
+              <span><i class="fas fa-battery-full"></i> 2815mAh</span>
+            </div>
+            <div class="card-colors">
+              <span class="color-dot" style="background:#1a1a1a"></span>
+              <span class="color-dot" style="background:#d4c5b0"></span>
+              <span class="color-dot" style="background:#2c4a6e"></span>
+            </div>
+            <div class="card-price-row">
+              <div class="card-price"><span class="price-from">À partir de</span> <strong>200 000 FCFA</strong></div>
+              <button class="btn-add-cart" data-name="iPhone 12 Pro Max" data-price="200000"><i class="fas fa-bag-shopping"></i></button>
+            </div>
+            <button class="btn-order" data-name="iPhone 12 Pro Max" data-price="200 000 FCFA" onclick="openOrderModal(this)">Commander maintenant</button>
+          </div>
+        </div>
+
+        <!-- iPhone 11 -->
+        <div class="product-card" data-serie="serie-older">
+          <div class="card-image">
+            <img src="images\11 simple.avif" alt="iPhone 11" class="product-image">
+          </div>
+          <div class="card-info">
+            <div class="card-series">iPhone 11</div>
+            <h3 class="card-name">Standard</h3>
+            <div class="card-specs">
+              <span><i class="fas fa-memory"></i> 4 Go RAM</span>
+              <span><i class="fas fa-camera"></i> 12MP</span>
+              <span><i class="fas fa-battery-full"></i> 3110mAh</span>
+            </div>
+            <div class="card-colors">
+              <span class="color-dot" style="background:#1a1a1a"></span>
+              <span class="color-dot" style="background:#fffaf0"></span>
+              <span class="color-dot" style="background:#c8a0b0"></span>
+              <span class="color-dot" style="background:#6aaa64"></span>
+            </div>
+            <div class="card-price-row">
+              <div class="card-price"><span class="price-from">À partir de</span> <strong>140 000 FCFA</strong></div>
+              <button class="btn-add-cart" data-name="iPhone 11" data-price="140000"><i class="fas fa-bag-shopping"></i></button>
+            </div>
+            <button class="btn-order" data-name="iPhone 11" data-price="140 000 FCFA" onclick="openOrderModal(this)">Commander maintenant</button>
+          </div>
+        </div>
+
+      </div><!-- /products-grid -->
+    </div>
+  </section>
+
+  <!-- FEATURES SECTION -->
+  <section id="features">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Nos Engagements</span>
+        <h2 class="section-title">Pourquoi choisir <em>GEO</em> ?</h2>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon"><i class="fas fa-certificate"></i></div>
+          <h3>100% Authentique</h3>
+          <p>Chaque iPhone vendu est original, neuf et scellé. Nous garantissons l'authenticité de tous nos produits.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon"><i class="fas fa-shipping-fast"></i></div>
+          <h3>Livraison Express</h3>
+          <p>Livraison rapide partout au Bénin et en Afrique de l'Ouest. Votre commande livrée en 24 à 48h.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon"><i class="fas fa-shield-halved"></i></div>
+          <h3>Garantie 1 an</h3>
+          <p>Tous nos iPhones bénéficient d'une garantie officielle de 12 mois constructeur.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon"><i class="fas fa-headset"></i></div>
+          <h3>Support 24/7</h3>
+          <p>Notre équipe est disponible par WhatsApp et email pour répondre à toutes vos questions.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon"><i class="fas fa-tag"></i></div>
+          <h3>Meilleur Prix</h3>
+          <p>Nous offrons les tarifs les plus compétitifs du marché pour chaque modèle d'iPhone.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon"><i class="fas fa-rotate-left"></i></div>
+          <h3>Retour facile</h3>
+          <p>Pas satisfait ? Retournez votre produit sous 7 jours, sans frais et sans question.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section id="testimonials">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Avis clients</span>
+        <h2 class="section-title">Ils nous font <em>confiance</em></h2>
+      </div>
+      <div class="testimonials-track" id="testimonialsTrack">
+        <div class="testimonial-card">
+          <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+          <p>"J'ai commandé mon iPhone 16 Pro Max et je l'ai reçu en moins de 24h ! Produit authentique, emballage scellé. GGS Apple Store est sérieux !"</p>
+          <div class="testi-author"><div class="testi-avatar">KA</div><div><strong>Kofi Amada</strong><span>Cotonou</span></div></div>
+        </div>
+        <div class="testimonial-card">
+          <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+          <p>"Service impeccable ! J'ai passé commande via WhatsApp, la réponse était immédiate. Mon iPhone 15 Pro est parfait. Je recommande à 100%."</p>
+          <div class="testi-author"><div class="testi-avatar">FM</div><div><strong>Fatima Moussa</strong><span>Porto-Novo</span></div></div>
+        </div>
+        <div class="testimonial-card">
+          <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+          <p>"Meilleur prix que j'ai trouvé pour un iPhone 14 Pro. Livraison rapide, vendeur très professionnel. Je reviendrai certainement."</p>
+          <div class="testi-author"><div class="testi-avatar">SB</div><div><strong>Samuel Bello</strong><span>Parakou</span></div></div>
+        </div>
+        <div class="testimonial-card">
+          <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-stroke"></i></div>
+          <p>"iPhone 17 Pro Max reçu sans problème. L'équipe GGS Apple Store est très réactive. Service client top, je recommande vivement !"</p>
+          <div class="testi-author"><div class="testi-avatar">AN</div><div><strong>Ange Nkosi</strong><span>Lomé</span></div></div>
+        </div>
+      </div>
+      <div class="testi-dots" id="testiDots"></div>
+    </div>
+  </section>
+
+  <!-- CONTACT SECTION -->
+  <section id="contact">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Contactez-nous</span>
+        <h2 class="section-title">Prenez <em>contact</em></h2>
+      </div>
+      <div class="contact-grid">
+        <div class="contact-info">
+          <div class="contact-item">
+            <div class="contact-icon"><i class="fab fa-whatsapp"></i></div>
+            <div>
+              <strong>WhatsApp</strong>
+              <a href="https://wa.me/22943924728" target="_blank">+229 43 92 47 28</a>
+              <span>Disponible 7j/7 · Réponse rapide</span>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+            <div>
+              <strong>Email</strong>
+              <a href="mailto:michaelhologan45@gmail.com">michaelhologan45@gmail.com</a>
+              <span>Réponse sous 24h</span>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon"><i class="fas fa-clock"></i></div>
+            <div>
+              <strong>Horaires</strong>
+              <span>Lun – Sam : 8h00 – 20h00</span>
+              <span>Dimanche : 10h00 – 18h00</span>
+            </div>
+          </div>
+        </div>
+        <div class="contact-form-wrap">
+          <form class="contact-form" id="contactForm">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Prénom & Nom</label>
+                <input type="text" id="cf-name" placeholder="Igor DJOSSOU" required />
+              </div>
+              <div class="form-group">
+                <label>Téléphone / WhatsApp</label>
+                <input type="tel" id="cf-phone" placeholder="+229 XX XX XX XX" required />
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Email</label>
+              <input type="email" id="cf-email" placeholder="votre@email.com" required />
+            </div>
+            <div class="form-group">
+              <label>Message</label>
+              <textarea id="cf-message" rows="4" placeholder="Votre question ou demande..." required></textarea>
+            </div>
+            <button type="submit" class="btn-primary full-width">
+              <span>Envoyer le message</span>
+              <i class="fas fa-paper-plane"></i>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer id="footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="footer-logo">
+            <i class="fa-brands fa-apple"></i>
+            <span>GGS <strong>APPLE</strong> STORE</span>
+          </div>
+          <p>Votre boutique iPhone de confiance. Produits authentiques, prix compétitifs et service exceptionnel.</p>
+          <div class="footer-social">
+            <a href="https://wa.me/22943924728" target="_blank"><i class="fab fa-whatsapp"></i></a>
+            <a href="mailto:michaelhologan45@gmail.com"><i class="fas fa-envelope"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+          </div>
+        </div>
+        <div class="footer-links">
+          <div class="footer-col">
+            <h4>Produits</h4>
+            <ul>
+              <li><a href="#" onclick="filterProducts('serie-17')">iPhone 17</a></li>
+              <li><a href="#" onclick="filterProducts('serie-16')">iPhone 16</a></li>
+              <li><a href="#" onclick="filterProducts('serie-15')">iPhone 15</a></li>
+              <li><a href="#" onclick="filterProducts('serie-14')">iPhone 14</a></li>
+              <li><a href="#" onclick="filterProducts('serie-older')">iPhone 11–13</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Informations</h4>
+            <ul>
+              <li><a href="#features">Nos engagements</a></li>
+              <li><a href="#testimonials">Avis clients</a></li>
+              <li><a href="#contact">Contact</a></li>
+              <li><a href="#">Politique de retour</a></li>
+              <li><a href="#">CGV</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 GGS APPLE STORE. Tous droits réservés.</p>
+        <p>Apple et iPhone sont des marques déposées d'Apple Inc.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- CART PANEL -->
+  <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+  <div class="cart-panel" id="cartPanel">
+    <div class="cart-header">
+      <h3><i class="fas fa-shopping-bag"></i> Mon Panier</h3>
+      <button onclick="closeCart()"><i class="fas fa-xmark"></i></button>
+    </div>
+    <div class="cart-body" id="cartBody">
+      <div class="cart-empty"><i class="fas fa-bag-shopping"></i><p>Votre panier est vide</p></div>
+    </div>
+    <div class="cart-footer" id="cartFooter" style="display:none">
+      <div class="cart-total">Total : <strong id="cartTotal">0 FCFA</strong></div>
+      <button class="btn-primary full-width" id="cartCheckoutBtn">
+        <span>Commander le panier</span>
+        <i class="fas fa-arrow-right"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- ORDER MODAL -->
+  <div class="modal-overlay" id="orderModalOverlay" onclick="closeOrderModal(event)">
+    <div class="order-modal" id="orderModal">
+      <button class="modal-close" onclick="closeOrderModal()"><i class="fas fa-xmark"></i></button>
+      <div class="modal-header">
+        <i class="fa-brands fa-apple modal-apple-icon"></i>
+        <h3>Passer une commande</h3>
+        <p id="modalProductName">iPhone 17 Pro Max</p>
+      </div>
+      <form class="order-form" id="orderForm">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Prénom & Nom *</label>
+            <input type="text" id="o-name" placeholder="Jean " required />
+          </div>
+          <div class="form-group">
+            <label>Téléphone / WhatsApp *</label>
+            <input type="tel" id="o-phone" placeholder="+229 XX XX XX XX" required />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Email *</label>
+          <input type="email" id="o-email" placeholder="votre@email.com" required />
+        </div>
+        <div class="form-group">
+          <label>Adresse de livraison *</label>
+          <input type="text" id="o-address" placeholder="Cotonou, Bénin..." required />
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Couleur souhaitée</label>
+            <select id="o-color">
+              <option value="Titane Noir">Titane Noir</option>
+              <option value="Titane Naturel">Titane Naturel</option>
+              <option value="Titane Vert">Titane Vert</option>
+              <option value="Titane Bleu">Titane Bleu</option>
+              <option value="Blanc">Blanc</option>
+              <option value="Rouge">Rouge</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Stockage</label>
+            <select id="o-storage">
+              <option value="128Go">128 Go</option>
+              <option value="256Go">256 Go</option>
+              <option value="512Go">512 Go</option>
+              <option value="1To">1 To</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Message additionnel</label>
+          <textarea id="o-notes" rows="3" placeholder="Précisions sur votre commande..."></textarea>
+        </div>
+        <div class="order-method-row">
+          <p></p>
+          <div class="method-btns">
+            <button type="button" class="method-btn whatsapp-btn" id="sendWhatsapp">
+              <i class="fab fa-whatsapp"></i>Commander via WhatsApp
+            </button>
+            <button type="button" class="method-btn email-btn" id="sendEmail">
+              <i class="fas fa-envelope"></i> Commander maintenant
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- CONFIRMATION MODAL -->
+  <div class="confirm-overlay" id="confirmOverlay">
+    <div class="confirm-modal" id="confirmModal">
+      <div class="confirm-confetti" id="confettiContainer"></div>
+      <div class="confirm-icon-wrap">
+        <div class="confirm-icon-ring ring-1"></div>
+        <div class="confirm-icon-ring ring-2"></div>
+        <div class="confirm-check"><i class="fas fa-check"></i></div>
+      </div>
+      <div class="confirm-logo"><i class="fa-brands fa-apple"></i></div>
+      <h2 class="confirm-title">Commande envoyée !</h2>
+      <p class="confirm-sub">Merci <strong id="confirmCustomerName">Jean</strong> pour votre confiance.<br />Notre équipe vous contacte très bientôt.</p>
+      <div class="confirm-details" id="confirmDetails"></div>
+      <div class="confirm-actions">
+        <a href="https://wa.me/22943924728" target="_blank" class="confirm-wa-btn">
+          <i class="fab fa-whatsapp"></i> Suivre sur WhatsApp
+        </a>
+        <button class="confirm-close-btn" onclick="closeConfirmModal()">Continuer mes achats</button>
+      </div>
+      <div class="confirm-footer-logo">GGS <i class="fa-brands fa-apple"></i> STORE</div>
+    </div>
+  </div>
+
+  <!-- WHATSAPP FLOATING BTN -->
+  <a href="https://wa.me/22943924728" class="wa-float" target="_blank" title="Contacter via WhatsApp">
+    <i class="fab fa-whatsapp"></i>
+    <span class="wa-pulse"></span>
+  </a>
+
+  <script src="script.js"></script>
+</body>
+</html>

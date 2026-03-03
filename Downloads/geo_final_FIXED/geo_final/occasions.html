@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>iPhones d'Occasion — GEO APPLE STORE</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@300;400;500;600;700;900&family=Playfair+Display:ital,wght@1,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    /* ============================================
+       PAGE OCCASIONS — STYLES SPÉCIFIQUES
+       Palette : Ambre / Or sur fond noir du site
+       ============================================ */
+    :root {
+      --gold: #e8a000;
+      --gold-dark: #b87000;
+      --gold-light: #ffc430;
+      --gradient-gold: linear-gradient(135deg, #b87000, #e8c000);
+      --shadow-gold: 0 8px 32px rgba(232,160,0,0.35);
+    }
+
+    /* ----- HERO ----- */
+    #occ-hero {
+      min-height: 58vh;
+      display: flex; align-items: center; justify-content: center;
+      text-align: center;
+      padding: 130px 24px 70px;
+      position: relative; overflow: hidden;
+    }
+    #occ-hero .bg-layer { position: absolute; inset: 0; z-index: 0; }
+    .occ-grid-bg {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-size: 55px 55px;
+    }
+    .occ-glow-blob {
+      position: absolute; border-radius: 50%;
+      filter: blur(110px); pointer-events: none;
+    }
+    .blob-1 {
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(232,160,0,0.22), transparent 70%);
+      top: -180px; right: -80px;
+      animation: glowFloat 7s ease-in-out infinite;
+    }
+    .blob-2 {
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(232,0,29,0.12), transparent 70%);
+      bottom: -140px; left: -60px;
+      animation: glowFloat 9s ease-in-out infinite reverse;
+    }
+
+    .occ-hero-inner {
+      position: relative; z-index: 1;
+      display: flex; flex-direction: column;
+      align-items: center; gap: 22px;
+      max-width: 680px;
+    }
+    .occ-label {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(232,160,0,0.1);
+      border: 1px solid rgba(232,160,0,0.35);
+      border-radius: 30px; padding: 7px 18px;
+      font-size: 0.72rem; font-weight: 700;
+      color: var(--gold); text-transform: uppercase; letter-spacing: 1.5px;
+    }
+    .occ-label-pulse {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--gold);
+      animation: blink 1.5s ease-in-out infinite;
+    }
+    .occ-hero-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3.2rem, 9vw, 6.5rem);
+      letter-spacing: 3px; line-height: 0.92;
+      color: var(--white);
+    }
+    .occ-hero-title em {
+      font-family: 'Playfair Display', serif;
+      color: var(--gold); font-style: italic;
+    }
+    .occ-hero-sub {
+      font-size: 0.96rem; color: rgba(255,255,255,0.6);
+      line-height: 1.75; max-width: 500px;
+    }
+    .occ-trust-row {
+      display: flex; flex-wrap: wrap; gap: 10px;
+      justify-content: center;
+    }
+    .occ-trust-chip {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 20px; padding: 7px 14px;
+      font-size: 0.73rem; font-weight: 600;
+      color: rgba(255,255,255,0.65);
+    }
+    .occ-trust-chip i { color: var(--gold); font-size: 0.75rem; }
+
+    /* ----- TICKER OR ----- */
+    .occ-ticker-band {
+      background: var(--gradient-gold);
+      padding: 11px 0; overflow: hidden;
+    }
+    .occ-ticker-band .ticker-track {
+      font-size: 0.88rem; letter-spacing: 1.5px;
+      color: rgba(0,0,0,0.75);
+    }
+    .occ-ticker-band .sep { color: rgba(0,0,0,0.35); }
+
+    /* ----- SECTION SHOP ----- */
+    #occ-shop { padding: 72px 0 100px; }
+
+    /* Stats bar */
+    .occ-stats {
+      display: flex; align-items: center; justify-content: center;
+      gap: 28px; flex-wrap: wrap;
+      padding: 22px 32px;
+      background: rgba(232,160,0,0.05);
+      border: 1px solid rgba(232,160,0,0.18);
+      border-radius: 18px;
+      margin-bottom: 44px;
+    }
+    .occ-stat { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+    .occ-stat strong { font-size: 1.55rem; font-weight: 900; color: var(--white); line-height: 1; }
+    .occ-stat span { font-size: 0.68rem; color: var(--grey); text-transform: uppercase; letter-spacing: 1px; }
+    .occ-stat-sep { width: 1px; height: 34px; background: var(--border); }
+
+    /* Filters */
+    .occ-filter-row {
+      display: flex; align-items: center; gap: 9px;
+      flex-wrap: wrap; margin-bottom: 36px;
+    }
+    .occ-filter-ico { font-size: 0.78rem; color: var(--grey); margin-right: 4px; }
+    .occ-f-btn {
+      padding: 8px 18px;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 30px; color: var(--grey);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.75rem; font-weight: 600;
+      cursor: pointer; transition: var(--transition);
+      white-space: nowrap;
+    }
+    .occ-f-btn:hover { border-color: var(--gold); color: var(--gold); }
+    .occ-f-btn.active {
+      background: var(--gradient-gold);
+      border-color: transparent; color: #111;
+      font-weight: 700;
+      box-shadow: var(--shadow-gold);
+    }
+
+    /* Grid */
+    .occ-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(275px, 1fr));
+      gap: 22px;
+    }
+
+    /* Card */
+    .occ-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden; position: relative;
+      transition: var(--transition);
+      display: flex; flex-direction: column;
+    }
+    .occ-card:hover {
+      border-color: rgba(232,160,0,0.4);
+      transform: translateY(-6px);
+      box-shadow: 0 24px 60px rgba(0,0,0,0.55), 0 0 0 1px rgba(232,160,0,0.15);
+    }
+    .occ-card.sold-out { opacity: 0.75; }
+
+    /* Condition badge */
+    .occ-cond {
+      position: absolute; top: 13px; left: 13px; z-index: 3;
+      font-size: 0.62rem; font-weight: 800;
+      text-transform: uppercase; letter-spacing: 1px;
+      padding: 4px 12px; border-radius: 20px;
+    }
+    .cond-A { background: linear-gradient(135deg,#00b870,#00e896); color:#fff; }
+    .cond-B { background: linear-gradient(135deg,#0088e8,#00aaff); color:#fff; }
+    .cond-C { background: var(--gradient-gold); color:#111; }
+    .cond-D { background: rgba(160,160,160,0.2); color:#ccc; border:1px solid rgba(255,255,255,0.15); }
+
+    /* Photo count chip */
+    .occ-photo-chip {
+      position: absolute; bottom: 11px; right: 11px; z-index: 3;
+      background: rgba(0,0,0,0.62); backdrop-filter: blur(6px);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 20px; padding: 4px 10px;
+      font-size: 0.67rem; font-weight: 600;
+      color: rgba(255,255,255,0.75);
+      display: flex; align-items: center; gap: 5px;
+    }
+    .occ-photo-chip i { color: var(--gold); }
+
+    /* Sold overlay */
+    .occ-sold-veil {
+      position: absolute; inset: 0; z-index: 4;
+      background: rgba(8,8,8,0.72);
+      backdrop-filter: blur(3px);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    .occ-card.sold-out .occ-sold-veil { opacity: 1; pointer-events: all; }
+    .sold-stamp {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.9rem; letter-spacing: 6px;
+      color: #fff;
+      border: 3px solid rgba(232,0,29,0.85);
+      padding: 7px 20px; border-radius: 3px;
+      transform: rotate(-13deg);
+      text-shadow: 0 2px 14px rgba(232,0,29,0.6);
+    }
+
+    /* Image */
+    .occ-img-box {
+      height: 260px; position: relative; overflow: hidden;
+      background: linear-gradient(160deg, #1c1c1c, #111);
+      cursor: zoom-in;
+    }
+    .occ-img-box img {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center;
+      display: block;
+      transition: transform 0.45s ease;
+    }
+    .occ-card:hover .occ-img-box img { transform: scale(1.07); }
+    .occ-no-img {
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 3.5rem; color: rgba(255,255,255,0.07);
+    }
+
+    /* Body */
+    .occ-body {
+      padding: 18px 20px 20px;
+      display: flex; flex-direction: column; gap: 11px;
+      flex: 1;
+    }
+    .occ-series { font-size: 0.67rem; font-weight: 700; color: var(--gold); text-transform: uppercase; letter-spacing: 2px; }
+    .occ-name { font-family: 'Bebas Neue', sans-serif; font-size: 1.65rem; letter-spacing: 2px; color: var(--white); line-height: 1; }
+    .occ-chips { display: flex; gap: 7px; flex-wrap: wrap; }
+    .occ-chip {
+      font-size: 0.65rem; color: var(--grey);
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: 20px; padding: 3px 10px;
+      display: flex; align-items: center; gap: 4px;
+    }
+    .occ-chip i { color: var(--gold); font-size: 0.58rem; }
+
+    /* État dots */
+    .occ-etat { display: flex; align-items: center; gap: 9px; }
+    .occ-etat-lbl { font-size: 0.67rem; color: var(--grey); min-width: 40px; }
+    .etat-dots { display: flex; gap: 4px; }
+    .ed {
+      width: 11px; height: 11px; border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+    }
+    .ed.on-A { background: #00b870; }
+    .ed.on-B { background: #0088e8; }
+    .ed.on-C { background: var(--gold); }
+    .ed.on-D { background: #888; }
+
+    /* Description */
+    .occ-desc {
+      font-size: 0.77rem; color: rgba(255,255,255,0.5);
+      line-height: 1.65;
+      border-top: 1px solid var(--border);
+      padding-top: 10px;
+    }
+
+    /* Prix */
+    .occ-price-area {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-top: auto; padding-top: 6px;
+    }
+    .occ-prices { display: flex; flex-direction: column; gap: 2px; }
+    .occ-old { font-size: 0.72rem; color: var(--grey); text-decoration: line-through; }
+    .occ-price-main { font-size: 1.12rem; font-weight: 900; color: var(--white); line-height: 1.1; }
+    .occ-price-main small { font-size: 0.68rem; font-weight: 500; color: var(--grey); }
+    .occ-eco {
+      font-size: 0.63rem; font-weight: 700; color: #00b870;
+      background: rgba(0,184,112,0.1);
+      border: 1px solid rgba(0,184,112,0.2);
+      border-radius: 10px; padding: 3px 8px;
+    }
+    .occ-cart-btn {
+      width: 38px; height: 38px; flex-shrink: 0;
+      background: rgba(232,160,0,0.1);
+      border: 1px solid rgba(232,160,0,0.3);
+      border-radius: 50%; color: var(--gold);
+      font-size: 0.9rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: var(--transition);
+    }
+    .occ-cart-btn:hover { background: var(--gold); color: #111; border-color: var(--gold); }
+    .occ-card.sold-out .occ-cart-btn { opacity: 0.35; pointer-events: none; }
+
+    .occ-order-btn {
+      width: 100%; padding: 12px;
+      background: transparent;
+      border: 1px solid rgba(232,160,0,0.4);
+      border-radius: 30px; color: var(--gold);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.82rem; font-weight: 700;
+      letter-spacing: 0.5px; cursor: pointer;
+      transition: var(--transition);
+    }
+    .occ-order-btn:hover {
+      background: var(--gradient-gold);
+      border-color: transparent; color: #111;
+      box-shadow: var(--shadow-gold);
+    }
+    .occ-card.sold-out .occ-order-btn { opacity: 0.35; pointer-events: none; cursor: default; }
+
+    /* Empty */
+    .occ-empty-state {
+      grid-column: 1/-1;
+      text-align: center; padding: 80px 24px;
+      display: none;
+    }
+    .occ-empty-state.show { display: block; }
+    .occ-empty-state i { font-size: 3.5rem; color: rgba(255,255,255,0.08); display: block; margin-bottom: 16px; }
+    .occ-empty-state h3 { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; letter-spacing: 2px; color: rgba(255,255,255,0.35); margin-bottom: 8px; }
+    .occ-empty-state p { font-size: 0.88rem; color: var(--grey); margin-bottom: 24px; }
+
+    /* CTA bottom */
+    .occ-bottom-cta {
+      margin-top: 80px;
+      padding: 52px 40px;
+      background: linear-gradient(135deg, rgba(184,112,0,0.12), rgba(232,0,29,0.07));
+      border: 1px solid rgba(232,160,0,0.2);
+      border-radius: 24px; text-align: center;
+      position: relative; overflow: hidden;
+    }
+    .occ-bottom-cta::before {
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background: radial-gradient(circle at 25% 50%, rgba(232,160,0,0.09), transparent 55%),
+                  radial-gradient(circle at 75% 50%, rgba(232,0,29,0.07), transparent 55%);
+    }
+    .occ-bottom-cta h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2rem,5vw,3rem); letter-spacing: 2px;
+      color: var(--white); margin-bottom: 10px; position: relative;
+    }
+    .occ-bottom-cta h2 em {
+      font-family: 'Playfair Display', serif;
+      color: var(--gold); font-style: italic;
+    }
+    .occ-bottom-cta p { font-size: 0.9rem; color: rgba(255,255,255,0.55); margin-bottom: 28px; position: relative; }
+    .occ-cta-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; position: relative; }
+    .occ-wa-cta {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 13px 28px;
+      background: #25d366; color: #fff; border: none;
+      border-radius: 50px; font-family: 'Montserrat', sans-serif;
+      font-size: 0.88rem; font-weight: 700;
+      cursor: pointer; text-decoration: none;
+      transition: var(--transition);
+      box-shadow: 0 8px 24px rgba(37,211,102,0.35);
+    }
+    .occ-wa-cta:hover { background: #1aa84e; transform: translateY(-2px); }
+    .occ-neufs-link {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 13px 28px;
+      background: transparent; border: 1px solid rgba(255,255,255,0.18);
+      color: var(--white); border-radius: 50px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.88rem; font-weight: 600;
+      text-decoration: none; transition: var(--transition);
+    }
+    .occ-neufs-link:hover { border-color: rgba(255,255,255,0.5); background: rgba(255,255,255,0.04); }
+
+    /* ----- LIGHTBOX ----- */
+    #occ-lightbox {
+      position: fixed; inset: 0; z-index: 5000;
+      background: rgba(0,0,0,0.94); backdrop-filter: blur(14px);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+      padding: 20px;
+    }
+    #occ-lightbox.open { opacity: 1; pointer-events: all; }
+    .lb-wrap { position: relative; max-width: 560px; width: 100%; }
+    .lb-img-box {
+      border-radius: 16px; overflow: hidden;
+      background: #111;
+      aspect-ratio: 4/3;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .lb-img-box img { width: 100%; height: 100%; object-fit: contain; display: block; }
+    .lb-close {
+      position: absolute; top: -16px; right: -16px;
+      width: 40px; height: 40px;
+      background: var(--red); border: none; border-radius: 50%;
+      color: #fff; font-size: 1rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: var(--transition); z-index: 2;
+    }
+    .lb-close:hover { transform: scale(1.12); }
+    .lb-arrow {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      width: 42px; height: 42px;
+      background: rgba(255,255,255,0.1); backdrop-filter: blur(4px);
+      border: 1px solid rgba(255,255,255,0.15); border-radius: 50%;
+      color: #fff; font-size: 0.9rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: var(--transition);
+    }
+    .lb-arrow:hover { background: rgba(232,160,0,0.5); }
+    .lb-prev { left: -22px; }
+    .lb-next { right: -22px; }
+    .lb-bottom { display: flex; flex-direction: column; align-items: center; gap: 8px; margin-top: 14px; }
+    .lb-counter { font-size: 0.73rem; color: rgba(255,255,255,0.4); }
+    .lb-dots { display: flex; gap: 6px; }
+    .lb-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: rgba(255,255,255,0.2); cursor: pointer;
+      transition: var(--transition);
+    }
+    .lb-dot.active { background: var(--gold); width: 20px; border-radius: 4px; }
+
+    /* ----- ORDER MODAL ----- */
+    #occ-order-overlay {
+      position: fixed; inset: 0; z-index: 3000;
+      background: rgba(0,0,0,0.82); backdrop-filter: blur(8px);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none; transition: opacity 0.3s;
+      padding: 20px;
+    }
+    #occ-order-overlay.open { opacity: 1; pointer-events: all; }
+    #occ-order-box {
+      background: #111;
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      width: 100%; max-width: 580px;
+      max-height: 90vh; overflow-y: auto;
+      padding: 36px; position: relative;
+      transform: scale(0.95) translateY(20px);
+      transition: transform 0.38s cubic-bezier(0.4,0,0.2,1);
+    }
+    #occ-order-overlay.open #occ-order-box { transform: scale(1) translateY(0); }
+    .occ-modal-close {
+      position: absolute; top: 16px; right: 16px;
+      width: 36px; height: 36px;
+      background: var(--light-grey); border: none; border-radius: 50%;
+      color: var(--white); font-size: 1rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: var(--transition);
+    }
+    .occ-modal-close:hover { background: var(--red); }
+
+    /* ----- RESPONSIVE ----- */
+    @media (max-width: 768px) {
+      #occ-hero { padding: 100px 20px 56px; min-height: auto; }
+      .occ-grid { grid-template-columns: repeat(2,1fr); gap: 14px; }
+      .occ-img-box { height: 200px; }
+      .occ-stats { gap: 16px; padding: 18px; }
+      .occ-bottom-cta { padding: 36px 24px; }
+    }
+    @media (max-width: 480px) {
+      #occ-hero { padding: 88px 16px 44px; }
+      .occ-grid { grid-template-columns: 1fr; }
+      .occ-img-box { height: 250px; }
+      .occ-filter-row { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 8px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+      .occ-filter-row::-webkit-scrollbar { display: none; }
+      .occ-f-btn { flex-shrink: 0; }
+      .lb-prev { left: -10px; }
+      .lb-next { right: -10px; }
+      .occ-cta-btns { flex-direction: column; align-items: stretch; }
+      .occ-wa-cta, .occ-neufs-link { justify-content: center; }
+      .occ-stats .occ-stat-sep { display: none; }
+      #occ-order-box { padding: 24px 18px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="cursor-dot"></div>
+  <div class="cursor-ring"></div>
+
+  <!-- HEADER -->
+  <header id="header">
+    <nav class="navbar">
+      <a href="index.html" class="nav-logo">
+        <i class="fa-brands fa-apple"></i>
+        <span>GEO <strong>APPLE</strong> STORE</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="index.html#products">iPhones Neufs</a></li>
+        <li><a href="occasions.html" style="color:#fff; border-bottom:2px solid var(--gold); padding-bottom:2px;">Occasions</a></li>
+        <li><a href="index.html#contact">Contact</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a href="https://wa.me/22943924728" target="_blank" class="btn-order-now" style="text-decoration:none; display:flex; align-items:center; gap:6px;">
+          <i class="fab fa-whatsapp"></i> WhatsApp
+        </a>
+      </div>
+      <button class="hamburger" id="hamburger">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+    <div class="mobile-menu" id="mobileMenu">
+      <ul>
+        <li><a href="index.html" onclick="closeMobileMenu()">Accueil</a></li>
+        <li><a href="index.html#products" onclick="closeMobileMenu()">iPhones Neufs</a></li>
+        <li><a href="occasions.html" onclick="closeMobileMenu()">Occasions</a></li>
+        <li><a href="index.html#contact" onclick="closeMobileMenu()">Contact</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section id="occ-hero">
+    <div class="bg-layer">
+      <div class="occ-grid-bg"></div>
+      <div class="occ-glow-blob blob-1"></div>
+      <div class="occ-glow-blob blob-2"></div>
+    </div>
+    <div class="occ-hero-inner">
+      <div class="occ-label"><span class="occ-label-pulse"></span> Stock mis à jour régulièrement</div>
+      <h1 class="occ-hero-title">iPhones<br><em>d'Occasion</em></h1>
+      <p class="occ-hero-sub">Des appareils inspectés, testés et garantis par GEO Apple Store.<br>Économisez jusqu'à 50% sur des iPhones en parfait état.</p>
+      <div class="occ-trust-row">
+        <span class="occ-trust-chip"><i class="fas fa-shield-halved"></i> Garantie 3 mois</span>
+        <span class="occ-trust-chip"><i class="fas fa-magnifying-glass"></i> Testé & vérifié</span>
+        <span class="occ-trust-chip"><i class="fas fa-tag"></i> Jusqu'à -50%</span>
+        <span class="occ-trust-chip"><i class="fas fa-rotate-left"></i> Retour 7 jours</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- TICKER OR -->
+  <div class="occ-ticker-band">
+    <div class="ticker-track">
+      <span>iPhone Occasion</span><span class="sep">✦</span>
+      <span>Testé &amp; Vérifié</span><span class="sep">✦</span>
+      <span>Garantie 3 mois</span><span class="sep">✦</span>
+      <span>Prix Réduits</span><span class="sep">✦</span>
+      <span>Stock Limité</span><span class="sep">✦</span>
+      <span>Livraison Express</span><span class="sep">✦</span>
+      <span>iPhone Occasion</span><span class="sep">✦</span>
+      <span>Testé &amp; Vérifié</span><span class="sep">✦</span>
+      <span>Garantie 3 mois</span><span class="sep">✦</span>
+      <span>Prix Réduits</span><span class="sep">✦</span>
+      <span>Stock Limité</span><span class="sep">✦</span>
+      <span>Livraison Express</span><span class="sep">✦</span>
+    </div>
+  </div>
+
+  <!-- SHOP -->
+  <section id="occ-shop">
+    <div class="container">
+
+      <!-- Stats -->
+      <div class="occ-stats reveal" id="occStats">
+        <div class="occ-stat"><strong id="sTotal">0</strong><span>En stock</span></div>
+        <div class="occ-stat-sep"></div>
+        <div class="occ-stat"><strong id="sAvail">0</strong><span>Disponibles</span></div>
+        <div class="occ-stat-sep"></div>
+        <div class="occ-stat"><strong>3 mois</strong><span>Garantie</span></div>
+        <div class="occ-stat-sep"></div>
+        <div class="occ-stat"><strong>24h</strong><span>Livraison</span></div>
+      </div>
+
+      <!-- Filtres -->
+      <div class="occ-filter-row">
+        <i class="fas fa-sliders occ-filter-ico"></i>
+        <button class="occ-f-btn active" data-f="all">Tous</button>
+        <button class="occ-f-btn" data-f="A">⭐ Excellent</button>
+        <button class="occ-f-btn" data-f="B">Très bon</button>
+        <button class="occ-f-btn" data-f="C">Bon état</button>
+        <button class="occ-f-btn" data-f="dispo">Disponible</button>
+        <button class="occ-f-btn" data-f="vendu">Vendu</button>
+      </div>
+
+      <!-- Grid -->
+      <div class="occ-grid" id="occGrid"></div>
+      <div class="occ-empty-state" id="occEmpty">
+        <i class="fa-brands fa-apple"></i>
+        <h3>Aucun iPhone disponible</h3>
+        <p>Notre stock d'occasion se renouvelle régulièrement.<br>Revenez bientôt ou contactez-nous !</p>
+        <a href="https://wa.me/22943924728" target="_blank" class="btn-primary" style="text-decoration:none; width:fit-content; margin:0 auto;">
+          <i class="fab fa-whatsapp"></i><span>Nous contacter</span>
+        </a>
+      </div>
+
+      <!-- CTA -->
+      <div class="occ-bottom-cta reveal">
+        <h2>Vous cherchez un modèle <em>spécifique</em> ?</h2>
+        <p>Contactez-nous directement — nous trouvons l'iPhone qu'il vous faut.</p>
+        <div class="occ-cta-btns">
+          <a href="https://wa.me/22943924728" target="_blank" class="occ-wa-cta">
+            <i class="fab fa-whatsapp"></i> Contacter via WhatsApp
+          </a>
+          <a href="index.html#products" class="occ-neufs-link">
+            <i class="fa-brands fa-apple"></i> Voir les neufs
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer id="footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="footer-logo"><i class="fa-brands fa-apple"></i><span>GEO <strong>APPLE</strong> STORE</span></div>
+          <p>Votre boutique iPhone de confiance — neufs et occasions vérifiées.</p>
+          <div class="footer-social">
+            <a href="https://wa.me/22943924728" target="_blank"><i class="fab fa-whatsapp"></i></a>
+            <a href="mailto:michaelhologan45@gmail.com"><i class="fas fa-envelope"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+          </div>
+        </div>
+        <div class="footer-links">
+          <div class="footer-col">
+            <h4>Navigation</h4>
+            <ul>
+              <li><a href="index.html">Accueil</a></li>
+              <li><a href="index.html#products">iPhones Neufs</a></li>
+              <li><a href="occasions.html">iPhones Occasion</a></li>
+              <li><a href="index.html#contact">Contact</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Contact</h4>
+            <ul>
+              <li><a href="https://wa.me/22943924728">WhatsApp</a></li>
+              <li><a href="mailto:michaelhologan45@gmail.com">Email</a></li>
+              <li><a href="#">Politique de retour</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 GEO APPLE STORE. Tous droits réservés.</p>
+        <p>Apple et iPhone sont des marques déposées d'Apple Inc.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- LIGHTBOX -->
+  <div id="occ-lightbox">
+    <div class="lb-wrap">
+      <button class="lb-close" id="lbClose"><i class="fas fa-xmark"></i></button>
+      <button class="lb-arrow lb-prev" id="lbPrev"><i class="fas fa-chevron-left"></i></button>
+      <button class="lb-arrow lb-next" id="lbNext"><i class="fas fa-chevron-right"></i></button>
+      <div class="lb-img-box"><img src="" alt="" id="lbImg" /></div>
+      <div class="lb-bottom">
+        <div class="lb-counter" id="lbCounter"></div>
+        <div class="lb-dots" id="lbDots"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ORDER MODAL -->
+  <div id="occ-order-overlay">
+    <div id="occ-order-box">
+      <button class="occ-modal-close" id="closeOccModal"><i class="fas fa-xmark"></i></button>
+      <div class="modal-header">
+        <i class="fa-brands fa-apple modal-apple-icon" style="color:#e8a000"></i>
+        <h3 style="font-family:'Bebas Neue',sans-serif;font-size:1.7rem;letter-spacing:2px;color:#fff;margin:8px 0 4px;">Commander cet iPhone</h3>
+        <p id="occModalTitle" style="color:#e8a000;font-weight:700;font-size:1rem;"></p>
+      </div>
+      <form class="order-form" id="occOrderForm" onsubmit="return false">
+        <div class="form-row">
+          <div class="form-group"><label>Prénom &amp; Nom *</label><input type="text" id="oo-name" placeholder="Jean Dupont" required /></div>
+          <div class="form-group"><label>Téléphone / WhatsApp *</label><input type="tel" id="oo-phone" placeholder="+229 XX XX XX XX" required /></div>
+        </div>
+        <div class="form-group"><label>Email *</label><input type="email" id="oo-email" placeholder="votre@email.com" required /></div>
+        <div class="form-group"><label>Adresse de livraison *</label><input type="text" id="oo-address" placeholder="Cotonou, Bénin..." required /></div>
+        <div class="form-group"><label>Message additionnel</label><textarea id="oo-notes" rows="3" placeholder="Questions sur l'état du téléphone..."></textarea></div>
+        <div class="order-method-row">
+          <div class="method-btns">
+            <button type="button" class="method-btn whatsapp-btn" id="occBtnWA"><i class="fab fa-whatsapp"></i> Commander via WhatsApp</button>
+            <button type="button" class="method-btn email-btn" id="occBtnEmail"><i class="fas fa-envelope"></i> Commander par Email</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- WA FLOAT -->
+  <a href="https://wa.me/22943924728" class="wa-float" target="_blank">
+    <i class="fab fa-whatsapp"></i><span class="wa-pulse"></span>
+  </a>
+
+  <script>
+  (() => {
+    /* ===== CONFIG ===== */
+    const WA = "22943924728";
+    const EMAIL = "michaelhologan45@gmail.com";
+    const KEY = "geo_occasions";
+
+    /* ===== CURSOR ===== */
+    const dot = document.querySelector(".cursor-dot");
+    const ring = document.querySelector(".cursor-ring");
+    let mx=0,my=0,rx=0,ry=0;
+    document.addEventListener("mousemove",e=>{mx=e.clientX;my=e.clientY;dot.style.left=mx+"px";dot.style.top=my+"px";});
+    (function ac(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+"px";ring.style.top=ry+"px";requestAnimationFrame(ac);})();
+    document.querySelectorAll("a,button").forEach(el=>{
+      el.addEventListener("mouseenter",()=>document.body.classList.add("cursor-hover"));
+      el.addEventListener("mouseleave",()=>document.body.classList.remove("cursor-hover"));
+    });
+
+    /* ===== HEADER ===== */
+    window.addEventListener("scroll",()=>document.getElementById("header").classList.toggle("scrolled",scrollY>80));
+
+    /* ===== HAMBURGER ===== */
+    const hb=document.getElementById("hamburger"),mm=document.getElementById("mobileMenu");
+    hb.onclick=()=>{hb.classList.toggle("open");mm.classList.toggle("open");};
+    window.closeMobileMenu=()=>{hb.classList.remove("open");mm.classList.remove("open");};
+
+    /* ===== REVEAL ===== */
+    const ro=new IntersectionObserver((es)=>{es.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add("visible"),i*80);ro.unobserve(e.target);}});},{threshold:.08});
+    setTimeout(()=>document.querySelectorAll(".reveal").forEach(el=>ro.observe(el)),100);
+
+    /* ===== DATA ===== */
+    function getData(){try{return JSON.parse(localStorage.getItem(KEY)||"[]");}catch{return[];}}
+
+    /* ===== COND CONFIG ===== */
+    const COND={
+      A:{cls:"cond-A",lbl:"Excellent",dots:5},
+      B:{cls:"cond-B",lbl:"Très bon",dots:4},
+      C:{cls:"cond-C",lbl:"Bon état",dots:3},
+      D:{cls:"cond-D",lbl:"Correct",dots:2},
+      "excellent":{cls:"cond-A",lbl:"Excellent",dots:5},
+      "tres-bon":{cls:"cond-B",lbl:"Très bon",dots:4},
+      "bon":{cls:"cond-C",lbl:"Bon état",dots:3},
+      "correct":{cls:"cond-D",lbl:"Correct",dots:2},
+    };
+
+    function fmtPrice(n){return Number(n).toLocaleString("fr-FR");}
+
+    function eDots(cond,score){
+      let html="";
+      for(let i=1;i<=5;i++) html+=`<div class="ed${i<=score?" on-"+cond:""}"></div>`;
+      return html;
+    }
+
+    /* ===== BUILD CARD ===== */
+    function buildCard(p){
+      const c=COND[p.condition||p.state||"C"]||COND.C;
+      const imgs=p.images||(p.image?[p.image]:[]);
+      const mainImg=imgs[0]||"";
+      const sold=!!(p.sold);
+      const eco=(p.originalPrice&&p.price&&Number(p.originalPrice)>Number(p.price))
+        ?Math.round((1-Number(p.price)/Number(p.originalPrice))*100):0;
+      const imgsJSON=JSON.stringify(imgs).replace(/"/g,"&quot;");
+
+      const div=document.createElement("div");
+      div.className="occ-card reveal"+(sold?" sold-out":"");
+      div.dataset.cond=c.cls.replace("cond-","");
+      div.dataset.sold=sold?"1":"0";
+
+      div.innerHTML=`
+        <div class="occ-cond ${c.cls}">${c.lbl}</div>
+        <div class="occ-sold-veil"><div class="sold-stamp">VENDU</div></div>
+        <div class="occ-img-box" onclick="openLB(${imgsJSON},0)">
+          ${mainImg
+            ?`<img src="${mainImg}" alt="${p.name||""}" loading="lazy"/>`
+            :`<div class="occ-no-img"><i class="fa-brands fa-apple"></i></div>`}
+          ${imgs.length>1?`<div class="occ-photo-chip"><i class="fas fa-images"></i>${imgs.length} photos</div>`:""}
+        </div>
+        <div class="occ-body">
+          <div class="occ-series">${p.series||"iPhone"}</div>
+          <div class="occ-name">${p.name||"iPhone"}</div>
+          <div class="occ-chips">
+            ${p.storage?`<span class="occ-chip"><i class="fas fa-hdd"></i>${p.storage}</span>`:""}
+            ${p.color?`<span class="occ-chip"><i class="fas fa-circle" style="color:${colorHex(p.color)};font-size:.5rem;"></i>${p.color}</span>`:""}
+            ${p.battery?`<span class="occ-chip"><i class="fas fa-battery-half"></i>Batterie ${p.battery}%</span>`:""}
+          </div>
+          <div class="occ-etat">
+            <span class="occ-etat-lbl">État</span>
+            <div class="etat-dots">${eDots(c.cls.replace("cond-",""),c.dots)}</div>
+          </div>
+          ${p.description?`<div class="occ-desc">${p.description}</div>`:""}
+          <div class="occ-price-area">
+            <div class="occ-prices">
+              ${p.originalPrice?`<div class="occ-old">${fmtPrice(p.originalPrice)} FCFA neuf</div>`:""}
+              <div class="occ-price-main">${fmtPrice(p.price)} <small>FCFA</small></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px">
+              ${eco?`<span class="occ-eco">-${eco}%</span>`:""}
+              <button class="occ-cart-btn" onclick="openOrderModal(event,'${(p.name||"iPhone").replace(/'/g,"\\'")}','${fmtPrice(p.price)} FCFA')"><i class="fas fa-bag-shopping"></i></button>
+            </div>
+          </div>
+          <button class="occ-order-btn" onclick="openOrderModal(event,'${(p.name||"iPhone").replace(/'/g,"\\'")}','${fmtPrice(p.price)} FCFA')">
+            ${sold?"Déjà vendu":"Commander cet iPhone"}
+          </button>
+        </div>`;
+      return div;
+    }
+
+    function colorHex(n){
+      const m={noir:"#111",blanc:"#f5f5f5",or:"#c8a000",rose:"#e8a0a0",bleu:"#4488cc",vert:"#44aa88",violet:"#8844aa",rouge:"#cc2200",gris:"#888"};
+      return m[(n||"").toLowerCase()]||"#888";
+    }
+
+    /* ===== RENDER ===== */
+    function render(filter="all"){
+      const data=getData();
+      const grid=document.getElementById("occGrid");
+      const empty=document.getElementById("occEmpty");
+      grid.innerHTML="";
+
+      const avail=data.filter(d=>!d.sold).length;
+      document.getElementById("sTotal").textContent=data.length;
+      document.getElementById("sAvail").textContent=avail;
+
+      let items=data;
+      if(filter==="A") items=data.filter(d=>["A","excellent"].includes(d.condition||d.state));
+      else if(filter==="B") items=data.filter(d=>["B","tres-bon"].includes(d.condition||d.state));
+      else if(filter==="C") items=data.filter(d=>["C","D","bon","correct"].includes(d.condition||d.state));
+      else if(filter==="dispo") items=data.filter(d=>!d.sold);
+      else if(filter==="vendu") items=data.filter(d=>d.sold);
+
+      if(!items.length){
+        empty.classList.add("show");
+      } else {
+        empty.classList.remove("show");
+        items.forEach(p=>{
+          const card=buildCard(p);
+          grid.appendChild(card);
+        });
+        setTimeout(()=>grid.querySelectorAll(".reveal").forEach((el,i)=>setTimeout(()=>el.classList.add("visible"),i*60)),50);
+      }
+    }
+
+    /* ===== FILTRES ===== */
+    document.querySelectorAll(".occ-f-btn").forEach(btn=>{
+      btn.onclick=function(){
+        document.querySelectorAll(".occ-f-btn").forEach(b=>b.classList.remove("active"));
+        this.classList.add("active");
+        render(this.dataset.f);
+      };
+    });
+
+    /* ===== LIGHTBOX ===== */
+    let lbImgs=[],lbIdx=0;
+    window.openLB=function(imgs,idx){
+      if(!imgs||!imgs.length) return;
+      lbImgs=imgs; lbIdx=idx;
+      renderLB();
+      document.getElementById("occ-lightbox").classList.add("open");
+      document.body.style.overflow="hidden";
+    };
+    function renderLB(){
+      document.getElementById("lbImg").src=lbImgs[lbIdx];
+      document.getElementById("lbCounter").textContent=`${lbIdx+1} / ${lbImgs.length}`;
+      const dots=document.getElementById("lbDots");
+      dots.innerHTML=lbImgs.map((_,i)=>`<div class="lb-dot${i===lbIdx?" active":""}" onclick="lbGo(${i})"></div>`).join("");
+      ["lbPrev","lbNext"].forEach(id=>document.getElementById(id).style.display=lbImgs.length>1?"":"none");
+    }
+    window.lbGo=function(i){lbIdx=(i+lbImgs.length)%lbImgs.length;renderLB();};
+    document.getElementById("lbClose").onclick=closeLB;
+    document.getElementById("occ-lightbox").onclick=e=>{if(e.target===document.getElementById("occ-lightbox"))closeLB();};
+    document.getElementById("lbPrev").onclick=e=>{e.stopPropagation();lbGo(lbIdx-1);};
+    document.getElementById("lbNext").onclick=e=>{e.stopPropagation();lbGo(lbIdx+1);};
+    function closeLB(){document.getElementById("occ-lightbox").classList.remove("open");document.body.style.overflow="";}
+    let lbTX=0;
+    document.getElementById("occ-lightbox").addEventListener("touchstart",e=>{lbTX=e.touches[0].clientX;});
+    document.getElementById("occ-lightbox").addEventListener("touchend",e=>{const d=lbTX-e.changedTouches[0].clientX;if(Math.abs(d)>40)lbGo(d>0?lbIdx+1:lbIdx-1);});
+
+    /* ===== ORDER MODAL ===== */
+    let occProd={name:"",price:""};
+    window.openOrderModal=function(e,name,price){
+      e&&e.stopPropagation&&e.stopPropagation();
+      occProd={name,price};
+      document.getElementById("occModalTitle").textContent=`${name} — ${price}`;
+      document.getElementById("occ-order-overlay").classList.add("open");
+      document.body.style.overflow="hidden";
+    };
+    function closeModal(){document.getElementById("occ-order-overlay").classList.remove("open");document.body.style.overflow="";}
+    document.getElementById("closeOccModal").onclick=closeModal;
+    document.getElementById("occ-order-overlay").onclick=e=>{if(e.target===document.getElementById("occ-order-overlay"))closeModal();};
+
+    document.getElementById("occBtnWA").onclick=()=>{
+      const n=document.getElementById("oo-name").value.trim();
+      const p=document.getElementById("oo-phone").value.trim();
+      if(!n||!p){alert("Veuillez remplir votre nom et téléphone.");return;}
+      const msg=`🍎 *COMMANDE OCCASION — GEO APPLE STORE*\n\n📱 *Produit :* ${occProd.name}\n💰 *Prix :* ${occProd.price}\n\n👤 *Nom :* ${n}\n📞 *Tél :* ${p}\n📍 *Adresse :* ${document.getElementById("oo-address").value||"—"}\n💬 *Notes :* ${document.getElementById("oo-notes").value||"—"}`;
+      window.open(`https://wa.me/${WA}?text=${encodeURIComponent(msg)}`,"_blank");
+      closeModal();
+    };
+    document.getElementById("occBtnEmail").onclick=async()=>{
+      const n=document.getElementById("oo-name").value.trim();
+      const p=document.getElementById("oo-phone").value.trim();
+      const e=document.getElementById("oo-email").value.trim();
+      const a=document.getElementById("oo-address").value.trim();
+      if(!n||!p||!e||!a){alert("Veuillez remplir tous les champs obligatoires.");return;}
+
+      const btn=document.getElementById("occBtnEmail");
+      btn.disabled=true;
+      btn.innerHTML=`<i class="fas fa-spinner fa-spin"></i> Envoi en cours...`;
+
+      try {
+        const res=await fetch("/api/send-order-occasion",{
+          method:"POST",
+          headers:{"Content-Type":"application/json"},
+          body:JSON.stringify({
+            customerName:n,
+            customerPhone:p,
+            customerEmail:e,
+            customerAddress:a,
+            productName:occProd.name,
+            productPrice:occProd.price,
+            notes:document.getElementById("oo-notes").value.trim(),
+            orderDate:new Date().toLocaleString("fr-FR")
+          })
+        });
+        const data=await res.json();
+        if(data.success){
+          closeModal();
+          // Reset form
+          ["oo-name","oo-phone","oo-email","oo-address","oo-notes"].forEach(id=>document.getElementById(id).value="");
+          // Show success message
+          const toast=document.createElement("div");
+          toast.style.cssText="position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#22c55e;color:#fff;padding:14px 28px;border-radius:50px;font-weight:700;font-size:.9rem;z-index:9999;box-shadow:0 8px 32px rgba(0,0,0,.4);display:flex;align-items:center;gap:10px;";
+          toast.innerHTML=`<i class="fas fa-circle-check"></i> Commande envoyée ! Nous vous contactons bientôt.`;
+          document.body.appendChild(toast);
+          setTimeout(()=>toast.remove(),4000);
+        } else {
+          alert("Erreur lors de l'envoi. Veuillez utiliser WhatsApp.");
+        }
+      } catch(err) {
+        alert("Erreur réseau. Veuillez utiliser WhatsApp pour commander.");
+      }
+
+      btn.disabled=false;
+      btn.innerHTML=`<i class="fas fa-envelope"></i> Commander par Email`;
+    };
+
+    /* ===== INIT ===== */
+    render();
+  })();
+  </script>
+</body>
+</html>

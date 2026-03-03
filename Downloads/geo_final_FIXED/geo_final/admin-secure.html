@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin — GEO APPLE STORE</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@300;400;500;600;700;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+    html{font-size:16px;scroll-behavior:smooth;}
+    :root{
+      --red:#e8001d;--rd:#b0001a;--black:#080808;--dark:#111;
+      --card:#161616;--white:#fff;--grey:#888;--lg:#2a2a2a;
+      --border:rgba(255,255,255,0.08);--radius:14px;--radius-sm:10px;
+      --tr:all 0.25s cubic-bezier(.4,0,.2,1);
+      --gold:#e8a000;--gold-d:#b87000;
+      --green:#22c55e;--blue:#3b82f6;
+    }
+    body{background:var(--black);color:var(--white);font-family:'Montserrat',sans-serif;min-height:100vh;overflow-x:hidden;}
+    ::-webkit-scrollbar{width:5px;height:5px;}
+    ::-webkit-scrollbar-track{background:var(--dark);}
+    ::-webkit-scrollbar-thumb{background:var(--lg);border-radius:4px;}
+
+    /* ===== LOGIN ===== */
+    #loginScreen{
+      position:fixed;inset:0;z-index:9999;
+      background:var(--black);
+      display:flex;align-items:center;justify-content:center;padding:24px;
+    }
+    .login-bg{
+      position:absolute;inset:0;
+      background:radial-gradient(ellipse at 30% 20%,rgba(232,0,29,.18) 0%,transparent 55%),
+                 radial-gradient(ellipse at 70% 80%,rgba(232,160,0,.12) 0%,transparent 50%);
+    }
+    .login-box{
+      position:relative;z-index:1;
+      background:rgba(22,22,22,.95);border:1px solid var(--border);
+      border-radius:24px;padding:44px 40px;
+      width:100%;max-width:420px;
+      animation:loginPop .5s cubic-bezier(.34,1.56,.64,1) both;
+    }
+    @keyframes loginPop{from{opacity:0;transform:scale(.9) translateY(20px)}to{opacity:1;transform:none}}
+    .login-logo{display:flex;align-items:center;gap:10px;font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:2px;color:var(--white);margin-bottom:6px;}
+    .login-logo i{color:var(--red);font-size:1.8rem;}
+    .login-sub{font-size:.75rem;color:var(--grey);letter-spacing:2px;text-transform:uppercase;margin-bottom:32px;}
+    .lf{display:flex;flex-direction:column;gap:6px;margin-bottom:18px;}
+    .lf label{font-size:.7rem;font-weight:700;color:var(--grey);text-transform:uppercase;letter-spacing:1px;}
+    .lf input{
+      background:rgba(255,255,255,.04);border:1px solid var(--border);
+      border-radius:10px;padding:13px 16px;color:var(--white);
+      font-family:'Montserrat',sans-serif;font-size:.88rem;
+      outline:none;transition:var(--tr);
+    }
+    .lf input:focus{border-color:var(--red);background:rgba(232,0,29,.06);}
+    .login-err{
+      background:rgba(232,0,29,.1);border:1px solid rgba(232,0,29,.3);
+      border-radius:8px;padding:10px 14px;font-size:.8rem;color:var(--red);
+      display:none;margin-bottom:14px;align-items:center;gap:8px;
+    }
+    .login-err.show{display:flex;}
+    .btn-login{
+      width:100%;padding:14px;
+      background:linear-gradient(135deg,var(--red),#ff4560);
+      border:none;border-radius:50px;color:var(--white);
+      font-family:'Montserrat',sans-serif;font-size:.88rem;font-weight:700;
+      letter-spacing:1px;text-transform:uppercase;cursor:pointer;
+      transition:var(--tr);box-shadow:0 8px 32px rgba(232,0,29,.35);
+    }
+    .btn-login:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(232,0,29,.5);}
+    .btn-login:disabled{opacity:.6;cursor:not-allowed;transform:none;}
+    .login-security{
+      margin-top:20px;text-align:center;
+      font-size:.7rem;color:rgba(255,255,255,.2);
+      display:flex;align-items:center;justify-content:center;gap:6px;
+    }
+    .login-security i{color:var(--green);font-size:.75rem;}
+
+    /* ===== APP ===== */
+    #adminApp{display:none;min-height:100vh;}
+    #adminApp.show{display:flex;}
+
+    /* ===== SIDEBAR ===== */
+    .sidebar{
+      width:230px;flex-shrink:0;
+      background:var(--dark);border-right:1px solid var(--border);
+      display:flex;flex-direction:column;
+      position:sticky;top:0;height:100vh;
+    }
+    .sb-logo{padding:24px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;}
+    .sb-logo i{color:var(--red);font-size:1.6rem;}
+    .sb-logo span{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:1.5px;line-height:1.1;}
+    .sb-badge{font-size:.6rem;background:var(--gold);color:#111;border-radius:4px;padding:2px 6px;font-weight:800;text-transform:uppercase;letter-spacing:1px;}
+    .sb-secure-badge{
+      display:flex;align-items:center;gap:6px;
+      padding:8px 20px;
+      background:rgba(34,197,94,.06);
+      border-bottom:1px solid rgba(34,197,94,.1);
+      font-size:.65rem;color:var(--green);font-weight:700;
+    }
+    nav.sb-nav{padding:16px 12px;flex:1;}
+    .sb-section{font-size:.6rem;color:rgba(255,255,255,.25);text-transform:uppercase;letter-spacing:2px;padding:10px 10px 6px;margin-top:6px;}
+    .sb-link{
+      display:flex;align-items:center;gap:10px;
+      padding:10px 12px;border-radius:10px;
+      font-size:.8rem;font-weight:600;color:var(--grey);
+      cursor:pointer;transition:var(--tr);
+      text-decoration:none;border:none;background:none;
+      width:100%;font-family:'Montserrat',sans-serif;
+    }
+    .sb-link:hover{background:rgba(255,255,255,.04);color:var(--white);}
+    .sb-link.active{background:rgba(232,0,29,.12);color:var(--white);}
+    .sb-link i{width:16px;text-align:center;font-size:.9rem;}
+    .sb-link.active i{color:var(--red);}
+    .sb-footer{padding:16px 20px;border-top:1px solid var(--border);}
+    .sb-user{font-size:.72rem;font-weight:600;color:rgba(255,255,255,.5);margin-bottom:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+    .sb-session{font-size:.65rem;color:var(--grey);margin-bottom:10px;}
+    .sb-logout{
+      display:flex;align-items:center;gap:7px;cursor:pointer;
+      font-size:.72rem;color:var(--grey);transition:color .2s;
+      background:none;border:none;font-family:'Montserrat',sans-serif;padding:0;
+    }
+    .sb-logout:hover{color:var(--red);}
+
+    /* ===== MAIN ===== */
+    .main-area{flex:1;overflow-y:auto;min-height:100vh;}
+    .top-bar{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:20px 28px;border-bottom:1px solid var(--border);
+      background:rgba(17,17,17,.8);backdrop-filter:blur(10px);
+      position:sticky;top:0;z-index:100;
+    }
+    .top-bar h1{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:2px;color:var(--white);}
+    .top-bar-right{display:flex;align-items:center;gap:12px;}
+    .tb-chip{
+      display:flex;align-items:center;gap:7px;
+      background:rgba(255,255,255,.04);border:1px solid var(--border);
+      border-radius:20px;padding:6px 14px;
+      font-size:.72rem;font-weight:600;color:var(--grey);
+    }
+    .tb-chip i{font-size:.75rem;}
+    .tb-chip span{color:var(--white);font-weight:700;}
+    .content-pad{padding:28px;}
+
+    /* ===== TABS ===== */
+    .tab-content{display:none;}
+    .tab-content.show{display:block;}
+
+    /* ===== DASH STATS ===== */
+    .dash-stats{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:16px;margin-bottom:32px;}
+    .dsc{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;display:flex;flex-direction:column;gap:8px;}
+    .dsc-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1rem;}
+    .dsc-icon.red{background:rgba(232,0,29,.12);color:var(--red);}
+    .dsc-icon.green{background:rgba(34,197,94,.1);color:var(--green);}
+    .dsc-icon.gold{background:rgba(232,160,0,.1);color:var(--gold);}
+    .dsc-icon.blue{background:rgba(59,130,246,.1);color:var(--blue);}
+    .dsc-num{font-size:2rem;font-weight:900;color:var(--white);line-height:1;}
+    .dsc-lbl{font-size:.7rem;color:var(--grey);text-transform:uppercase;letter-spacing:1px;}
+
+    .section-title{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:2px;color:var(--white);margin-bottom:16px;}
+
+    /* ===== TABLE ===== */
+    .tbl-wrap{overflow-x:auto;border-radius:var(--radius);border:1px solid var(--border);}
+    .admin-table{width:100%;border-collapse:collapse;}
+    .admin-table th{padding:13px 16px;text-align:left;font-size:.67rem;font-weight:700;color:var(--grey);text-transform:uppercase;letter-spacing:1.5px;background:rgba(255,255,255,.02);border-bottom:1px solid var(--border);white-space:nowrap;}
+    .admin-table td{padding:12px 16px;font-size:.8rem;color:rgba(255,255,255,.8);border-bottom:1px solid rgba(255,255,255,.04);vertical-align:middle;}
+    .admin-table tr:last-child td{border-bottom:none;}
+    .admin-table tr:hover td{background:rgba(255,255,255,.02);}
+    .tbl-thumb{width:44px;height:44px;border-radius:8px;object-fit:cover;display:block;background:var(--lg);}
+    .tbl-thumb-ph{width:44px;height:44px;border-radius:8px;background:var(--lg);display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:rgba(255,255,255,.1);}
+    .tbl-name{font-weight:600;color:var(--white);}
+    .tbl-sub{font-size:.7rem;color:var(--grey);margin-top:2px;}
+    .bc{display:inline-block;font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px;padding:3px 10px;border-radius:20px;}
+    .bc-A{background:#22c55e;color:#fff;}
+    .bc-B{background:#3b82f6;color:#fff;}
+    .bc-C{background:var(--gold);color:#111;}
+    .bc-D{background:rgba(160,160,160,.2);color:#ccc;border:1px solid rgba(255,255,255,.12);}
+    .bs{display:inline-flex;align-items:center;gap:5px;font-size:.72rem;font-weight:700;}
+    .bs-dispo{color:var(--green);}
+    .bs-vendu{color:var(--red);}
+    .bs-dot{width:6px;height:6px;border-radius:50%;}
+    .bs-dispo .bs-dot{background:var(--green);}
+    .bs-vendu .bs-dot{background:var(--red);}
+    .tbl-actions{display:flex;gap:8px;}
+    .tbl-btn{width:32px;height:32px;border:1px solid var(--border);border-radius:8px;background:transparent;color:var(--grey);font-size:.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:var(--tr);}
+    .tbl-btn:hover{border-color:rgba(255,255,255,.25);color:var(--white);}
+    .tbl-btn.del:hover{border-color:rgba(232,0,29,.5);color:var(--red);}
+    .tbl-btn.sold:hover{border-color:rgba(34,197,94,.5);color:var(--green);}
+    .tbl-btn.edit:hover{border-color:rgba(232,160,0,.5);color:var(--gold);}
+    .empty-tbl{text-align:center;padding:56px 24px;color:var(--grey);}
+    .empty-tbl i{font-size:2.5rem;opacity:.2;display:block;margin-bottom:12px;}
+
+    /* ===== FORM ===== */
+    .form-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px;margin-bottom:24px;}
+    .form-card-title{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:1.5px;color:var(--white);margin-bottom:20px;display:flex;align-items:center;gap:10px;}
+    .form-card-title i{color:var(--gold);}
+    .fg{display:flex;flex-direction:column;gap:6px;margin-bottom:16px;}
+    .fg label{font-size:.7rem;font-weight:700;color:var(--grey);text-transform:uppercase;letter-spacing:1px;}
+    .fg input,.fg select,.fg textarea{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 14px;color:var(--white);font-family:'Montserrat',sans-serif;font-size:.88rem;outline:none;transition:var(--tr);}
+    .fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--gold);background:rgba(232,160,0,.05);}
+    .fg select option{background:var(--dark);}
+    .fg textarea{resize:vertical;min-height:80px;}
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+    .form-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;}
+
+    /* ===== IMAGE UPLOAD ===== */
+    .img-zone{border:2px dashed var(--border);border-radius:var(--radius);padding:32px 24px;text-align:center;cursor:pointer;transition:var(--tr);margin-bottom:12px;}
+    .img-zone:hover,.img-zone.drag{border-color:var(--gold);background:rgba(232,160,0,.05);}
+    .img-zone i{font-size:2rem;color:var(--gold);margin-bottom:10px;display:block;}
+    .img-zone p{font-size:.83rem;color:var(--grey);margin-bottom:4px;}
+    .img-zone span{font-size:.72rem;color:rgba(255,255,255,.25);}
+    #imgFileInput{display:none;}
+    .img-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:10px;margin-top:12px;}
+    .img-thumb{position:relative;border-radius:10px;overflow:hidden;aspect-ratio:1;background:var(--lg);}
+    .img-thumb img{width:100%;height:100%;object-fit:cover;display:block;}
+    .img-del{position:absolute;top:5px;right:5px;width:22px;height:22px;background:rgba(232,0,29,.85);border:none;border-radius:50%;color:#fff;font-size:.65rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:var(--tr);}
+    .img-del:hover{background:var(--red);transform:scale(1.1);}
+    .img-count{font-size:.68rem;color:var(--grey);margin-top:6px;}
+
+    /* ===== TOGGLE ===== */
+    .toggle-wrap{display:inline-flex;align-items:center;gap:8px;cursor:pointer;user-select:none;}
+    .ts-track{width:38px;height:20px;border-radius:20px;background:rgba(255,255,255,.08);border:1px solid var(--border);position:relative;transition:var(--tr);}
+    .ts-track.on{background:rgba(232,0,29,.3);border-color:rgba(232,0,29,.4);}
+    .ts-thumb{position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:var(--grey);transition:var(--tr);}
+    .ts-track.on .ts-thumb{left:20px;background:var(--red);}
+    .ts-label{font-size:.78rem;color:var(--grey);}
+
+    /* ===== BUTTONS ===== */
+    .btn-submit{display:flex;align-items:center;justify-content:center;gap:10px;padding:14px 32px;background:linear-gradient(135deg,var(--gold-d),var(--gold));border:none;border-radius:50px;color:#111;font-family:'Montserrat',sans-serif;font-size:.88rem;font-weight:800;cursor:pointer;transition:var(--tr);box-shadow:0 8px 24px rgba(232,160,0,.35);}
+    .btn-submit:hover{transform:translateY(-2px);box-shadow:0 12px 36px rgba(232,160,0,.5);}
+    .btn-cancel{display:flex;align-items:center;justify-content:center;gap:8px;padding:14px 24px;background:transparent;border:1px solid var(--border);border-radius:50px;color:var(--grey);font-family:'Montserrat',sans-serif;font-size:.88rem;font-weight:600;cursor:pointer;transition:var(--tr);}
+    .btn-cancel:hover{border-color:rgba(255,255,255,.2);color:var(--white);}
+    .btn-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px;}
+
+    /* ===== TOAST ===== */
+    #toast{position:fixed;top:24px;right:24px;z-index:9999;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px 20px;display:flex;align-items:center;gap:12px;font-size:.82rem;font-weight:600;transform:translateX(120%);opacity:0;transition:all .35s cubic-bezier(.34,1.56,.64,1);min-width:260px;box-shadow:0 12px 40px rgba(0,0,0,.5);}
+    #toast.show{transform:none;opacity:1;}
+    #toast i{font-size:1.1rem;}
+    #toast.success{border-color:rgba(34,197,94,.3);}
+    #toast.success i{color:var(--green);}
+    #toast.error{border-color:rgba(232,0,29,.3);}
+    #toast.error i{color:var(--red);}
+
+    /* ===== SETTINGS ===== */
+    .settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+    .settings-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:24px;}
+    .settings-card h3{font-size:.9rem;font-weight:700;color:var(--white);margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+    .settings-card h3 i{color:var(--gold);}
+    .settings-info{background:rgba(59,130,246,.08);border:1px solid rgba(59,130,246,.2);border-radius:10px;padding:12px 16px;font-size:.78rem;color:rgba(255,255,255,.6);line-height:1.6;margin-top:12px;}
+    .settings-info i{color:var(--blue);}
+
+    /* ===== EXPORT ===== */
+    .export-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:24px;display:flex;flex-direction:column;gap:12px;}
+    .btn-export{display:inline-flex;align-items:center;gap:8px;padding:11px 22px;background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.3);border-radius:50px;color:var(--blue);font-family:'Montserrat',sans-serif;font-size:.8rem;font-weight:700;cursor:pointer;transition:var(--tr);}
+    .btn-export:hover{background:rgba(59,130,246,.2);}
+    .btn-import{display:inline-flex;align-items:center;gap:8px;padding:11px 22px;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);border-radius:50px;color:var(--green);font-family:'Montserrat',sans-serif;font-size:.8rem;font-weight:700;cursor:pointer;transition:var(--tr);}
+    .btn-import:hover{background:rgba(34,197,94,.2);}
+
+    /* ===== CONFIRM MODAL ===== */
+    #confirmModal{position:fixed;inset:0;z-index:9998;background:rgba(0,0,0,.8);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s;padding:20px;}
+    #confirmModal.show{opacity:1;pointer-events:all;}
+    .confirm-box{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:32px 28px;text-align:center;max-width:400px;width:100%;}
+    .confirm-box i{font-size:2.4rem;color:var(--red);display:block;margin-bottom:14px;}
+    .confirm-box h3{font-size:1.1rem;font-weight:700;color:var(--white);margin-bottom:8px;}
+    .confirm-box p{font-size:.84rem;color:var(--grey);margin-bottom:24px;}
+    .confirm-btns{display:flex;gap:12px;justify-content:center;}
+    .confirm-del{padding:11px 28px;background:linear-gradient(135deg,var(--rd),var(--red));border:none;border-radius:50px;color:#fff;font-family:'Montserrat',sans-serif;font-size:.84rem;font-weight:700;cursor:pointer;transition:var(--tr);}
+    .confirm-del:hover{opacity:.85;}
+    .confirm-no{padding:11px 28px;background:transparent;border:1px solid var(--border);border-radius:50px;color:var(--grey);font-family:'Montserrat',sans-serif;font-size:.84rem;font-weight:600;cursor:pointer;transition:var(--tr);}
+    .confirm-no:hover{border-color:rgba(255,255,255,.2);color:var(--white);}
+
+    /* ===== MOBILE ===== */
+    .sb-toggle{display:none;background:none;border:none;color:var(--white);font-size:1.3rem;cursor:pointer;padding:4px;}
+    .sb-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:190;}
+    .sb-overlay.show{display:block;}
+    @media(max-width:900px){
+      .sidebar{position:fixed;left:-250px;z-index:200;transition:left .3s ease;height:100vh;}
+      .sidebar.open{left:0;}
+      .sb-toggle{display:block;}
+    }
+    @media(max-width:640px){
+      .form-row,.form-row-3{grid-template-columns:1fr;}
+      .dash-stats{grid-template-columns:1fr 1fr;}
+      .settings-grid{grid-template-columns:1fr;}
+      .content-pad{padding:18px;}
+    }
+  </style>
+</head>
+<body>
+
+  <!-- LOGIN -->
+  <div id="loginScreen">
+    <div class="login-bg"></div>
+    <div class="login-box">
+      <div class="login-logo"><i class="fa-brands fa-apple"></i><span>GEO APPLE STORE</span></div>
+      <div class="login-sub">Espace Administration Sécurisé</div>
+      <div class="lf">
+        <label>Email administrateur</label>
+        <input type="email" id="lgEmail" placeholder="admin@geoapplestore.com" autocomplete="email"/>
+      </div>
+      <div class="lf">
+        <label>Mot de passe</label>
+        <input type="password" id="lgPass" placeholder="••••••••" autocomplete="current-password"/>
+      </div>
+      <div class="login-err" id="lgErr"><i class="fas fa-circle-exclamation"></i><span id="lgErrMsg">Email ou mot de passe incorrect.</span></div>
+      <button class="btn-login" id="lgBtn"><i class="fas fa-lock-open"></i> Accéder au tableau de bord</button>
+      <div class="login-security"><i class="fas fa-shield-halved"></i> Connexion sécurisée — Authentification serveur</div>
+    </div>
+  </div>
+
+  <!-- APP -->
+  <div id="adminApp">
+    <div class="sb-overlay" id="sbOverlay" onclick="closeSidebar()"></div>
+    <aside class="sidebar" id="sidebar">
+      <div class="sb-logo">
+        <i class="fa-brands fa-apple"></i>
+        <div><div style="font-family:'Bebas Neue',sans-serif;letter-spacing:2px;font-size:1.15rem;">GEO APPLE</div><span class="sb-badge">Admin</span></div>
+      </div>
+      <div class="sb-secure-badge"><i class="fas fa-shield-halved"></i> Session sécurisée active</div>
+      <nav class="sb-nav">
+        <div class="sb-section">Principal</div>
+        <button class="sb-link active" data-tab="dashboard"><i class="fas fa-chart-line"></i> Tableau de bord</button>
+        <button class="sb-link" data-tab="add"><i class="fas fa-plus-circle"></i> Ajouter un iPhone</button>
+        <button class="sb-link" data-tab="list"><i class="fas fa-mobile-screen-button"></i> Liste occasions</button>
+        <div class="sb-section">Outils</div>
+        <button class="sb-link" data-tab="export"><i class="fas fa-database"></i> Export / Import</button>
+        <button class="sb-link" data-tab="settings"><i class="fas fa-gear"></i> Paramètres</button>
+        <div class="sb-section">Accès site</div>
+        <a class="sb-link" href="/" target="_blank"><i class="fas fa-house"></i> Accueil</a>
+        <a class="sb-link" href="/occasions.html" target="_blank"><i class="fas fa-arrow-up-right-from-square"></i> Page Occasions</a>
+      </nav>
+      <div class="sb-footer">
+        <div class="sb-user" id="sbUser"></div>
+        <div class="sb-session" id="sbSession"></div>
+        <button class="sb-logout" onclick="doLogout()"><i class="fas fa-right-from-bracket"></i> Déconnexion</button>
+      </div>
+    </aside>
+
+    <div class="main-area">
+      <div class="top-bar">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <button class="sb-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+          <h1 id="topTitle">Tableau de bord</h1>
+        </div>
+        <div class="top-bar-right">
+          <div class="tb-chip"><i class="fas fa-mobile-screen-button" style="color:var(--gold)"></i> Stock: <span id="tbStock">0</span></div>
+          <div class="tb-chip"><i class="fas fa-circle-check" style="color:var(--green)"></i> Dispo: <span id="tbAvail">0</span></div>
+        </div>
+      </div>
+
+      <div class="content-pad">
+
+        <!-- DASHBOARD -->
+        <div class="tab-content show" id="tab-dashboard">
+          <div class="dash-stats" id="dashStats"></div>
+          <h2 class="section-title"><i class="fas fa-clock" style="color:var(--gold);margin-right:8px"></i>Dernières annonces</h2>
+          <div class="tbl-wrap" id="recentTable"></div>
+        </div>
+
+        <!-- ADD / EDIT -->
+        <div class="tab-content" id="tab-add">
+          <input type="hidden" id="editId"/>
+          <div class="form-card">
+            <div class="form-card-title"><i class="fas fa-tag"></i> Informations du téléphone</div>
+            <div class="form-row">
+              <div class="fg"><label>Nom du modèle *</label><input type="text" id="fName" placeholder="ex: iPhone 13 Pro Max"/></div>
+              <div class="fg"><label>Série</label><input type="text" id="fSeries" placeholder="ex: iPhone 13"/></div>
+            </div>
+            <div class="form-row-3">
+              <div class="fg"><label>État *</label>
+                <select id="fCond">
+                  <option value="A">Excellent état</option>
+                  <option value="B">Très bon état</option>
+                  <option value="C" selected>Bon état</option>
+                  <option value="D">État correct</option>
+                </select>
+              </div>
+              <div class="fg"><label>Stockage</label><input type="text" id="fStorage" placeholder="ex: 256 Go"/></div>
+              <div class="fg"><label>Couleur</label><input type="text" id="fColor" placeholder="ex: Noir, Blanc..."/></div>
+            </div>
+            <div class="form-row">
+              <div class="fg"><label>Prix occasion (FCFA) *</label><input type="number" id="fPrice" placeholder="ex: 180000"/></div>
+              <div class="fg"><label>Prix neuf (FCFA)</label><input type="number" id="fOldPrice" placeholder="ex: 350000"/></div>
+            </div>
+            <div class="fg"><label>Batterie (%)</label><input type="number" id="fBattery" placeholder="ex: 87" min="1" max="100"/></div>
+            <div class="fg"><label>Description</label><textarea id="fDesc" placeholder="État, accessoires inclus, imperfections..."></textarea></div>
+            <div style="display:flex;align-items:center;gap:14px;margin-top:4px;">
+              <label class="toggle-wrap" onclick="toggleSold()">
+                <div class="ts-track" id="tsTrack"><div class="ts-thumb"></div></div>
+                <span class="ts-label" id="tsLabel">Disponible</span>
+              </label>
+            </div>
+          </div>
+          <div class="form-card">
+            <div class="form-card-title"><i class="fas fa-images"></i> Photos</div>
+            <div class="img-zone" id="dropZone" onclick="document.getElementById('imgFileInput').click()">
+              <i class="fas fa-cloud-arrow-up"></i>
+              <p>Cliquez ou glissez vos photos ici</p>
+              <span>PNG, JPG, WEBP · Plusieurs photos acceptées</span>
+            </div>
+            <input type="file" id="imgFileInput" accept="image/*" multiple/>
+            <div class="img-count" id="imgCount">0 photo(s)</div>
+            <div class="img-grid" id="imgGrid"></div>
+          </div>
+          <div class="btn-row">
+            <button class="btn-submit" onclick="saveProduct()"><i class="fas fa-floppy-disk"></i><span id="saveTxt">Publier l'annonce</span></button>
+            <button class="btn-cancel" onclick="resetForm()"><i class="fas fa-xmark"></i> Annuler</button>
+          </div>
+        </div>
+
+        <!-- LIST -->
+        <div class="tab-content" id="tab-list">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:20px;">
+            <h2 class="section-title" style="margin:0">Toutes les annonces</h2>
+            <button class="btn-submit" onclick="showTab('add')" style="font-size:.8rem;padding:10px 22px;"><i class="fas fa-plus"></i> Nouvelle annonce</button>
+          </div>
+          <div class="tbl-wrap" id="fullTable"></div>
+        </div>
+
+        <!-- EXPORT -->
+        <div class="tab-content" id="tab-export">
+          <h2 class="section-title">Export / Import</h2>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:700px;">
+            <div class="export-card">
+              <h3 style="font-size:.9rem;font-weight:700;color:#fff;display:flex;align-items:center;gap:8px;"><i class="fas fa-download" style="color:var(--blue)"></i>Exporter</h3>
+              <p style="font-size:.8rem;color:var(--grey);line-height:1.6;">Télécharger toutes vos annonces en fichier JSON.</p>
+              <button class="btn-export" onclick="exportData()"><i class="fas fa-download"></i> Télécharger JSON</button>
+            </div>
+            <div class="export-card">
+              <h3 style="font-size:.9rem;font-weight:700;color:#fff;display:flex;align-items:center;gap:8px;"><i class="fas fa-upload" style="color:var(--green)"></i>Importer</h3>
+              <p style="font-size:.8rem;color:var(--grey);line-height:1.6;">Restaurer depuis un fichier JSON. <strong style="color:#fff;">Remplace les données actuelles.</strong></p>
+              <button class="btn-import" onclick="document.getElementById('importFile').click()"><i class="fas fa-upload"></i> Choisir fichier</button>
+              <input type="file" id="importFile" accept=".json" style="display:none;" onchange="importData(event)"/>
+            </div>
+          </div>
+          <div style="margin-top:28px;">
+            <h2 class="section-title">Zone dangereuse</h2>
+            <div class="export-card" style="border-color:rgba(232,0,29,.2);max-width:340px;">
+              <p style="font-size:.82rem;color:var(--grey);">Supprimer définitivement toutes les annonces.</p>
+              <button class="btn-export" style="background:rgba(232,0,29,.1);border-color:rgba(232,0,29,.3);color:var(--red);" onclick="clearAll()"><i class="fas fa-trash"></i> Effacer tout</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- SETTINGS -->
+        <div class="tab-content" id="tab-settings">
+          <h2 class="section-title">Paramètres</h2>
+          <div class="settings-grid">
+            <div class="settings-card">
+              <h3><i class="fas fa-lock"></i> Changer le mot de passe</h3>
+              <div class="fg"><label>Mot de passe actuel</label><input type="password" id="curPwd" placeholder="••••••••"/></div>
+              <div class="fg"><label>Nouveau mot de passe</label><input type="password" id="newPwd" placeholder="Au moins 8 caractères"/></div>
+              <button class="btn-submit" style="font-size:.8rem;padding:11px 22px;margin-top:4px;" onclick="changePwd()"><i class="fas fa-floppy-disk"></i> Enregistrer</button>
+              <div class="settings-info"><i class="fas fa-info-circle"></i> Le mot de passe est vérifié côté serveur. Après changement, mettez à jour votre fichier <strong>.env</strong> avec <code>ADMIN_PASSWORD=nouveaumotdepasse</code></div>
+            </div>
+            <div class="settings-card">
+              <h3><i class="fas fa-shield-halved"></i> Sécurité de la session</h3>
+              <p style="font-size:.82rem;color:var(--grey);line-height:1.7;margin-bottom:16px;">Votre session expire automatiquement après <strong style="color:#fff;">2 heures</strong> d'inactivité. Le mot de passe n'est jamais stocké dans le navigateur.</p>
+              <div style="background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.2);border-radius:10px;padding:12px 16px;">
+                <div style="font-size:.72rem;color:var(--green);font-weight:700;margin-bottom:4px;"><i class="fas fa-circle-check"></i> Auth côté serveur</div>
+                <div style="font-size:.72rem;color:var(--green);font-weight:700;margin-bottom:4px;"><i class="fas fa-circle-check"></i> Token sécurisé (64 chars)</div>
+                <div style="font-size:.72rem;color:var(--green);font-weight:700;"><i class="fas fa-circle-check"></i> Anti brute-force actif</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- CONFIRM -->
+  <div id="confirmModal">
+    <div class="confirm-box">
+      <i class="fas fa-triangle-exclamation"></i>
+      <h3>Supprimer cette annonce ?</h3>
+      <p>Cette action est irréversible.</p>
+      <div class="confirm-btns">
+        <button class="confirm-del" id="confirmYes">Supprimer</button>
+        <button class="confirm-no" onclick="closeConfirm()">Annuler</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast"><i class="fas fa-circle-check"></i><span id="toastMsg">Succès !</span></div>
+
+  <script>
+  (() => {
+    /* ===== TOKEN SESSION ===== */
+    const KEY_DATA = "geo_occasions";
+    let adminToken = sessionStorage.getItem("geo_admin_token") || null;
+    let sessionTimer = null;
+
+    /* ===== LOGIN ===== */
+    document.getElementById("lgBtn").onclick = doLogin;
+    ["lgEmail","lgPass"].forEach(id => {
+      document.getElementById(id).addEventListener("keydown", e => { if(e.key==="Enter") doLogin(); });
+    });
+
+    async function doLogin() {
+      const email = document.getElementById("lgEmail").value.trim();
+      const pwd   = document.getElementById("lgPass").value;
+      const btn   = document.getElementById("lgBtn");
+      const err   = document.getElementById("lgErr");
+
+      if (!email || !pwd) { showErr("Veuillez remplir tous les champs."); return; }
+
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Connexion...';
+      err.classList.remove("show");
+
+      try {
+        const res  = await fetch("/api/admin/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password: pwd })
+        });
+        const data = await res.json();
+
+        if (data.success) {
+          adminToken = data.token;
+          sessionStorage.setItem("geo_admin_token", adminToken);
+          enterApp(email);
+        } else {
+          showErr(data.error || "Email ou mot de passe incorrect.");
+          document.getElementById("lgPass").value = "";
+        }
+      } catch(e) {
+        showErr("Erreur de connexion au serveur.");
+      }
+
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fas fa-lock-open"></i> Accéder au tableau de bord';
+    }
+
+    function showErr(msg) {
+      document.getElementById("lgErrMsg").textContent = msg;
+      document.getElementById("lgErr").classList.add("show");
+    }
+
+    // Auto-login si token valide
+    if (adminToken) {
+      fetch("/api/admin/check", { headers: { "x-admin-token": adminToken } })
+        .then(r => r.json())
+        .then(d => { if(d.success) enterApp(d.email); else { adminToken=null; sessionStorage.removeItem("geo_admin_token"); } })
+        .catch(() => {});
+    }
+
+    function enterApp(email) {
+      document.getElementById("loginScreen").style.display = "none";
+      document.getElementById("adminApp").classList.add("show");
+      document.getElementById("sbUser").textContent = email;
+      startSessionTimer();
+      refreshTopBar();
+      renderDashboard();
+    }
+
+    /* ===== SESSION TIMER ===== */
+    function startSessionTimer() {
+      let remaining = 2 * 60 * 60; // 2h en secondes
+      clearInterval(sessionTimer);
+      sessionTimer = setInterval(() => {
+        remaining--;
+        const h = Math.floor(remaining / 3600);
+        const m = Math.floor((remaining % 3600) / 60);
+        document.getElementById("sbSession").textContent = `Session: ${h}h${m.toString().padStart(2,"0")}m`;
+        if (remaining <= 0) { doLogout(); }
+      }, 1000);
+    }
+
+    window.doLogout = async function() {
+      if (adminToken) {
+        await fetch("/api/admin/logout", { method:"POST", headers:{"x-admin-token":adminToken} }).catch(()=>{});
+      }
+      adminToken = null;
+      sessionStorage.removeItem("geo_admin_token");
+      clearInterval(sessionTimer);
+      location.reload();
+    };
+
+    /* ===== API HELPER ===== */
+    function authHeaders() {
+      return { "Content-Type": "application/json", "x-admin-token": adminToken };
+    }
+
+    /* ===== SIDEBAR ===== */
+    window.toggleSidebar = () => { document.getElementById("sidebar").classList.toggle("open"); document.getElementById("sbOverlay").classList.toggle("show"); };
+    window.closeSidebar  = () => { document.getElementById("sidebar").classList.remove("open"); document.getElementById("sbOverlay").classList.remove("show"); };
+
+    /* ===== TABS ===== */
+    const TITLES = { dashboard:"Tableau de bord", add:"Ajouter un iPhone", list:"Liste des occasions", export:"Export / Import", settings:"Paramètres" };
+    document.querySelectorAll(".sb-link[data-tab]").forEach(btn => {
+      btn.onclick = function() { showTab(this.dataset.tab); closeSidebar(); };
+    });
+    window.showTab = function(tab) {
+      document.querySelectorAll(".tab-content").forEach(t=>t.classList.remove("show"));
+      document.querySelectorAll(".sb-link").forEach(b=>b.classList.remove("active"));
+      document.getElementById("tab-"+tab).classList.add("show");
+      document.querySelector(`.sb-link[data-tab="${tab}"]`)?.classList.add("active");
+      document.getElementById("topTitle").textContent = TITLES[tab]||"";
+      if(tab==="list") renderFullTable();
+      if(tab==="dashboard") renderDashboard();
+      if(tab==="add" && !document.getElementById("editId").value) resetForm();
+    };
+
+    /* ===== DATA ===== */
+    function getData() { try{return JSON.parse(localStorage.getItem(KEY_DATA)||"[]");}catch{return[];} }
+    function saveData(arr) { localStorage.setItem(KEY_DATA,JSON.stringify(arr)); refreshTopBar(); }
+    function refreshTopBar() {
+      const d=getData();
+      document.getElementById("tbStock").textContent=d.length;
+      document.getElementById("tbAvail").textContent=d.filter(x=>!x.sold).length;
+    }
+
+    const CMAP = { A:{lbl:"Excellent",cls:"bc-A"}, B:{lbl:"Très bon",cls:"bc-B"}, C:{lbl:"Bon état",cls:"bc-C"}, D:{lbl:"Correct",cls:"bc-D"} };
+
+    /* ===== DASHBOARD ===== */
+    function renderDashboard() {
+      const d=getData();
+      const avail=d.filter(x=>!x.sold).length;
+      const sold=d.filter(x=>x.sold).length;
+      document.getElementById("dashStats").innerHTML=`
+        <div class="dsc"><div class="dsc-icon gold"><i class="fas fa-mobile-screen-button"></i></div><div class="dsc-num">${d.length}</div><div class="dsc-lbl">Total</div></div>
+        <div class="dsc"><div class="dsc-icon green"><i class="fas fa-circle-check"></i></div><div class="dsc-num">${avail}</div><div class="dsc-lbl">Disponibles</div></div>
+        <div class="dsc"><div class="dsc-icon red"><i class="fas fa-tag"></i></div><div class="dsc-num">${sold}</div><div class="dsc-lbl">Vendus</div></div>
+        <div class="dsc"><div class="dsc-icon blue"><i class="fas fa-camera"></i></div><div class="dsc-num">${d.reduce((s,x)=>s+(x.images?x.images.length:x.image?1:0),0)}</div><div class="dsc-lbl">Photos</div></div>`;
+      document.getElementById("recentTable").innerHTML = buildTable(d.slice(-5).reverse());
+    }
+
+    /* ===== TABLE ===== */
+    function buildTable(arr) {
+      if(!arr.length) return `<div class="empty-tbl"><i class="fa-brands fa-apple"></i><p>Aucune annonce</p></div>`;
+      return `<table class="admin-table">
+        <thead><tr><th>Photo</th><th>Modèle</th><th>État</th><th>Prix</th><th>Statut</th><th>Actions</th></tr></thead>
+        <tbody>${arr.map(p => {
+          const imgs=p.images||(p.image?[p.image]:[]);
+          const thumb=imgs[0]
+            ?`<img src="${imgs[0]}" class="tbl-thumb" alt=""/><div style="font-size:.65rem;color:var(--grey);margin-top:4px;">${imgs.length} photo(s)</div>`
+            :`<div class="tbl-thumb-ph"><i class="fa-brands fa-apple"></i></div>`;
+          const c=CMAP[p.condition]||CMAP.C;
+          return `<tr>
+            <td>${thumb}</td>
+            <td><div class="tbl-name">${p.name||"—"}</div><div class="tbl-sub">${p.series||""} ${p.storage||""}</div></td>
+            <td><span class="bc ${c.cls}">${c.lbl}</span></td>
+            <td><strong>${Number(p.price||0).toLocaleString("fr-FR")}</strong> FCFA</td>
+            <td><span class="bs ${p.sold?"bs-vendu":"bs-dispo"}"><span class="bs-dot"></span>${p.sold?"Vendu":"Disponible"}</span></td>
+            <td><div class="tbl-actions">
+              <button class="tbl-btn edit" title="Modifier" onclick="editProduct('${p.id}')"><i class="fas fa-pen"></i></button>
+              <button class="tbl-btn sold" title="${p.sold?"Remettre dispo":"Marquer vendu"}" onclick="toggleSoldStatus('${p.id}')"><i class="fas fa-${p.sold?"rotate-left":"check"}"></i></button>
+              <button class="tbl-btn del" title="Supprimer" onclick="askDelete('${p.id}')"><i class="fas fa-trash"></i></button>
+            </div></td>
+          </tr>`;
+        }).join("")}</tbody>
+      </table>`;
+    }
+
+    function renderFullTable() { document.getElementById("fullTable").innerHTML=buildTable(getData().reverse()); }
+
+    /* ===== IMAGES ===== */
+    let pendingImgs=[];
+    function refreshImgUI() {
+      document.getElementById("imgCount").textContent=`${pendingImgs.length} photo(s)`;
+      document.getElementById("imgGrid").innerHTML=pendingImgs.map((src,i)=>`
+        <div class="img-thumb">
+          <img src="${src}" alt="Photo ${i+1}"/>
+          <button class="img-del" onclick="removeImg(${i})"><i class="fas fa-xmark"></i></button>
+        </div>`).join("");
+    }
+    window.removeImg=i=>{pendingImgs.splice(i,1);refreshImgUI();};
+
+    document.getElementById("imgFileInput").onchange=function(e){
+      Array.from(e.target.files).forEach(f=>{
+        if(!f.type.startsWith("image/")) return;
+        const r=new FileReader();
+        r.onload=ev=>{pendingImgs.push(ev.target.result);refreshImgUI();};
+        r.readAsDataURL(f);
+      });
+      this.value="";
+    };
+    const dz=document.getElementById("dropZone");
+    dz.addEventListener("dragover",e=>{e.preventDefault();dz.classList.add("drag");});
+    dz.addEventListener("dragleave",()=>dz.classList.remove("drag"));
+    dz.addEventListener("drop",e=>{
+      e.preventDefault();dz.classList.remove("drag");
+      Array.from(e.dataTransfer.files).forEach(f=>{
+        if(!f.type.startsWith("image/")) return;
+        const r=new FileReader();
+        r.onload=ev=>{pendingImgs.push(ev.target.result);refreshImgUI();};
+        r.readAsDataURL(f);
+      });
+    });
+
+    /* ===== SOLD TOGGLE ===== */
+    let isSold=false;
+    window.toggleSold=()=>{
+      isSold=!isSold;
+      document.getElementById("tsTrack").classList.toggle("on",isSold);
+      document.getElementById("tsLabel").textContent=isSold?"Marqué comme VENDU":"Disponible";
+    };
+
+    /* ===== SAVE ===== */
+    window.saveProduct=function(){
+      const name=document.getElementById("fName").value.trim();
+      const price=document.getElementById("fPrice").value.trim();
+      if(!name){showToast("Veuillez entrer le nom du modèle.","error");return;}
+      if(!price){showToast("Veuillez entrer le prix.","error");return;}
+      const data=getData();
+      const editId=document.getElementById("editId").value;
+      const product={
+        id:editId||Date.now().toString(),
+        name,series:document.getElementById("fSeries").value.trim(),
+        condition:document.getElementById("fCond").value,
+        storage:document.getElementById("fStorage").value.trim(),
+        color:document.getElementById("fColor").value.trim(),
+        price:Number(price),
+        originalPrice:document.getElementById("fOldPrice").value?Number(document.getElementById("fOldPrice").value):null,
+        battery:document.getElementById("fBattery").value?Number(document.getElementById("fBattery").value):null,
+        description:document.getElementById("fDesc").value.trim(),
+        images:pendingImgs.slice(),sold:isSold,
+        createdAt:editId?(data.find(d=>d.id===editId)?.createdAt||Date.now()):Date.now(),
+        updatedAt:Date.now()
+      };
+      if(editId){const idx=data.findIndex(d=>d.id===editId);if(idx>=0)data[idx]=product;}
+      else data.push(product);
+      saveData(data);
+      showToast(editId?"Annonce mise à jour !":"Annonce publiée !");
+      resetForm();showTab("list");
+    };
+
+    window.editProduct=function(id){
+      const p=getData().find(d=>d.id===id);if(!p)return;
+      document.getElementById("editId").value=id;
+      document.getElementById("fName").value=p.name||"";
+      document.getElementById("fSeries").value=p.series||"";
+      document.getElementById("fCond").value=p.condition||"C";
+      document.getElementById("fStorage").value=p.storage||"";
+      document.getElementById("fColor").value=p.color||"";
+      document.getElementById("fPrice").value=p.price||"";
+      document.getElementById("fOldPrice").value=p.originalPrice||"";
+      document.getElementById("fBattery").value=p.battery||"";
+      document.getElementById("fDesc").value=p.description||"";
+      pendingImgs=p.images?[...p.images]:(p.image?[p.image]:[]);
+      refreshImgUI();
+      isSold=!!p.sold;
+      document.getElementById("tsTrack").classList.toggle("on",isSold);
+      document.getElementById("tsLabel").textContent=isSold?"Marqué comme VENDU":"Disponible";
+      document.getElementById("saveTxt").textContent="Mettre à jour";
+      showTab("add");
+      document.querySelector(".main-area").scrollTo(0,0);
+    };
+
+    window.resetForm=function(){
+      ["fName","fSeries","fStorage","fColor","fPrice","fOldPrice","fBattery","fDesc"].forEach(id=>document.getElementById(id).value="");
+      document.getElementById("fCond").value="C";
+      document.getElementById("editId").value="";
+      pendingImgs=[];refreshImgUI();
+      isSold=false;
+      document.getElementById("tsTrack").classList.remove("on");
+      document.getElementById("tsLabel").textContent="Disponible";
+      document.getElementById("saveTxt").textContent="Publier l'annonce";
+    };
+
+    window.toggleSoldStatus=function(id){
+      const data=getData();const p=data.find(d=>d.id===id);if(!p)return;
+      p.sold=!p.sold;saveData(data);renderFullTable();renderDashboard();
+      showToast(p.sold?"Marqué vendu.":"Remis disponible.");
+    };
+
+    /* ===== DELETE ===== */
+    let deleteId=null;
+    window.askDelete=id=>{deleteId=id;document.getElementById("confirmModal").classList.add("show");};
+    window.closeConfirm=()=>{document.getElementById("confirmModal").classList.remove("show");deleteId=null;};
+    document.getElementById("confirmYes").onclick=function(){
+      if(!deleteId)return;
+      saveData(getData().filter(d=>d.id!==deleteId));
+      renderFullTable();renderDashboard();closeConfirm();showToast("Annonce supprimée.");
+    };
+
+    /* ===== EXPORT / IMPORT ===== */
+    window.exportData=()=>{
+      const blob=new Blob([JSON.stringify(getData(),null,2)],{type:"application/json"});
+      const a=document.createElement("a");a.href=URL.createObjectURL(blob);
+      a.download=`geo_occasions_${new Date().toISOString().slice(0,10)}.json`;a.click();
+      showToast("Export téléchargé !");
+    };
+    window.importData=e=>{
+      const f=e.target.files[0];if(!f)return;
+      const r=new FileReader();
+      r.onload=ev=>{
+        try{const arr=JSON.parse(ev.target.result);if(!Array.isArray(arr))throw new Error();saveData(arr);renderDashboard();showToast(`${arr.length} annonce(s) importée(s) !`);}
+        catch{showToast("Fichier JSON invalide.","error");}
+      };
+      r.readAsText(f);e.target.value="";
+    };
+    window.clearAll=()=>{
+      if(!confirm("Supprimer TOUTES les annonces ?"))return;
+      saveData([]);renderDashboard();showToast("Stock effacé.","error");
+    };
+
+    /* ===== CHANGE PASSWORD (via serveur) ===== */
+    window.changePwd=async function(){
+      const cur=document.getElementById("curPwd").value;
+      const nw=document.getElementById("newPwd").value;
+      if(!cur||!nw){showToast("Remplissez les deux champs.","error");return;}
+      if(nw.length<8){showToast("8 caractères minimum.","error");return;}
+      try{
+        const res=await fetch("/api/admin/change-password",{
+          method:"POST",headers:authHeaders(),
+          body:JSON.stringify({currentPassword:cur,newPassword:nw})
+        });
+        const d=await res.json();
+        if(d.success){
+          document.getElementById("curPwd").value="";
+          document.getElementById("newPwd").value="";
+          showToast("Mot de passe mis à jour ! Pensez à mettre à jour votre .env");
+        } else {
+          showToast(d.error||"Erreur.","error");
+        }
+      }catch{showToast("Erreur serveur.","error");}
+    };
+
+    /* ===== TOAST ===== */
+    let toastT;
+    function showToast(msg,type="success"){
+      const t=document.getElementById("toast");
+      t.className=type;
+      t.querySelector("i").className=`fas fa-${type==="success"?"circle-check":"circle-exclamation"}`;
+      document.getElementById("toastMsg").textContent=msg;
+      t.classList.add("show");
+      clearTimeout(toastT);
+      toastT=setTimeout(()=>t.classList.remove("show"),3200);
+    }
+
+    refreshImgUI();
+  })();
+  </script>
+</body>
+</html>
