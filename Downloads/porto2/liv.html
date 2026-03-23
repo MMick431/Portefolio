@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YUMGO — Livraison de Repas</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root{
+--bg:#f7f7f5;--white:#ffffff;--dark:#1a1a1a;--dark2:#2d2d2d;
+--text:#1e293b;--text2:#64748b;--text3:#94a3b8;
+--orange:#ff5a1f;--orange2:#ff7a45;--orange-soft:rgba(255,90,31,.06);--orange-med:rgba(255,90,31,.12);
+--green:#16a34a;--green-soft:rgba(22,163,74,.08);
+--yellow:#ca8a04;--yellow-soft:rgba(202,138,4,.08);
+--red:#dc2626;--red-soft:rgba(220,38,38,.06);
+--blue:#2563eb;--blue-soft:rgba(37,99,235,.06);
+--border:#e8e8e4;--border2:#f0f0ec;
+--shadow-xs:0 1px 3px rgba(0,0,0,.04);
+--shadow-sm:0 2px 12px rgba(0,0,0,.06);
+--shadow-md:0 8px 30px rgba(0,0,0,.08);
+--shadow-lg:0 16px 50px rgba(0,0,0,.1);
+--shadow-orange:0 8px 25px rgba(255,90,31,.2);
+--radius:16px;--radius-sm:12px;--radius-xs:8px;
+--ease:cubic-bezier(.4,0,.2,1);--bounce:cubic-bezier(.68,-.55,.265,1.55);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}button{cursor:pointer;border:none;outline:none;font-family:inherit;background:none}
+input,select{font-family:inherit;outline:none}img{max-width:100%;display:block}
+::selection{background:var(--orange);color:#fff}
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-thumb{background:var(--orange);border-radius:10px}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes scaleIn{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
+@keyframes slideDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes popIn{0%{transform:scale(0)}60%{transform:scale(1.15)}100%{transform:scale(1)}}
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+@keyframes cartBounce{0%{transform:scale(1)}25%{transform:scale(1.3)}50%{transform:scale(.9)}100%{transform:scale(1)}}
+@keyframes slideInRight{from{transform:translateX(100%)}to{transform:translateX(0)}}
+@keyframes slideInLeft{from{transform:translateX(-100%)}to{transform:translateX(0)}}
+
+.rv{opacity:0;transform:translateY(40px);transition:all .7s var(--ease)}
+.rv.vis{opacity:1;transform:translateY(0)}
+
+/* ====== NAVBAR ====== */
+.navbar{position:sticky;top:0;z-index:200;background:rgba(255,255,255,.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border2);transition:box-shadow .3s}
+.navbar.scrolled{box-shadow:var(--shadow-sm)}
+.nav-wrap{max-width:1360px;margin:0 auto;padding:0 24px}
+.nav-top{display:flex;align-items:center;gap:16px;height:68px}
+.mob-btn{display:none;width:40px;height:40px;border-radius:var(--radius-xs);align-items:center;justify-content:center;font-size:1.1rem;color:var(--text);flex-shrink:0}
+.logo{font-size:1.45rem;font-weight:800;display:flex;align-items:center;gap:6px;flex-shrink:0;letter-spacing:-.5px}
+.logo-icon{width:34px;height:34px;background:var(--orange);border-radius:var(--radius-xs);display:flex;align-items:center;justify-content:center;color:#fff;font-size:.85rem}
+.logo span{color:var(--orange)}
+.nav-loc{display:flex;align-items:center;gap:8px;padding:8px 16px;border-radius:50px;background:var(--orange-soft);color:var(--orange);font-size:.82rem;font-weight:600;cursor:pointer;transition:all .3s;flex-shrink:0;margin-left:10px}
+.nav-loc:hover{background:var(--orange-med)}
+.nav-loc i:first-child{font-size:.75rem}
+.nav-search{flex:1;position:relative;max-width:480px;margin:0 auto}
+.nav-search input{width:100%;padding:11px 18px 11px 44px;background:var(--bg);border:1.5px solid var(--border);border-radius:50px;font-size:.85rem;color:var(--text);transition:all .3s}
+.nav-search input:focus{border-color:var(--orange);background:#fff;box-shadow:0 0 0 4px var(--orange-soft)}
+.nav-search input::placeholder{color:var(--text3)}
+.nav-search .si{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--text3);font-size:.85rem}
+.nav-right{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.n-btn{position:relative;width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.05rem;color:var(--text2);transition:all .3s}
+.n-btn:hover{background:var(--orange-soft);color:var(--orange)}
+.n-dot{position:absolute;top:7px;right:7px;width:8px;height:8px;background:var(--orange);border-radius:50%;border:2px solid #fff}
+.n-user{width:36px;height:36px;border-radius:50%;overflow:hidden;cursor:pointer;transition:transform .3s;flex-shrink:0;border:2px solid var(--border)}
+.n-user:hover{transform:scale(1.08);border-color:var(--orange)}
+.n-user img{width:100%;height:100%;object-fit:cover}
+.cart-btn{display:flex;align-items:center;gap:8px;padding:10px 22px;background:var(--orange);color:#fff;border-radius:50px;font-size:.84rem;font-weight:600;transition:all .3s;box-shadow:var(--shadow-orange);flex-shrink:0}
+.cart-btn:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(255,90,31,.3)}
+.cart-badge{background:#fff;color:var(--orange);min-width:22px;height:22px;border-radius:50px;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;padding:0 5px}
+.cart-badge.pop{animation:cartBounce .4s var(--bounce)}
+
+/* NAV CATEGORIES */
+.nav-cats{display:flex;gap:6px;padding:10px 0;overflow-x:auto}
+.nav-cats::-webkit-scrollbar{display:none}
+.nc-item{display:flex;align-items:center;gap:7px;padding:8px 18px;border-radius:50px;font-size:.82rem;font-weight:600;color:var(--text2);white-space:nowrap;transition:all .3s;cursor:pointer;border:1.5px solid transparent;flex-shrink:0}
+.nc-item:hover{color:var(--text);background:var(--white);border-color:var(--border)}
+.nc-item.active{background:var(--dark);color:#fff;border-color:var(--dark)}
+.nc-item i{font-size:.75rem}
+.nc-img{width:24px;height:24px;border-radius:50%;object-fit:cover;flex-shrink:0}
+
+/* ====== HERO ====== */
+.hero{padding:32px 0 20px}
+.hero-wrap{max-width:1360px;margin:0 auto;padding:0 24px}
+.hero-banner{border-radius:var(--radius);overflow:hidden;position:relative;height:400px}
+.hero-slide{position:absolute;inset:0;opacity:0;transition:opacity .8s var(--ease)}
+.hero-slide.active{opacity:1}
+.hero-slide img{width:100%;height:100%;object-fit:cover}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.7) 0%,rgba(0,0,0,.2) 60%,transparent 100%)}
+.hero-content{position:absolute;top:50%;left:0;transform:translateY(-50%);padding:0 50px;z-index:2;color:#fff;max-width:550px}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:var(--orange);padding:6px 16px;border-radius:50px;font-size:.72rem;font-weight:700;margin-bottom:18px;text-transform:uppercase;letter-spacing:.5px}
+.hero-h{font-size:2.8rem;font-weight:800;line-height:1.1;margin-bottom:14px}
+.hero-p{font-size:1rem;color:rgba(255,255,255,.8);line-height:1.6;margin-bottom:24px}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap}
+.hb{display:inline-flex;align-items:center;gap:8px;padding:14px 30px;border-radius:50px;font-size:.88rem;font-weight:600;transition:all .3s}
+.hb-fill{background:#fff;color:var(--dark)}
+.hb-fill:hover{transform:translateY(-2px);box-shadow:var(--shadow-md)}
+.hb-ghost{border:1.5px solid rgba(255,255,255,.4);color:#fff;backdrop-filter:blur(6px)}
+.hb-ghost:hover{background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.6)}
+.hero-dots{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:3}
+.h-dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.4);cursor:pointer;transition:all .3s}
+.h-dot.active{background:#fff;width:28px;border-radius:10px}
+
+/* HERO QUICK INFO */
+.hero-info{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:-40px;position:relative;z-index:4}
+.hi-card{background:var(--white);border-radius:var(--radius-sm);padding:20px;display:flex;align-items:center;gap:14px;border:1px solid var(--border2);transition:all .3s;box-shadow:var(--shadow-xs)}
+.hi-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-md)}
+.hi-icon{width:48px;height:48px;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
+.hi-1{background:var(--orange-soft);color:var(--orange)}
+.hi-2{background:var(--green-soft);color:var(--green)}
+.hi-3{background:var(--blue-soft);color:var(--blue)}
+.hi-4{background:var(--yellow-soft);color:var(--yellow)}
+.hi-label{font-size:.78rem;font-weight:700;margin-bottom:2px}
+.hi-sub{font-size:.7rem;color:var(--text3)}
+
+/* ====== SECTIONS ====== */
+.sec{padding:50px 0}
+.sec-wrap{max-width:1360px;margin:0 auto;padding:0 24px}
+.sec-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;flex-wrap:wrap;gap:10px}
+.sec-h2{font-size:1.5rem;font-weight:800;display:flex;align-items:center;gap:8px}
+.sec-h2 i{color:var(--orange);font-size:1rem}
+.see-all{display:flex;align-items:center;gap:6px;font-size:.85rem;font-weight:600;color:var(--orange);transition:gap .3s}
+.see-all:hover{gap:12px}
+
+/* CATEGORIES SCROLL */
+.cats-scroll{display:flex;gap:14px;overflow-x:auto;padding:4px 0 12px;scroll-snap-type:x mandatory}
+.cats-scroll::-webkit-scrollbar{display:none}
+.cat-card{min-width:140px;background:var(--white);border:1.5px solid var(--border2);border-radius:var(--radius-sm);padding:18px 14px;text-align:center;transition:all .35s var(--ease);cursor:pointer;scroll-snap-align:start;flex-shrink:0;position:relative;overflow:hidden}
+.cat-card::before{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--orange);transform:scaleX(0);transition:transform .3s}
+.cat-card:hover,.cat-card.active{border-color:var(--orange);transform:translateY(-6px);box-shadow:var(--shadow-sm)}
+.cat-card:hover::before,.cat-card.active::before{transform:scaleX(1)}
+.cat-img{width:52px;height:52px;border-radius:50%;margin:0 auto 10px;overflow:hidden;border:2px solid var(--border2);transition:border-color .3s}
+.cat-card:hover .cat-img,.cat-card.active .cat-img{border-color:var(--orange)}
+.cat-img img{width:100%;height:100%;object-fit:cover}
+.cat-name{font-size:.82rem;font-weight:700;margin-bottom:2px}
+.cat-count{font-size:.68rem;color:var(--text3)}
+
+/* PROMOS STRIP */
+.promos-strip{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:10px}
+.promo-card{border-radius:var(--radius);padding:32px;position:relative;overflow:hidden;color:#fff;min-height:180px;display:flex;flex-direction:column;justify-content:center;transition:transform .3s;cursor:pointer}
+.promo-card:hover{transform:scale(1.02)}
+.promo-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.promo-ov{position:absolute;inset:0}
+.p1 .promo-ov{background:linear-gradient(135deg,rgba(255,90,31,.92),rgba(255,122,69,.8))}
+.p2 .promo-ov{background:linear-gradient(135deg,rgba(22,163,74,.92),rgba(34,197,94,.8))}
+.promo-body{position:relative;z-index:1}
+.promo-tag{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.2);backdrop-filter:blur(8px);padding:5px 14px;border-radius:50px;font-size:.68rem;font-weight:700;margin-bottom:14px;text-transform:uppercase;letter-spacing:.5px}
+.promo-h{font-size:1.6rem;font-weight:800;margin-bottom:6px;line-height:1.15}
+.promo-p{font-size:.82rem;opacity:.85;margin-bottom:18px}
+.promo-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 24px;background:#fff;color:var(--dark);border-radius:50px;font-size:.8rem;font-weight:600;transition:all .3s}
+.promo-btn:hover{transform:translateY(-2px);box-shadow:var(--shadow-md)}
+
+/* RESTAURANT GRID */
+.rest-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.rest-card{background:var(--white);border-radius:var(--radius);overflow:hidden;border:1px solid var(--border2);transition:all .45s var(--ease);cursor:pointer;position:relative}
+.rest-card:hover{transform:translateY(-8px);box-shadow:var(--shadow-lg);border-color:transparent}
+.rest-img{position:relative;height:210px;overflow:hidden}
+.rest-img img{width:100%;height:100%;object-fit:cover;transition:transform .6s var(--ease)}
+.rest-card:hover .rest-img img{transform:scale(1.06)}
+.rest-badges{position:absolute;top:14px;left:14px;display:flex;flex-direction:column;gap:6px;z-index:2}
+.rb{padding:5px 14px;border-radius:50px;font-size:.68rem;font-weight:700;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:flex;align-items:center;gap:5px}
+.rb-sale{background:rgba(255,90,31,.92);color:#fff}
+.rb-new{background:rgba(22,163,74,.92);color:#fff}
+.rb-top{background:rgba(202,138,4,.92);color:#fff}
+.rest-fav{position:absolute;top:14px;right:14px;width:38px;height:38px;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.88rem;color:var(--text3);transition:all .3s;z-index:2}
+.rest-fav:hover,.rest-fav.loved{color:var(--red);transform:scale(1.1)}
+.rest-fav.loved i{font-weight:900}
+.rest-delivery{position:absolute;bottom:14px;left:14px;display:flex;gap:8px;z-index:2}
+.rd-chip{background:rgba(0,0,0,.7);backdrop-filter:blur(10px);color:#fff;padding:5px 12px;border-radius:50px;font-size:.7rem;font-weight:600;display:flex;align-items:center;gap:5px}
+.rest-body{padding:18px}
+.rest-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px}
+.rest-name{font-size:1rem;font-weight:700;line-height:1.3}
+.rest-rating{display:flex;align-items:center;gap:4px;background:var(--yellow-soft);padding:4px 10px;border-radius:50px;font-size:.78rem;font-weight:700;color:var(--yellow);flex-shrink:0}
+.rest-rating i{font-size:.6rem}
+.rest-cats{font-size:.76rem;color:var(--text3);margin-bottom:10px}
+.rest-meta{display:flex;gap:16px;font-size:.76rem;color:var(--text2)}
+.rest-meta span{display:flex;align-items:center;gap:5px}
+.rest-meta i{font-size:.7rem;color:var(--text3)}
+
+/* POPULAR ITEMS */
+.items-scroll{display:flex;gap:18px;overflow-x:auto;padding:4px 0 12px}
+.items-scroll::-webkit-scrollbar{display:none}
+.item-card{min-width:240px;background:var(--white);border-radius:var(--radius-sm);overflow:hidden;border:1px solid var(--border2);transition:all .35s var(--ease);cursor:pointer;flex-shrink:0;scroll-snap-align:start}
+.item-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-md);border-color:transparent}
+.item-img{height:160px;overflow:hidden;position:relative}
+.item-img img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+.item-card:hover .item-img img{transform:scale(1.06)}
+.item-add{position:absolute;bottom:10px;right:10px;width:36px;height:36px;background:var(--orange);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.85rem;opacity:0;transform:scale(.8);transition:all .3s;box-shadow:var(--shadow-orange);z-index:2}
+.item-card:hover .item-add{opacity:1;transform:scale(1)}
+.item-add:hover{transform:scale(1.1)!important}
+.item-body{padding:14px}
+.item-name{font-size:.88rem;font-weight:600;margin-bottom:4px}
+.item-rest{font-size:.72rem;color:var(--text3);margin-bottom:8px;display:flex;align-items:center;gap:4px}
+.item-bottom{display:flex;justify-content:space-between;align-items:center}
+.item-price{font-size:1rem;font-weight:800;color:var(--orange)}
+.item-time{font-size:.7rem;color:var(--text3);display:flex;align-items:center;gap:4px}
+
+/* HOW IT WORKS */
+.how-sec{background:var(--white);padding:70px 0}
+.how-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.how-card{text-align:center;padding:30px 20px;border-radius:var(--radius);transition:all .3s}
+.how-card:hover{background:var(--bg);transform:translateY(-4px)}
+.how-num{width:40px;height:40px;margin:0 auto 16px;background:var(--orange);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.9rem;font-weight:800}
+.how-icon{width:64px;height:64px;margin:0 auto 16px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.4rem}
+.hwi-1{background:var(--orange-soft);color:var(--orange)}
+.hwi-2{background:var(--green-soft);color:var(--green)}
+.hwi-3{background:var(--blue-soft);color:var(--blue)}
+.hwi-4{background:var(--yellow-soft);color:var(--yellow)}
+.how-h{font-size:.95rem;font-weight:700;margin-bottom:6px}
+.how-p{font-size:.8rem;color:var(--text2);line-height:1.6}
+.how-line{display:none}
+
+/* APP DOWNLOAD */
+.app-sec{padding:70px 0}
+.app-card{background:var(--dark);border-radius:var(--radius);padding:60px;display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:center;color:#fff;position:relative;overflow:hidden}
+.app-card::before{content:'';position:absolute;top:-100px;right:-100px;width:350px;height:350px;background:radial-gradient(circle,rgba(255,90,31,.15),transparent 70%);border-radius:50%}
+.app-body{position:relative;z-index:1}
+.app-tag{display:inline-flex;align-items:center;gap:6px;background:var(--orange);padding:6px 16px;border-radius:50px;font-size:.68rem;font-weight:700;margin-bottom:18px;text-transform:uppercase;letter-spacing:.5px}
+.app-h{font-size:2.2rem;font-weight:800;line-height:1.1;margin-bottom:14px}
+.app-p{font-size:.92rem;color:rgba(255,255,255,.6);line-height:1.7;margin-bottom:28px}
+.app-btns{display:flex;gap:12px;flex-wrap:wrap}
+.app-store{display:flex;align-items:center;gap:10px;padding:12px 24px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:var(--radius-xs);transition:all .3s;color:#fff}
+.app-store:hover{background:rgba(255,255,255,.15);transform:translateY(-2px)}
+.app-store i{font-size:1.6rem}
+.app-store .as-sub{font-size:.58rem;color:rgba(255,255,255,.5)}
+.app-store .as-main{font-size:.92rem;font-weight:600}
+.app-visual{position:relative;z-index:1;display:flex;justify-content:center}
+.app-phone{width:240px;height:480px;background:linear-gradient(180deg,#1a1a2e,#111);border-radius:34px;padding:10px;border:2px solid rgba(255,255,255,.1);box-shadow:0 30px 80px rgba(0,0,0,.5);position:relative}
+.app-phone-screen{width:100%;height:100%;border-radius:26px;overflow:hidden;background:#111}
+.app-phone-screen img{width:100%;height:100%;object-fit:cover}
+.app-phone-notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:100px;height:24px;background:#000;border-radius:0 0 16px 16px;z-index:5}
+
+/* NEWSLETTER */
+.nl-sec{background:var(--orange-soft);padding:70px 0}
+.nl-card{max-width:620px;margin:0 auto;text-align:center}
+.nl-icon{width:64px;height:64px;margin:0 auto 18px;background:var(--orange-med);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.3rem;color:var(--orange)}
+.nl-h{font-size:1.8rem;font-weight:800;margin-bottom:10px}
+.nl-p{color:var(--text2);margin-bottom:28px;font-size:.9rem}
+.nl-form{display:flex;gap:10px;max-width:460px;margin:0 auto}
+.nl-form input{flex:1;padding:14px 22px;border:1.5px solid var(--border);border-radius:50px;font-size:.88rem;background:#fff;transition:all .3s}
+.nl-form input:focus{border-color:var(--orange);box-shadow:0 0 0 4px var(--orange-soft)}
+.nl-form button{padding:14px 30px;background:var(--orange);color:#fff;border-radius:50px;font-weight:700;font-size:.88rem;transition:all .3s;white-space:nowrap;box-shadow:var(--shadow-orange)}
+.nl-form button:hover{background:var(--orange2);transform:translateY(-2px)}
+
+/* FOOTER */
+.footer{background:var(--dark);color:rgba(255,255,255,.6);padding:60px 0 24px}
+.ft-wrap{max-width:1360px;margin:0 auto;padding:0 24px}
+.ft-grid{display:grid;grid-template-columns:1.8fr 1fr 1fr 1fr;gap:40px;margin-bottom:40px}
+.ft-brand{display:flex;align-items:center;gap:8px;margin-bottom:14px}
+.ft-brand-icon{width:34px;height:34px;background:var(--orange);border-radius:var(--radius-xs);display:flex;align-items:center;justify-content:center;color:#fff;font-size:.85rem}
+.ft-brand-name{font-size:1.3rem;font-weight:800;color:#fff}
+.ft-brand-name span{color:var(--orange)}
+.ft-desc{font-size:.82rem;line-height:1.7;margin-bottom:18px}
+.ft-social{display:flex;gap:8px}
+.ft-social a{width:38px;height:38px;background:rgba(255,255,255,.06);border-radius:50%;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.4);font-size:.85rem;transition:all .3s}
+.ft-social a:hover{background:var(--orange);color:#fff;transform:translateY(-3px)}
+.ft-col h4{color:#fff;font-size:.88rem;font-weight:700;margin-bottom:18px}
+.ft-links{display:flex;flex-direction:column;gap:10px}
+.ft-links a{font-size:.82rem;transition:all .3s;display:flex;align-items:center;gap:0}
+.ft-links a::before{content:'';width:0;height:1.5px;background:var(--orange);transition:width .3s;margin-right:0}
+.ft-links a:hover{color:var(--orange);padding-left:6px}
+.ft-links a:hover::before{width:10px;margin-right:6px}
+.ft-bottom{border-top:1px solid rgba(255,255,255,.06);padding-top:22px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;font-size:.75rem}
+.ft-pay{display:flex;gap:8px}
+.ft-pay-i{width:42px;height:28px;background:rgba(255,255,255,.06);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:.95rem;color:rgba(255,255,255,.35)}
+
+/* CART SIDEBAR */
+.cart-ov{position:fixed;inset:0;background:rgba(0,0,0,.4);backdrop-filter:blur(4px);z-index:300;opacity:0;visibility:hidden;transition:all .3s}
+.cart-ov.open{opacity:1;visibility:visible}
+.cart-sb{position:fixed;top:0;right:-460px;width:440px;max-width:92vw;height:100vh;background:#fff;z-index:301;transition:right .4s var(--ease);display:flex;flex-direction:column;box-shadow:-10px 0 40px rgba(0,0,0,.1)}
+.cart-sb.open{right:0}
+.cart-hd{display:flex;justify-content:space-between;align-items:center;padding:22px 24px;border-bottom:1px solid var(--border2)}
+.cart-hd h3{font-size:1.05rem;font-weight:700;display:flex;align-items:center;gap:10px}
+.cart-cnt{background:var(--orange);color:#fff;min-width:24px;height:24px;border-radius:50px;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;padding:0 6px}
+.cart-x{width:36px;height:36px;background:var(--bg);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.85rem;color:var(--text2);transition:all .3s}
+.cart-x:hover{background:var(--orange-soft);color:var(--orange);transform:rotate(90deg)}
+.cart-body{flex:1;overflow-y:auto;padding:16px 24px}
+.cart-empty{text-align:center;padding:60px 20px;color:var(--text3)}
+.cart-empty i{font-size:3rem;margin-bottom:14px;display:block;opacity:.3}
+.ci{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--border2);animation:slideInRight .3s var(--ease)}
+.ci-img{width:76px;height:76px;border-radius:var(--radius-xs);overflow:hidden;flex-shrink:0}
+.ci-img img{width:100%;height:100%;object-fit:cover}
+.ci-info{flex:1}
+.ci-name{font-size:.85rem;font-weight:600;margin-bottom:3px}
+.ci-rest{font-size:.7rem;color:var(--text3);margin-bottom:8px}
+.ci-row{display:flex;justify-content:space-between;align-items:center}
+.ci-price{font-size:.95rem;font-weight:700;color:var(--orange)}
+.ci-qty{display:flex;align-items:center}
+.qb{width:30px;height:30px;background:var(--bg);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;color:var(--text);transition:all .3s}
+.qb:hover{background:var(--orange);color:#fff}
+.qv{width:36px;text-align:center;font-weight:600;font-size:.88rem}
+.ci-rm{position:absolute;top:14px;right:0;background:none;color:var(--text3);font-size:.75rem;transition:color .3s}
+.ci-rm:hover{color:var(--red)}
+.cart-ft{padding:22px 24px;border-top:1px solid var(--border2);background:var(--bg)}
+.cf-row{display:flex;justify-content:space-between;font-size:.85rem;margin-bottom:6px;color:var(--text2)}
+.cf-total{display:flex;justify-content:space-between;font-size:1.15rem;font-weight:800;margin:14px 0 18px;padding-top:12px;border-top:1.5px solid var(--border)}
+.co-btn{width:100%;padding:16px;background:var(--orange);color:#fff;border-radius:var(--radius-xs);font-size:.95rem;font-weight:700;display:flex;align-items:center;justify-content:center;gap:10px;transition:all .3s;box-shadow:var(--shadow-orange)}
+.co-btn:hover{background:var(--orange2);transform:translateY(-2px)}
+
+/* TOAST */
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--dark);color:#fff;padding:14px 28px;border-radius:var(--radius-xs);font-size:.88rem;font-weight:500;z-index:999;box-shadow:var(--shadow-lg);transition:transform .5s var(--bounce);display:flex;align-items:center;gap:10px;max-width:90vw}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast i{color:var(--green)}
+
+/* RESPONSIVE */
+@media(max-width:1100px){
+    .rest-grid{grid-template-columns:repeat(2,1fr)}
+    .hero-info{grid-template-columns:repeat(2,1fr)}
+    .ft-grid{grid-template-columns:repeat(2,1fr)}
+    .how-grid{grid-template-columns:repeat(2,1fr)}
+    .app-card{grid-template-columns:1fr;text-align:center;padding:40px 32px}
+    .app-visual{margin-top:20px}
+    .app-btns{justify-content:center}
+}
+@media(max-width:768px){
+    .mob-btn{display:flex}
+    .nav-search{display:none}
+    .nav-loc{display:none}
+    .n-user{display:none}
+    .hero-banner{height:300px}
+    .hero-content{padding:0 24px}
+    .hero-h{font-size:1.8rem}
+    .hero-info{grid-template-columns:1fr 1fr;gap:10px;margin-top:-30px}
+    .rest-grid{grid-template-columns:1fr}
+    .promos-strip{grid-template-columns:1fr}
+    .how-grid{grid-template-columns:1fr 1fr}
+    .ft-grid{grid-template-columns:1fr;gap:28px}
+    .ft-bottom{flex-direction:column;text-align:center}
+    .sec-h2{font-size:1.25rem}
+    .nl-form{flex-direction:column}
+    .app-phone{width:200px;height:400px}
+    .promo-h{font-size:1.3rem}
+    .cart-btn span.desk{display:none}
+}
+@media(max-width:480px){
+    .hero-banner{height:240px}
+    .hero-h{font-size:1.5rem}
+    .hero-btns{flex-direction:column}
+    .hero-info{grid-template-columns:1fr}
+    .how-grid{grid-template-columns:1fr}
+    .rest-img{height:180px}
+    .item-card{min-width:200px}
+}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+<div class="nav-wrap">
+    <div class="nav-top">
+        <button class="mob-btn" id="mobBtn"><i class="fas fa-bars"></i></button>
+        <a href="#" class="logo"><div class="logo-icon"><i class="fas fa-utensils"></i></div>YUM<span>GO</span></a>
+        <div class="nav-loc"><i class="fas fa-location-dot"></i> Paris, 75001 <i class="fas fa-chevron-down" style="font-size:.55rem;margin-left:2px"></i></div>
+        <div class="nav-search"><input type="text" placeholder="Rechercher un restaurant, un plat..." id="searchInput"><i class="fas fa-search si"></i></div>
+        <div class="nav-right">
+            <button class="n-btn" title="Notifications"><i class="far fa-bell"></i><span class="n-dot"></span></button>
+            <button class="n-btn" title="Favoris"><i class="far fa-heart"></i></button>
+            <div class="n-user"><img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=80&h=80&fit=crop" alt="User"></div>
+            <button class="cart-btn" id="cartToggle"><i class="fas fa-bag-shopping"></i> <span class="desk">Panier</span> <span class="cart-badge" id="cartBadge">0</span></button>
+        </div>
+    </div>
+    <div class="nav-cats" id="navCats">
+        <div class="nc-item active" data-cat="all"><i class="fas fa-fire"></i> Populaire</div>
+        <div class="nc-item" data-cat="pizza"><img class="nc-img" src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=48&h=48&fit=crop" alt=""> Pizza</div>
+        <div class="nc-item" data-cat="burger"><img class="nc-img" src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=48&h=48&fit=crop" alt=""> Burgers</div>
+        <div class="nc-item" data-cat="sushi"><img class="nc-img" src="https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=48&h=48&fit=crop" alt=""> Sushi</div>
+        <div class="nc-item" data-cat="asian"><img class="nc-img" src="https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=48&h=48&fit=crop" alt=""> Asiatique</div>
+        <div class="nc-item" data-cat="healthy"><img class="nc-img" src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=48&h=48&fit=crop" alt=""> Healthy</div>
+        <div class="nc-item" data-cat="dessert"><img class="nc-img" src="https://images.unsplash.com/photo-1551024601-bec78aea704b?w=48&h=48&fit=crop" alt=""> Desserts</div>
+        <div class="nc-item" data-cat="coffee"><img class="nc-img" src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=48&h=48&fit=crop" alt=""> Café</div>
+        <div class="nc-item" data-cat="mexican"><img class="nc-img" src="https://images.unsplash.com/photo-1625398407796-82650a8c135f?w=48&h=48&fit=crop" alt=""> Mexicain</div>
+    </div>
+</div>
+</nav>
+
+<!-- HERO SLIDER -->
+<section class="hero">
+<div class="hero-wrap">
+    <div class="hero-banner" id="heroBanner">
+        <div class="hero-slide active">
+            <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1400&h=500&fit=crop" alt="Food">
+            <div class="hero-overlay"></div>
+            <div class="hero-content">
+                <div class="hero-badge"><i class="fas fa-bolt"></i> Livraison en 25 min</div>
+                <h1 class="hero-h">Vos plats favoris,<br>livrés chez vous.</h1>
+                <p class="hero-p">Commandez auprès des meilleurs restaurants de Paris et faites-vous livrer en un temps record.</p>
+                <div class="hero-btns"><a href="#restaurants" class="hb hb-fill"><i class="fas fa-utensils"></i> Commander</a><a href="#how" class="hb hb-ghost"><i class="fas fa-play"></i> Comment ça marche</a></div>
+            </div>
+        </div>
+        <div class="hero-slide">
+            <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=1400&h=500&fit=crop" alt="Pizza">
+            <div class="hero-overlay"></div>
+            <div class="hero-content">
+                <div class="hero-badge"><i class="fas fa-tag"></i> -30% Première commande</div>
+                <h1 class="hero-h">Les meilleures<br>pizzas de Paris</h1>
+                <p class="hero-p">Pâte fraîche, ingrédients premium, cuisson au feu de bois. Code : YUMGO30</p>
+                <div class="hero-btns"><a href="#restaurants" class="hb hb-fill"><i class="fas fa-shopping-bag"></i> En profiter</a></div>
+            </div>
+        </div>
+        <div class="hero-slide">
+            <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1400&h=500&fit=crop" alt="Restaurant">
+            <div class="hero-overlay"></div>
+            <div class="hero-content">
+                <div class="hero-badge"><i class="fas fa-star"></i> Top Rated</div>
+                <h1 class="hero-h">Restaurants étoilés<br>à domicile</h1>
+                <p class="hero-p">Accédez à la gastronomie des plus grands chefs sans quitter votre canapé.</p>
+                <div class="hero-btns"><a href="#restaurants" class="hb hb-fill"><i class="fas fa-crown"></i> Découvrir</a></div>
+            </div>
+        </div>
+        <div class="hero-dots" id="heroDots"></div>
+    </div>
+    <div class="hero-info">
+        <div class="hi-card rv"><div class="hi-icon hi-1"><i class="fas fa-truck-fast"></i></div><div><div class="hi-label">Livraison Express</div><div class="hi-sub">En 25 min en moyenne</div></div></div>
+        <div class="hi-card rv"><div class="hi-icon hi-2"><i class="fas fa-shield-check"></i></div><div><div class="hi-label">Paiement Sécurisé</div><div class="hi-sub">Carte, Apple Pay, PayPal</div></div></div>
+        <div class="hi-card rv"><div class="hi-icon hi-3"><i class="fas fa-rotate-left"></i></div><div><div class="hi-label">Satisfait ou Remboursé</div><div class="hi-sub">Garantie 100%</div></div></div>
+        <div class="hi-card rv"><div class="hi-icon hi-4"><i class="fas fa-percent"></i></div><div><div class="hi-label">Offres Quotidiennes</div><div class="hi-sub">Jusqu'à -50% chaque jour</div></div></div>
+    </div>
+</div>
+</section>
+
+<!-- PROMOS -->
+<section class="sec">
+<div class="sec-wrap">
+    <div class="promos-strip">
+        <div class="promo-card p1 rv"><img src="https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=700&h=300&fit=crop" alt=""><div class="promo-ov"></div><div class="promo-body"><div class="promo-tag"><i class="fas fa-bolt"></i> Offre limitée</div><h3 class="promo-h">-30% sur votre<br>première commande</h3><p class="promo-p">Code : YUMGO30 • Sans minimum</p><a href="#" class="promo-btn">En profiter <i class="fas fa-arrow-right"></i></a></div></div>
+        <div class="promo-card p2 rv"><img src="https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=700&h=300&fit=crop" alt=""><div class="promo-ov"></div><div class="promo-body"><div class="promo-tag"><i class="fas fa-leaf"></i> Healthy</div><h3 class="promo-h">Livraison gratuite<br>sur le healthy</h3><p class="promo-p">Toute la semaine sur les bowls et salades</p><a href="#" class="promo-btn">Découvrir <i class="fas fa-arrow-right"></i></a></div></div>
+    </div>
+</div>
+</section>
+
+<!-- CATEGORIES -->
+<section class="sec" style="padding-top:10px">
+<div class="sec-wrap">
+    <div class="sec-head rv"><h2 class="sec-h2"><i class="fas fa-grip"></i> Explorer par catégorie</h2><a href="#" class="see-all">Voir tout <i class="fas fa-arrow-right"></i></a></div>
+    <div class="cats-scroll">
+        <div class="cat-card active rv"><div class="cat-img"><img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=100&h=100&fit=crop" alt=""></div><div class="cat-name">Pizza</div><div class="cat-count">186 restos</div></div>
+        <div class="cat-card rv"><div class="cat-img"><img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=100&h=100&fit=crop" alt=""></div><div class="cat-name">Burgers</div><div class="cat-count">152 restos</div></div>
+        <div class="cat-card rv"><div class="cat-img"><img src="https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=100&h=100&fit=crop" alt=""></div><div class="cat-name">Sushi</div><div class="cat-count">98 restos</div></div>
+        <div class="cat-card rv"><div class="cat-img"><img src="https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=100&h=100&fit=crop" alt=""></div><div class="cat-name">Asiatique</div><div class="cat-count">112 restos</div></div>
+        <div class="cat-card rv"><div class="cat-img"><img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=100&h=100&fit=crop" alt=""></div><div class="cat-name">Healthy</div><div class="cat-count">86 restos</div></div>
+        <div class="cat-card rv"><div class="cat-img"><img src="https://images.unsplash.com/photo-1625398407796-82650a8c135f?w=100&h=100&fit=crop" alt=""></div><div class="cat-name">Mexicain</div><div class="cat-count">74 restos</div></div>
+        <div class="cat-card rv"><div class="cat-img"><img src="https://images.unsplash.com/photo-1551024601-bec78aea704b?w=100&h=100&fit=crop" alt=""></div><div class="cat-name">Desserts</div><div class="cat-count">64 restos</div></div>
+        <div class="cat-card rv"><div class="cat-img"><img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=100&h=100&fit=crop" alt=""></div><div class="cat-name">Café</div><div class="cat-count">92 restos</div></div>
+        <div class="cat-card rv"><div class="cat-img"><img src="https://images.unsplash.com/photo-1484723091739-30a097e8f929?w=100&h=100&fit=crop" alt=""></div><div class="cat-name">Brunch</div><div class="cat-count">58 restos</div></div>
+    </div>
+</div>
+</section>
+
+<!-- RESTAURANTS -->
+<section class="sec" id="restaurants">
+<div class="sec-wrap">
+    <div class="sec-head rv"><h2 class="sec-h2"><i class="fas fa-store"></i> Restaurants populaires près de vous</h2><a href="#" class="see-all">Voir tout <i class="fas fa-arrow-right"></i></a></div>
+    <div class="rest-grid" id="restGrid">
+        <div class="rest-card rv"><div class="rest-img"><img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=600&h=400&fit=crop" alt="" loading="lazy"><div class="rest-badges"><span class="rb rb-sale"><i class="fas fa-tag"></i> -30%</span></div><button class="rest-fav" onclick="toggleFav(this)"><i class="far fa-heart"></i></button><div class="rest-delivery"><span class="rd-chip"><i class="fas fa-clock"></i> 20-30 min</span><span class="rd-chip"><i class="fas fa-motorcycle"></i> Gratuite</span></div></div><div class="rest-body"><div class="rest-top"><div class="rest-name">La Pizza d'Oro</div><div class="rest-rating"><i class="fas fa-star"></i> 4.8</div></div><div class="rest-cats">Pizza • Italien • Pâtes</div><div class="rest-meta"><span><i class="fas fa-euro-sign"></i> Min. 15€</span><span><i class="fas fa-map-pin"></i> 1.2 km</span><span><i class="fas fa-receipt"></i> 342 avis</span></div></div></div>
+        <div class="rest-card rv"><div class="rest-img"><img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600&h=400&fit=crop" alt="" loading="lazy"><div class="rest-badges"><span class="rb rb-new"><i class="fas fa-sparkles"></i> Nouveau</span></div><button class="rest-fav" onclick="toggleFav(this)"><i class="far fa-heart"></i></button><div class="rest-delivery"><span class="rd-chip"><i class="fas fa-clock"></i> 15-25 min</span><span class="rd-chip"><i class="fas fa-motorcycle"></i> 2.99€</span></div></div><div class="rest-body"><div class="rest-top"><div class="rest-name">Smash Burger House</div><div class="rest-rating"><i class="fas fa-star"></i> 4.9</div></div><div class="rest-cats">Burger • Américain • Frites</div><div class="rest-meta"><span><i class="fas fa-euro-sign"></i> Min. 12€</span><span><i class="fas fa-map-pin"></i> 0.8 km</span><span><i class="fas fa-receipt"></i> 528 avis</span></div></div></div>
+        <div class="rest-card rv"><div class="rest-img"><img src="https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=600&h=400&fit=crop" alt="" loading="lazy"><div class="rest-badges"><span class="rb rb-top"><i class="fas fa-crown"></i> Top</span></div><button class="rest-fav" onclick="toggleFav(this)"><i class="far fa-heart"></i></button><div class="rest-delivery"><span class="rd-chip"><i class="fas fa-clock"></i> 25-35 min</span><span class="rd-chip"><i class="fas fa-motorcycle"></i> Gratuite</span></div></div><div class="rest-body"><div class="rest-top"><div class="rest-name">Tokyo Sushi Bar</div><div class="rest-rating"><i class="fas fa-star"></i> 4.7</div></div><div class="rest-cats">Sushi • Japonais • Ramen • Poké</div><div class="rest-meta"><span><i class="fas fa-euro-sign"></i> Min. 20€</span><span><i class="fas fa-map-pin"></i> 2.1 km</span><span><i class="fas fa-receipt"></i> 412 avis</span></div></div></div>
+        <div class="rest-card rv"><div class="rest-img"><img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=600&h=400&fit=crop" alt="" loading="lazy"><div class="rest-badges"><span class="rb rb-sale"><i class="fas fa-tag"></i> -20%</span></div><button class="rest-fav" onclick="toggleFav(this)"><i class="far fa-heart"></i></button><div class="rest-delivery"><span class="rd-chip"><i class="fas fa-clock"></i> 15-20 min</span><span class="rd-chip"><i class="fas fa-motorcycle"></i> 1.99€</span></div></div><div class="rest-body"><div class="rest-top"><div class="rest-name">Green Bowl Studio</div><div class="rest-rating"><i class="fas fa-star"></i> 4.6</div></div><div class="rest-cats">Healthy • Végétarien • Bowls • Smoothies</div><div class="rest-meta"><span><i class="fas fa-euro-sign"></i> Min. 10€</span><span><i class="fas fa-map-pin"></i> 0.5 km</span><span><i class="fas fa-receipt"></i> 267 avis</span></div></div></div>
+        <div class="rest-card rv"><div class="rest-img"><img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&h=400&fit=crop" alt="" loading="lazy"><button class="rest-fav" onclick="toggleFav(this)"><i class="far fa-heart"></i></button><div class="rest-delivery"><span class="rd-chip"><i class="fas fa-clock"></i> 30-45 min</span><span class="rd-chip"><i class="fas fa-motorcycle"></i> Gratuite</span></div></div><div class="rest-body"><div class="rest-top"><div class="rest-name">Le Comptoir Français</div><div class="rest-rating"><i class="fas fa-star"></i> 4.9</div></div><div class="rest-cats">Gastronomique • Français • Vin</div><div class="rest-meta"><span><i class="fas fa-euro-sign"></i> Min. 35€</span><span><i class="fas fa-map-pin"></i> 3.4 km</span><span><i class="fas fa-receipt"></i> 189 avis</span></div></div></div>
+        <div class="rest-card rv"><div class="rest-img"><img src="https://images.unsplash.com/photo-1625398407796-82650a8c135f?w=600&h=400&fit=crop" alt="" loading="lazy"><div class="rest-badges"><span class="rb rb-new"><i class="fas fa-sparkles"></i> Nouveau</span></div><button class="rest-fav" onclick="toggleFav(this)"><i class="far fa-heart"></i></button><div class="rest-delivery"><span class="rd-chip"><i class="fas fa-clock"></i> 18-28 min</span><span class="rd-chip"><i class="fas fa-motorcycle"></i> 2.49€</span></div></div><div class="rest-body"><div class="rest-top"><div class="rest-name">El Mexicano Cantina</div><div class="rest-rating"><i class="fas fa-star"></i> 4.5</div></div><div class="rest-cats">Mexicain • Tacos • Burritos • Guacamole</div><div class="rest-meta"><span><i class="fas fa-euro-sign"></i> Min. 14€</span><span><i class="fas fa-map-pin"></i> 1.8 km</span><span><i class="fas fa-receipt"></i> 156 avis</span></div></div></div>
+    </div>
+</div>
+</section>
+
+<!-- POPULAR ITEMS -->
+<section class="sec">
+<div class="sec-wrap">
+    <div class="sec-head rv"><h2 class="sec-h2"><i class="fas fa-fire"></i> Les plats les plus commandés</h2><a href="#" class="see-all">Voir tout <i class="fas fa-arrow-right"></i></a></div>
+    <div class="items-scroll">
+        <div class="item-card rv"><div class="item-img"><img src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=400&h=300&fit=crop" alt="" loading="lazy"><button class="item-add" onclick="addItem('Margherita Classica',8.90,event)"><i class="fas fa-plus"></i></button></div><div class="item-body"><div class="item-name">Margherita Classica</div><div class="item-rest"><i class="fas fa-store"></i> La Pizza d'Oro</div><div class="item-bottom"><span class="item-price">8.90€</span><span class="item-time"><i class="fas fa-clock"></i> 20 min</span></div></div></div>
+        <div class="item-card rv"><div class="item-img"><img src="https://images.unsplash.com/photo-1586190848861-99aa4a171e90?w=400&h=300&fit=crop" alt="" loading="lazy"><button class="item-add" onclick="addItem('Smash Double',12.50,event)"><i class="fas fa-plus"></i></button></div><div class="item-body"><div class="item-name">Smash Double Cheese</div><div class="item-rest"><i class="fas fa-store"></i> Smash Burger House</div><div class="item-bottom"><span class="item-price">12.50€</span><span class="item-time"><i class="fas fa-clock"></i> 15 min</span></div></div></div>
+        <div class="item-card rv"><div class="item-img"><img src="https://images.unsplash.com/photo-1617196034796-73dfa7b1fd56?w=400&h=300&fit=crop" alt="" loading="lazy"><button class="item-add" onclick="addItem('Sashimi Mix 18p',16.90,event)"><i class="fas fa-plus"></i></button></div><div class="item-body"><div class="item-name">Sashimi Mix 18 pièces</div><div class="item-rest"><i class="fas fa-store"></i> Tokyo Sushi Bar</div><div class="item-bottom"><span class="item-price">16.90€</span><span class="item-time"><i class="fas fa-clock"></i> 25 min</span></div></div></div>
+        <div class="item-card rv"><div class="item-img"><img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=300&fit=crop" alt="" loading="lazy"><button class="item-add" onclick="addItem('Buddha Bowl',11.90,event)"><i class="fas fa-plus"></i></button></div><div class="item-body"><div class="item-name">Buddha Bowl Avocat</div><div class="item-rest"><i class="fas fa-store"></i> Green Bowl Studio</div><div class="item-bottom"><span class="item-price">11.90€</span><span class="item-time"><i class="fas fa-clock"></i> 15 min</span></div></div></div>
+        <div class="item-card rv"><div class="item-img"><img src="https://images.unsplash.com/photo-1551024601-bec78aea704b?w=400&h=300&fit=crop" alt="" loading="lazy"><button class="item-add" onclick="addItem('Tiramisu Maison',6.90,event)"><i class="fas fa-plus"></i></button></div><div class="item-body"><div class="item-name">Tiramisu Maison</div><div class="item-rest"><i class="fas fa-store"></i> Le Comptoir Français</div><div class="item-bottom"><span class="item-price">6.90€</span><span class="item-time"><i class="fas fa-clock"></i> 30 min</span></div></div></div>
+        <div class="item-card rv"><div class="item-img"><img src="https://images.unsplash.com/photo-1599974579688-8dbdd335c77f?w=400&h=300&fit=crop" alt="" loading="lazy"><button class="item-add" onclick="addItem('Tacos El Grande',9.50,event)"><i class="fas fa-plus"></i></button></div><div class="item-body"><div class="item-name">Tacos El Grande</div><div class="item-rest"><i class="fas fa-store"></i> El Mexicano Cantina</div><div class="item-bottom"><span class="item-price">9.50€</span><span class="item-time"><i class="fas fa-clock"></i> 18 min</span></div></div></div>
+    </div>
+</div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how-sec" id="how">
+<div class="sec-wrap">
+    <div class="sec-head rv" style="justify-content:center"><h2 class="sec-h2"><i class="fas fa-route"></i> Comment ça marche ?</h2></div>
+    <div class="how-grid">
+        <div class="how-card rv"><div class="how-num">1</div><div class="how-icon hwi-1"><i class="fas fa-location-dot"></i></div><h3 class="how-h">Entrez votre adresse</h3><p class="how-p">Indiquez votre localisation pour voir les restaurants disponibles autour de vous.</p></div>
+        <div class="how-card rv"><div class="how-num">2</div><div class="how-icon hwi-2"><i class="fas fa-utensils"></i></div><h3 class="how-h">Choisissez vos plats</h3><p class="how-p">Parcourez les menus et ajoutez vos plats favoris au panier en un clic.</p></div>
+        <div class="how-card rv"><div class="how-num">3</div><div class="how-icon hwi-3"><i class="fas fa-credit-card"></i></div><h3 class="how-h">Payez simplement</h3><p class="how-p">Paiement sécurisé par carte, Apple Pay, Google Pay ou PayPal.</p></div>
+        <div class="how-card rv"><div class="how-num">4</div><div class="how-icon hwi-4"><i class="fas fa-truck-fast"></i></div><h3 class="how-h">Livraison express</h3><p class="how-p">Suivez votre livreur en temps réel et recevez votre commande.</p></div>
+    </div>
+</div>
+</section>
+
+<!-- APP DOWNLOAD -->
+<section class="app-sec">
+<div class="sec-wrap">
+    <div class="app-card rv">
+        <div class="app-body">
+            <div class="app-tag"><i class="fas fa-mobile-screen"></i> Application Mobile</div>
+            <h2 class="app-h">Téléchargez<br>l'app YUMGO</h2>
+            <p class="app-p">Commandez encore plus rapidement grâce à notre application. Notifications en temps réel, offres exclusives et suivi de livraison.</p>
+            <div class="app-btns">
+                <a href="#" class="app-store"><i class="fab fa-apple"></i><div><span class="as-sub">Télécharger sur</span><span class="as-main">App Store</span></div></a>
+                <a href="#" class="app-store"><i class="fab fa-google-play"></i><div><span class="as-sub">Disponible sur</span><span class="as-main">Google Play</span></div></a>
+            </div>
+        </div>
+        <div class="app-visual">
+            <div class="app-phone"><div class="app-phone-notch"></div><div class="app-phone-screen"><img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=300&h=600&fit=crop" alt="App"></div></div>
+        </div>
+    </div>
+</div>
+</section>
+
+<!-- NEWSLETTER -->
+<section class="nl-sec">
+<div class="sec-wrap">
+    <div class="nl-card rv">
+        <div class="nl-icon"><i class="fas fa-envelope-open-text"></i></div>
+        <h2 class="nl-h">Restez gourmand</h2>
+        <p class="nl-p">Inscrivez-vous et recevez <strong>-10%</strong> sur votre prochaine commande + des offres exclusives chaque semaine.</p>
+        <form class="nl-form" onsubmit="event.preventDefault();toast('Merci ! Votre code -10% arrive par email 🎉')">
+            <input type="email" placeholder="Votre email..." required>
+            <button type="submit"><i class="fas fa-paper-plane"></i> S'inscrire</button>
+        </form>
+    </div>
+</div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+<div class="ft-wrap">
+    <div class="ft-grid">
+        <div>
+            <div class="ft-brand"><div class="ft-brand-icon"><i class="fas fa-utensils"></i></div><div class="ft-brand-name">YUM<span>GO</span></div></div>
+            <p class="ft-desc">Votre application de livraison de repas préférée. Les meilleurs restaurants, livrés chez vous en un temps record, 7j/7.</p>
+            <div class="ft-social"><a href="#"><i class="fab fa-instagram"></i></a><a href="#"><i class="fab fa-tiktok"></i></a><a href="#"><i class="fab fa-twitter"></i></a><a href="#"><i class="fab fa-facebook-f"></i></a><a href="#"><i class="fab fa-youtube"></i></a></div>
+        </div>
+        <div class="ft-col"><h4>Découvrir</h4><div class="ft-links"><a href="#">Restaurants</a><a href="#">Cuisines</a><a href="#">Promotions</a><a href="#">Carte cadeau</a><a href="#">Blog culinaire</a></div></div>
+        <div class="ft-col"><h4>Aide & Support</h4><div class="ft-links"><a href="#">Centre d'aide</a><a href="#">Mon compte</a><a href="#">Suivi de commande</a><a href="#">Remboursement</a><a href="#">FAQ</a></div></div>
+        <div class="ft-col"><h4>Partenaires</h4><div class="ft-links"><a href="#">Devenir livreur</a><a href="#">Restaurant partenaire</a><a href="#">Programme affilié</a><a href="#">Presse</a><a href="#">Carrières</a></div></div>
+    </div>
+    <div class="ft-bottom">
+        <span>© 2024 YUMGO. Tous droits réservés. Fait avec <i class="fas fa-heart" style="color:var(--orange)"></i> à Paris.</span>
+        <div class="ft-pay">
+            <div class="ft-pay-i"><i class="fab fa-cc-visa"></i></div>
+            <div class="ft-pay-i"><i class="fab fa-cc-mastercard"></i></div>
+            <div class="ft-pay-i"><i class="fab fa-cc-paypal"></i></div>
+            <div class="ft-pay-i"><i class="fab fa-cc-apple-pay"></i></div>
+            <div class="ft-pay-i"><i class="fab fa-cc-stripe"></i></div>
+        </div>
+    </div>
+</div>
+</footer>
+
+<!-- CART -->
+<div class="cart-ov" id="cartOv"></div>
+<div class="cart-sb" id="cartSb">
+    <div class="cart-hd"><h3><i class="fas fa-bag-shopping"></i> Votre panier <span class="cart-cnt" id="cartCnt">0</span></h3><button class="cart-x" id="cartX"><i class="fas fa-xmark"></i></button></div>
+    <div class="cart-body" id="cartBody"><div class="cart-empty" id="cartEmpty"><i class="fas fa-bag-shopping"></i><p>Votre panier est vide</p><p style="font-size:.78rem;margin-top:6px">Ajoutez des plats pour commencer !</p></div></div>
+    <div class="cart-ft" id="cartFt" style="display:none">
+        <div class="cf-row"><span>Sous-total</span><span id="cfSub">0.00€</span></div>
+        <div class="cf-row"><span>Livraison</span><span style="color:var(--green)">Gratuite</span></div>
+        <div class="cf-row"><span>Frais de service</span><span>0.99€</span></div>
+        <div class="cf-total"><span>Total</span><span id="cfTotal">0.00€</span></div>
+        <button class="co-btn" onclick="toast('Redirection vers le paiement sécurisé...')"><i class="fas fa-lock"></i> Commander • <span id="cfTotalBtn">0.00€</span></button>
+    </div>
+</div>
+
+<div class="toast" id="toastEl"><i class="fas fa-check-circle"></i><span id="toastMsg"></span></div>
+
+<script>
+/* SCROLL */
+window.addEventListener('scroll',function(){document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>30)});
+
+/* REVEAL */
+var obs=new IntersectionObserver(function(e){e.forEach(function(en){if(en.isIntersecting){en.target.classList.add('vis');obs.unobserve(en.target)}})},{threshold:.08,rootMargin:'0px 0px -30px 0px'});
+document.querySelectorAll('.rv').forEach(function(el){obs.observe(el)});
+
+/* HERO SLIDER */
+var slides=document.querySelectorAll('.hero-slide'),dotsC=document.getElementById('heroDots'),cur=0;
+slides.forEach(function(_,i){var d=document.createElement('div');d.className='h-dot'+(i===0?' active':'');d.onclick=function(){goSlide(i)};dotsC.appendChild(d)});
+function goSlide(n){slides[cur].classList.remove('active');document.querySelectorAll('.h-dot')[cur].classList.remove('active');cur=n;slides[cur].classList.add('active');document.querySelectorAll('.h-dot')[cur].classList.add('active')}
+setInterval(function(){goSlide((cur+1)%slides.length)},5000);
+
+/* NAV CATS */
+document.querySelectorAll('.nc-item').forEach(function(c){c.addEventListener('click',function(){document.querySelectorAll('.nc-item').forEach(function(x){x.classList.remove('active')});c.classList.add('active')})});
+document.querySelectorAll('.cat-card').forEach(function(c){c.addEventListener('click',function(){document.querySelectorAll('.cat-card').forEach(function(x){x.classList.remove('active')});c.classList.add('active')})});
+
+/* FAVORITES */
+function toggleFav(b){b.classList.toggle('loved');var i=b.querySelector('i');if(b.classList.contains('loved')){i.className='fas fa-heart';toast('Ajouté aux favoris ❤️')}else{i.className='far fa-heart';toast('Retiré des favoris')}}
+
+/* CART */
+var cart=[];
+function addItem(name,price,e){
+    e.stopPropagation();
+    var ex=cart.find(function(c){return c.name===name});
+    if(ex)ex.qty++;else cart.push({name:name,price:price,qty:1,img:'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=150&h=150&fit=crop'});
+    updateCart();toast(name+' ajouté au panier !');
+}
+function rmItem(i){cart.splice(i,1);updateCart()}
+function chgQty(i,d){cart[i].qty+=d;if(cart[i].qty<=0)rmItem(i);else updateCart()}
+
+function updateCart(){
+    var b=document.getElementById('cartBadge'),cnt=document.getElementById('cartCnt'),bd=document.getElementById('cartBody'),
+        em=document.getElementById('cartEmpty'),ft=document.getElementById('cartFt');
+    var tI=cart.reduce(function(s,c){return s+c.qty},0),tP=cart.reduce(function(s,c){return s+c.price*c.qty},0);
+    b.textContent=tI;cnt.textContent=tI;b.classList.remove('pop');void b.offsetWidth;b.classList.add('pop');
+    if(!cart.length){bd.innerHTML='';bd.appendChild(em);em.style.display='block';ft.style.display='none';return}
+    em.style.display='none';ft.style.display='block';
+    document.getElementById('cfSub').textContent=tP.toFixed(2)+'€';
+    document.getElementById('cfTotal').textContent=(tP+.99).toFixed(2)+'€';
+    document.getElementById('cfTotalBtn').textContent=(tP+.99).toFixed(2)+'€';
+    bd.innerHTML='';
+    cart.forEach(function(it,i){
+        var d=document.createElement('div');d.className='ci';d.style.position='relative';
+        d.innerHTML='<div class="ci-img"><img src="'+it.img+'" alt=""></div><div class="ci-info"><div class="ci-name">'+it.name+'</div><div class="ci-rest"><i class="fas fa-store"></i> Restaurant</div><div class="ci-row"><span class="ci-price">'+it.price.toFixed(2)+'€</span><div class="ci-qty"><button class="qb" onclick="chgQty('+i+',-1)"><i class="fas fa-minus"></i></button><span class="qv">'+it.qty+'</span><button class="qb" onclick="chgQty('+i+',1)"><i class="fas fa-plus"></i></button></div></div></div><button class="ci-rm" onclick="rmItem('+i+')"><i class="fas fa-trash-can"></i></button>';
+        bd.appendChild(d);
+    });
+}
+
+document.getElementById('cartToggle').addEventListener('click',function(){document.getElementById('cartSb').classList.add('open');document.getElementById('cartOv').classList.add('open');document.body.style.overflow='hidden'});
+function closeCart(){document.getElementById('cartSb').classList.remove('open');document.getElementById('cartOv').classList.remove('open');document.body.style.overflow=''}
+document.getElementById('cartX').addEventListener('click',closeCart);
+document.getElementById('cartOv').addEventListener('click',closeCart);
+
+/* TOAST */
+var tTO;function toast(m){var t=document.getElementById('toastEl');document.getElementById('toastMsg').textContent=m;t.classList.add('show');clearTimeout(tTO);tTO=setTimeout(function(){t.classList.remove('show')},3000)}
+
+/* SMOOTH SCROLL */
+document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener('click',function(e){var h=this.getAttribute('href');if(h!=='#'){e.preventDefault();var t=document.querySelector(h);if(t)t.scrollIntoView({behavior:'smooth'})}})});
+
+/* REST CARD CLICK → ADD RANDOM ITEM */
+document.querySelectorAll('.rest-card').forEach(function(c){
+    c.addEventListener('click',function(e){
+        if(e.target.closest('.rest-fav'))return;
+        var name=c.querySelector('.rest-name').textContent;
+        var price=Math.round((Math.random()*15+5)*100)/100;
+        addItem('Plat de '+name,price,e);
+    });
+});
+
+/* MOBILE NAV DRAWER */
+(function(){
+    var mobBtn=document.getElementById('mobBtn');
+    if(!mobBtn)return;
+    var drawer=document.createElement('div');
+    drawer.id='mobDrawer';
+    drawer.style.cssText='position:fixed;top:0;left:-100%;width:82%;max-width:320px;height:100vh;background:#fff;z-index:3000;transition:left .4s cubic-bezier(.4,0,.2,1);box-shadow:8px 0 40px rgba(0,0,0,.15);padding:80px 24px 24px;display:flex;flex-direction:column;gap:6px;overflow-y:auto';
+    var links=[
+        {href:'#restaurants',icon:'fa-utensils',label:'Restaurants'},
+        {href:'#popular',icon:'fa-fire',label:'Populaire'},
+        {href:'#how',icon:'fa-circle-question',label:'Comment ça marche'},
+        {href:'#app',icon:'fa-mobile-screen',label:"L'Application"},
+    ];
+    links.forEach(function(l){
+        var a=document.createElement('a');
+        a.href=l.href;
+        a.style.cssText='display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:12px;font-size:.95rem;font-weight:600;color:#1a1a2e;transition:background .2s';
+        a.innerHTML='<i class="fas '+l.icon+'" style="color:var(--primary);width:18px"></i>'+l.label;
+        a.addEventListener('mouseenter',function(){this.style.background='#f5f5ff'});
+        a.addEventListener('mouseleave',function(){this.style.background='transparent'});
+        a.addEventListener('click',function(){closeDr();var t=document.querySelector(l.href);if(t)setTimeout(function(){t.scrollIntoView({behavior:'smooth'})},300)});
+        drawer.appendChild(a);
+    });
+    var ov=document.createElement('div');
+    ov.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:2999;display:none;backdrop-filter:blur(2px)';
+    ov.addEventListener('click',closeDr);
+    document.body.appendChild(ov);
+    document.body.appendChild(drawer);
+    function openDr(){drawer.style.left='0';ov.style.display='block';document.body.style.overflow='hidden';mobBtn.innerHTML='<i class="fas fa-xmark"></i>';}
+    function closeDr(){drawer.style.left='-100%';ov.style.display='none';document.body.style.overflow='';mobBtn.innerHTML='<i class="fas fa-bars"></i>';}
+    mobBtn.addEventListener('click',function(){drawer.style.left==='-100%'||drawer.style.left===''?openDr():closeDr();});
+
+    /* MOBILE SEARCH */
+    var searchInput=document.getElementById('searchInput');
+    if(searchInput){
+        var mobSearch=document.createElement('div');
+        mobSearch.style.cssText='display:none;padding:8px 16px;background:var(--bg);border-bottom:1px solid var(--border2)';
+        var inp=document.createElement('input');
+        inp.type='text';inp.placeholder='Rechercher...';
+        inp.style.cssText='width:100%;padding:10px 16px;border-radius:50px;border:1.5px solid var(--border2);font-size:.9rem;background:#fff;font-family:inherit';
+        inp.addEventListener('input',function(){searchInput.value=inp.value;searchInput.dispatchEvent(new Event('input'));});
+        mobSearch.appendChild(inp);
+        var navbar=document.getElementById('navbar');
+        if(navbar)navbar.parentNode.insertBefore(mobSearch,navbar.nextSibling);
+        if(window.innerWidth<=768)mobSearch.style.display='block';
+        window.addEventListener('resize',function(){mobSearch.style.display=window.innerWidth<=768?'block':'none';});
+    }
+})();
+
+</script>
+</body>
+</html>

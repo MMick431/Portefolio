@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VORTEX — Cyberpunk RPG</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root{
+--bg:#0a0a0f;--bg2:#0f0f18;--neon:#00f0ff;--neon2:#ff00e5;
+--neon3:#b400ff;--red:#ff0040;--gold:#ffe100;--green:#00ff88;
+--text:#e0e0ff;--text2:rgba(224,224,255,.5);
+--glow-c:0 0 20px rgba(0,240,255,.3),0 0 60px rgba(0,240,255,.1);
+--glow-p:0 0 20px rgba(255,0,229,.3),0 0 60px rgba(255,0,229,.1);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Rajdhani',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+button{cursor:pointer;border:none;outline:none;font-family:inherit;background:none}
+::selection{background:var(--neon);color:#000}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-thumb{background:var(--neon);border-radius:10px}
+
+@keyframes glitch{0%{clip-path:inset(40% 0 61% 0)}20%{clip-path:inset(92% 0 1% 0)}40%{clip-path:inset(43% 0 1% 0)}60%{clip-path:inset(25% 0 58% 0)}80%{clip-path:inset(54% 0 7% 0)}100%{clip-path:inset(58% 0 43% 0)}}
+@keyframes glitch2{0%{clip-path:inset(65% 0 13% 0)}20%{clip-path:inset(15% 0 62% 0)}40%{clip-path:inset(79% 0 4% 0)}60%{clip-path:inset(7% 0 74% 0)}80%{clip-path:inset(45% 0 18% 0)}100%{clip-path:inset(22% 0 67% 0)}}
+@keyframes flicker{0%,100%{opacity:1}41%{opacity:1}42%{opacity:.8}43%{opacity:1}45%{opacity:.3}46%{opacity:1}}
+@keyframes scan-line{0%{top:-10%}100%{top:110%}}
+@keyframes neon-pulse{0%,100%{text-shadow:0 0 10px var(--neon),0 0 40px var(--neon),0 0 80px var(--neon)}50%{text-shadow:0 0 5px var(--neon),0 0 20px var(--neon),0 0 40px var(--neon)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-15px)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(50px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideIn{from{opacity:0;transform:translateX(-40px)}to{opacity:1;transform:translateX(0)}}
+@keyframes border-run{0%{background-position:0 0,100% 0,100% 100%,0 100%}100%{background-position:100% 0,100% 100%,0 100%,0 0}}
+@keyframes hex-rotate{to{transform:rotate(360deg)}}
+@keyframes particle-float{0%{transform:translateY(100vh) scale(0);opacity:0}50%{opacity:1}100%{transform:translateY(-10vh) scale(1);opacity:0}}
+
+.reveal{opacity:0;transform:translateY(50px);transition:all .8s cubic-bezier(.4,0,.2,1)}
+.reveal.vis{opacity:1;transform:translateY(0)}
+
+/* PARTICLES */
+.particles{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.particle{position:absolute;width:2px;height:2px;background:var(--neon);border-radius:50%;opacity:0;animation:particle-float linear infinite}
+
+/* SCANLINE */
+.scanline{position:fixed;top:-10%;left:0;width:100%;height:4px;background:linear-gradient(transparent,rgba(0,240,255,.05),transparent);z-index:9999;pointer-events:none;animation:scan-line 8s linear infinite}
+
+/* NAV */
+nav{position:fixed;top:0;width:100%;z-index:100;padding:16px 0;transition:all .4s}
+nav.scrolled{background:rgba(10,10,15,.92);backdrop-filter:blur(20px);border-bottom:1px solid rgba(0,240,255,.1)}
+.nav-c{max-width:1300px;margin:0 auto;padding:0 32px;display:flex;align-items:center;justify-content:space-between}
+.g-logo{font-family:'Orbitron',sans-serif;font-size:1.6rem;font-weight:900;color:var(--neon);text-shadow:0 0 20px rgba(0,240,255,.5);letter-spacing:4px}
+.nav-r{display:flex;align-items:center;gap:28px}
+.nav-r a{font-size:.85rem;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:2px;transition:all .3s;position:relative}
+.nav-r a:hover{color:var(--neon);text-shadow:0 0 10px rgba(0,240,255,.5)}
+.nav-r a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:2px;background:var(--neon);box-shadow:var(--glow-c);transition:width .3s}
+.nav-r a:hover::after{width:100%}
+.play-btn{padding:12px 32px;background:transparent;border:2px solid var(--neon);color:var(--neon);font-family:'Orbitron',sans-serif;font-size:.8rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;transition:all .3s;position:relative;overflow:hidden;clip-path:polygon(10px 0,100% 0,calc(100% - 10px) 100%,0 100%)}
+.play-btn:hover{background:var(--neon);color:#000;box-shadow:var(--glow-c)}
+
+/* HERO */
+.g-hero{min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden;padding-top:80px}
+.g-hero-bg{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.3),var(--bg));z-index:1}
+.g-hero-img{position:absolute;inset:0;background:linear-gradient(135deg,#0a001a,#000a14,#0a0014);z-index:0}
+.hex-grid{position:absolute;inset:0;z-index:1;opacity:.08;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='52'%3E%3Cpath d='M30 0L60 15v22L30 52 0 37V15z' fill='none' stroke='%2300f0ff' stroke-width='.5'/%3E%3C/svg%3E");background-size:60px 52px}
+.g-hero-c{max-width:1300px;margin:0 auto;padding:0 32px;position:relative;z-index:2;width:100%}
+
+.g-hero-content{max-width:700px}
+.g-sub{font-family:'Orbitron',sans-serif;font-size:.75rem;color:var(--neon);letter-spacing:6px;text-transform:uppercase;margin-bottom:20px;display:flex;align-items:center;gap:10px;animation:fadeUp .8s .2s both}
+.g-sub::before,.g-sub::after{content:'';width:30px;height:1px;background:var(--neon);box-shadow:var(--glow-c)}
+.g-title{font-family:'Orbitron',sans-serif;font-size:5.5rem;font-weight:900;line-height:.95;margin-bottom:8px;text-transform:uppercase;letter-spacing:4px;animation:fadeUp .8s .4s both;position:relative}
+.g-title .neon-text{color:var(--neon);text-shadow:0 0 20px rgba(0,240,255,.5),0 0 60px rgba(0,240,255,.2);animation:neon-pulse 3s ease-in-out infinite}
+.g-title .pink-text{color:var(--neon2);text-shadow:0 0 20px rgba(255,0,229,.5),0 0 60px rgba(255,0,229,.2)}
+/* GLITCH */
+.glitch-wrap{position:relative;display:inline-block}
+.glitch-wrap::before,.glitch-wrap::after{content:attr(data-text);position:absolute;top:0;left:0;width:100%;height:100%;overflow:hidden}
+.glitch-wrap::before{color:var(--neon);animation:glitch 3s infinite linear alternate-reverse;left:2px;text-shadow:none}
+.glitch-wrap::after{color:var(--neon2);animation:glitch2 3s infinite linear alternate-reverse;left:-2px;text-shadow:none}
+
+.g-desc{font-size:1.15rem;color:var(--text2);line-height:1.7;margin:24px 0 40px;max-width:550px;animation:fadeUp .8s .6s both}
+.g-hero-btns{display:flex;gap:16px;flex-wrap:wrap;animation:fadeUp .8s .8s both}
+.g-btn{display:inline-flex;align-items:center;gap:10px;padding:16px 40px;font-family:'Orbitron',sans-serif;font-size:.82rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;transition:all .4s;position:relative;clip-path:polygon(14px 0,100% 0,calc(100% - 14px) 100%,0 100%)}
+.g-btn-neon{background:var(--neon);color:#000;box-shadow:var(--glow-c)}
+.g-btn-neon:hover{box-shadow:0 0 40px rgba(0,240,255,.6),0 0 100px rgba(0,240,255,.2);transform:translateY(-3px)}
+.g-btn-outline{border:2px solid var(--neon2);color:var(--neon2)}
+.g-btn-outline:hover{background:var(--neon2);color:#000;box-shadow:var(--glow-p);transform:translateY(-3px)}
+
+.g-hero-stats{display:flex;gap:40px;margin-top:60px;animation:fadeUp .8s 1s both}
+.g-stat{position:relative;padding-left:16px}
+.g-stat::before{content:'';position:absolute;left:0;top:0;width:3px;height:100%;background:var(--neon);box-shadow:var(--glow-c);border-radius:2px}
+.g-stat:nth-child(2)::before{background:var(--neon2);box-shadow:var(--glow-p)}
+.g-stat:nth-child(3)::before{background:var(--gold)}
+.g-stat-val{font-family:'Orbitron',sans-serif;font-size:1.8rem;font-weight:800;color:var(--neon)}
+.g-stat:nth-child(2) .g-stat-val{color:var(--neon2)}
+.g-stat:nth-child(3) .g-stat-val{color:var(--gold)}
+.g-stat-lbl{font-size:.72rem;color:var(--text2);text-transform:uppercase;letter-spacing:1.5px;margin-top:2px}
+
+/* FEATURES */
+.g-features{padding:120px 0;position:relative}
+.g-sec-c{max-width:1300px;margin:0 auto;padding:0 32px}
+.g-sec-head{text-align:center;margin-bottom:70px}
+.g-sec-tag{font-family:'Orbitron',sans-serif;font-size:.7rem;color:var(--neon);letter-spacing:5px;text-transform:uppercase;margin-bottom:12px}
+.g-sec-h2{font-family:'Orbitron',sans-serif;font-size:2.5rem;font-weight:800;text-transform:uppercase;letter-spacing:3px}
+.g-sec-h2 .n{color:var(--neon);text-shadow:0 0 20px rgba(0,240,255,.3)}
+
+.g-feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.g-feat-card{
+    background:rgba(0,240,255,.02);border:1px solid rgba(0,240,255,.08);
+    padding:40px 28px;position:relative;overflow:hidden;transition:all .4s;
+    clip-path:polygon(0 0,calc(100% - 20px) 0,100% 20px,100% 100%,20px 100%,0 calc(100% - 20px));
+}
+.g-feat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--neon),transparent);opacity:0;transition:opacity .4s}
+.g-feat-card:hover::before{opacity:1}
+.g-feat-card:hover{border-color:rgba(0,240,255,.2);background:rgba(0,240,255,.04);transform:translateY(-8px);box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.g-feat-card::after{content:'';position:absolute;top:0;right:0;border:1px solid rgba(0,240,255,.15);border-width:0 1px 1px 0;width:20px;height:20px;transform:rotate(45deg) translate(7px,-7px)}
+.gf-icon{width:60px;height:60px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin-bottom:24px;position:relative}
+.gf-icon::before{content:'';position:absolute;inset:0;border:1px solid;border-radius:50%;opacity:.2;animation:hex-rotate 8s linear infinite}
+.gfi-1{color:var(--neon)}.gfi-1::before{border-color:var(--neon)}
+.gfi-2{color:var(--neon2)}.gfi-2::before{border-color:var(--neon2)}
+.gfi-3{color:var(--gold)}.gfi-3::before{border-color:var(--gold)}
+.gfi-4{color:var(--green)}.gfi-4::before{border-color:var(--green)}
+.gfi-5{color:var(--red)}.gfi-5::before{border-color:var(--red)}
+.gfi-6{color:var(--neon3)}.gfi-6::before{border-color:var(--neon3)}
+.gf-h3{font-family:'Orbitron',sans-serif;font-size:.92rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px}
+.gf-p{font-size:.88rem;color:var(--text2);line-height:1.7}
+
+/* EDITIONS */
+.g-editions{padding:120px 0;background:var(--bg2);position:relative}
+.g-editions::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--neon),transparent);opacity:.3}
+.ed-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+.ed-card{
+    border:1px solid rgba(0,240,255,.08);padding:40px 32px;text-align:center;
+    position:relative;transition:all .4s;overflow:hidden;
+    background:rgba(0,240,255,.01);
+}
+.ed-card.featured{border-color:var(--neon);box-shadow:var(--glow-c)}
+.ed-card:hover{transform:translateY(-8px);border-color:rgba(0,240,255,.2);box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.ed-badge{position:absolute;top:16px;right:16px;background:var(--neon);color:#000;font-family:'Orbitron',sans-serif;font-size:.55rem;font-weight:700;padding:4px 12px;letter-spacing:1.5px;text-transform:uppercase;clip-path:polygon(8px 0,100% 0,calc(100% - 8px) 100%,0 100%)}
+.ed-icon{font-size:2.5rem;margin-bottom:20px}
+.ed-name{font-family:'Orbitron',sans-serif;font-size:1rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px}
+.ed-price{font-family:'Orbitron',sans-serif;font-size:2.2rem;font-weight:900;color:var(--neon);margin-bottom:24px}
+.ed-price span{font-size:.9rem;color:var(--text2)}
+.ed-list{display:flex;flex-direction:column;gap:12px;margin-bottom:32px}
+.ed-list li{font-size:.85rem;color:var(--text2);display:flex;align-items:center;gap:10px}
+.ed-list li i{color:var(--neon);font-size:.7rem}
+.ed-btn{width:100%;padding:14px;font-family:'Orbitron',sans-serif;font-size:.75rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;border:2px solid var(--neon);color:var(--neon);transition:all .3s;clip-path:polygon(10px 0,100% 0,calc(100% - 10px) 100%,0 100%)}
+.ed-btn:hover{background:var(--neon);color:#000;box-shadow:var(--glow-c)}
+
+/* CTA */
+.g-cta{padding:120px 0;position:relative;overflow:hidden}
+.g-cta-card{max-width:800px;margin:0 auto;text-align:center;padding:70px 40px;border:1px solid rgba(0,240,255,.1);position:relative;background:rgba(0,240,255,.02)}
+.g-cta-card::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,240,255,.02) 2px,rgba(0,240,255,.02) 4px);pointer-events:none}
+.g-cta h2{font-family:'Orbitron',sans-serif;font-size:2.5rem;font-weight:900;text-transform:uppercase;letter-spacing:3px;margin-bottom:16px}
+.g-cta h2 .n{color:var(--neon);text-shadow:0 0 20px rgba(0,240,255,.3)}
+.g-cta p{color:var(--text2);font-size:1rem;margin-bottom:36px}
+.g-cta-form{display:flex;gap:10px;max-width:460px;margin:0 auto}
+.g-cta-form input{flex:1;padding:14px 22px;background:rgba(0,240,255,.04);border:1px solid rgba(0,240,255,.15);color:var(--text);font-size:.88rem;font-family:'Rajdhani',sans-serif;clip-path:polygon(10px 0,100% 0,calc(100% - 10px) 100%,0 100%);transition:border-color .3s}
+.g-cta-form input:focus{border-color:var(--neon);box-shadow:var(--glow-c)}
+.g-cta-form input::placeholder{color:var(--text2)}
+.g-cta-form button{padding:14px 32px;background:var(--neon);color:#000;font-family:'Orbitron',sans-serif;font-size:.75rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;clip-path:polygon(10px 0,100% 0,calc(100% - 10px) 100%,0 100%);transition:all .3s}
+.g-cta-form button:hover{box-shadow:var(--glow-c)}
+
+/* FOOTER */
+.g-footer{padding:40px 0;border-top:1px solid rgba(0,240,255,.06)}
+.g-ft{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;max-width:1300px;margin:0 auto;padding:0 32px}
+.g-ft-logo{font-family:'Orbitron',sans-serif;font-size:1rem;font-weight:700;color:var(--neon);letter-spacing:3px}
+.g-ft-links{display:flex;gap:24px}
+.g-ft-links a{font-size:.78rem;color:var(--text2);text-transform:uppercase;letter-spacing:1.5px;transition:color .3s}
+.g-ft-links a:hover{color:var(--neon)}
+.g-ft-copy{font-size:.72rem;color:var(--text2)}
+
+@media(max-width:1024px){.g-feat-grid,.ed-grid{grid-template-columns:1fr 1fr}.g-title{font-size:3.5rem}}
+@media(max-width:768px){
+    .g-feat-grid,.ed-grid{grid-template-columns:1fr}
+    .g-title{font-size:2.5rem}
+    .g-hero-btns{flex-direction:column;align-items:flex-start}
+    .g-hero-stats{flex-direction:column;gap:20px}
+    .nav-r{display:none}
+    .g-cta-form{flex-direction:column}
+    .g-ft{flex-direction:column;text-align:center}
+    .g-cta h2{font-size:1.8rem}
+}
+.mob-ham{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:8px}
+.mob-ham span{width:24px;height:2px;background:var(--neon);border-radius:2px;transition:all .3s;display:block}
+.mob-ham.active span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
+.mob-ham.active span:nth-child(2){opacity:0}
+.mob-ham.active span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+.mob-nav{display:none;position:fixed;inset:0;background:rgba(10,10,15,.98);z-index:99;flex-direction:column;align-items:center;justify-content:center;gap:32px}
+.mob-nav.open{display:flex}
+.mob-nav a{font-family:'Orbitron',sans-serif;font-size:1.2rem;color:var(--neon);letter-spacing:3px;text-transform:uppercase}
+@media(max-width:768px){.mob-ham{display:flex}}
+</style>
+</head>
+<body>
+<div class="scanline"></div>
+<div class="particles" id="particles"></div>
+
+<nav id="gnav">
+<div class="nav-c">
+    <div class="g-logo">VORTEX</div>
+    <div class="nav-r">
+        <a href="#features">Système</a>
+        <a href="#editions">Éditions</a>
+        <a href="#join">Rejoindre</a>
+        <button class="play-btn" onclick="showGameToast('🎮 Lancement du jeu...')">Jouer</button>
+    </div>
+    <button class="mob-ham" id="mobHam"><span></span><span></span><span></span></button>
+</div>
+<div class="mob-nav" id="mobNav">
+    <a href="#features" onclick="closeMobNav()">Système</a>
+    <a href="#editions" onclick="closeMobNav()">Éditions</a>
+    <a href="#join" onclick="closeMobNav()">Rejoindre</a>
+    <a href="#" onclick="closeMobNav();showGameToast('🎮 Lancement du jeu...')">Jouer</a>
+</div>
+</nav>
+
+<section class="g-hero">
+    <div class="g-hero-img"></div>
+    <div class="hex-grid"></div>
+    <div class="g-hero-bg"></div>
+    <div class="g-hero-c">
+        <div class="g-hero-content">
+            <div class="g-sub">// Saison 4 — Disponible maintenant</div>
+            <h1 class="g-title">
+                <div class="glitch-wrap" data-text="VORTEX"><span class="neon-text">VORTEX</span></div><br>
+                <span class="pink-text">UPRISING</span>
+            </h1>
+            <p class="g-desc">Plongez dans les rues néon de Neo-Tokyo 2089. Un monde cyberpunk ouvert où chaque choix façonne votre destinée dans une guerre entre corporations.</p>
+            <div class="g-hero-btns">
+                <a href="#" class="g-btn g-btn-neon"><i class="fas fa-play"></i> Jouer Maintenant</a>
+                <a href="#" class="g-btn g-btn-outline"><i class="fas fa-film"></i> Bande Annonce</a>
+            </div>
+            <div class="g-hero-stats">
+                <div class="g-stat"><div class="g-stat-val">2.4M</div><div class="g-stat-lbl">Joueurs En Ligne</div></div>
+                <div class="g-stat"><div class="g-stat-val">98%</div><div class="g-stat-lbl">Avis Positifs</div></div>
+                <div class="g-stat"><div class="g-stat-val">50+</div><div class="g-stat-lbl">Récompenses</div></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="g-features" id="features">
+<div class="g-sec-c">
+    <div class="g-sec-head reveal"><div class="g-sec-tag">// Système de jeu</div><h2 class="g-sec-h2">REPOUSSEZ LES <span class="n">LIMITES</span></h2></div>
+    <div class="g-feat-grid">
+        <div class="g-feat-card reveal"><div class="gf-icon gfi-1"><i class="fas fa-globe"></i></div><h3 class="gf-h3">Monde Ouvert</h3><p class="gf-p">Explorez Neo-Tokyo, une ville immense de 120km² avec un cycle jour/nuit dynamique et une météo réaliste.</p></div>
+        <div class="g-feat-card reveal"><div class="gf-icon gfi-2"><i class="fas fa-robot"></i></div><h3 class="gf-h3">IA Avancée</h3><p class="gf-p">Des PNJ propulsés par l'IA avec des comportements uniques, des dialogues dynamiques et des relations évolutives.</p></div>
+        <div class="g-feat-card reveal"><div class="gf-icon gfi-3"><i class="fas fa-gun"></i></div><h3 class="gf-h3">Combat Fluide</h3><p class="gf-p">Système de combat hybride mêlant tir, mêlée et pouvoirs cybernétiques dans une action frénétique.</p></div>
+        <div class="g-feat-card reveal"><div class="gf-icon gfi-4"><i class="fas fa-microchip"></i></div><h3 class="gf-h3">Augmentations</h3><p class="gf-p">Plus de 200 implants cybernétiques pour personnaliser votre corps et débloquer des capacités surhumaines.</p></div>
+        <div class="g-feat-card reveal"><div class="gf-icon gfi-5"><i class="fas fa-users"></i></div><h3 class="gf-h3">Multijoueur</h3><p class="gf-p">Coopérez ou affrontez-vous dans des modes PvP et PvE avec un matchmaking compétitif.</p></div>
+        <div class="g-feat-card reveal"><div class="gf-icon gfi-6"><i class="fas fa-wand-sparkles"></i></div><h3 class="gf-h3">Ray Tracing</h3><p class="gf-p">Graphismes nouvelle génération avec ray tracing global, reflets réalistes et éclairage volumétrique.</p></div>
+    </div>
+</div>
+</section>
+
+<section class="g-editions" id="editions">
+<div class="g-sec-c">
+    <div class="g-sec-head reveal"><div class="g-sec-tag">// Choisissez votre édition</div><h2 class="g-sec-h2">ENTREZ DANS LE <span class="n">VORTEX</span></h2></div>
+    <div class="ed-grid">
+        <div class="ed-card reveal"><div class="ed-icon">🎮</div><div class="ed-name">Standard</div><div class="ed-price">49€</div><ul class="ed-list"><li><i class="fas fa-check"></i> Jeu complet</li><li><i class="fas fa-check"></i> Mode multijoueur</li><li><i class="fas fa-check"></i> Mises à jour gratuites</li></ul><button class="ed-btn">Acheter</button></div>
+        <div class="ed-card featured reveal"><div class="ed-badge">Populaire</div><div class="ed-icon">⚡</div><div class="ed-name">Deluxe</div><div class="ed-price">79€</div><ul class="ed-list"><li><i class="fas fa-check"></i> Tout Standard +</li><li><i class="fas fa-check"></i> Season Pass</li><li><i class="fas fa-check"></i> Skins exclusifs</li><li><i class="fas fa-check"></i> Accès anticipé</li></ul><button class="ed-btn">Acheter</button></div>
+        <div class="ed-card reveal"><div class="ed-icon">👑</div><div class="ed-name">Ultimate</div><div class="ed-price">129€</div><ul class="ed-list"><li><i class="fas fa-check"></i> Tout Deluxe +</li><li><i class="fas fa-check"></i> Art book digital</li><li><i class="fas fa-check"></i> Soundtrack</li><li><i class="fas fa-check"></i> Figurine in-game</li></ul><button class="ed-btn">Acheter</button></div>
+    </div>
+</div>
+</section>
+
+<section class="g-cta" id="join">
+<div class="g-sec-c">
+    <div class="g-cta-card reveal">
+        <h2>REJOIGNEZ LA <span class="n">RÉSISTANCE</span></h2>
+        <p>Inscrivez-vous pour recevoir les dernières news, accès bêta et récompenses exclusives.</p>
+        <form class="g-cta-form" onsubmit="event.preventDefault();alert('Bienvenue dans le Vortex!')">
+            <input type="email" placeholder="Votre email..." required>
+            <button type="submit">S'inscrire</button>
+        </form>
+    </div>
+</div>
+</section>
+
+<footer class="g-footer">
+<div class="g-ft">
+    <div class="g-ft-logo">VORTEX</div>
+    <div class="g-ft-links"><a href="#">Support</a><a href="#">Communauté</a><a href="#">Presse</a><a href="#">CGU</a></div>
+    <div class="g-ft-copy">© 2024 Vortex Studios. Tous droits réservés.</div>
+</div>
+</footer>
+
+<script>
+window.addEventListener('scroll',function(){document.getElementById('gnav').classList.toggle('scrolled',window.scrollY>50)});
+var obs=new IntersectionObserver(function(e){e.forEach(function(en){if(en.isIntersecting){en.target.classList.add('vis');obs.unobserve(en.target)}})},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(function(el){obs.observe(el)});
+
+/* PARTICLES */
+var pC=document.getElementById('particles');
+for(var i=0;i<30;i++){
+    var p=document.createElement('div');p.className='particle';
+    p.style.left=Math.random()*100+'%';
+    p.style.animationDuration=(Math.random()*10+8)+'s';
+    p.style.animationDelay=Math.random()*10+'s';
+    p.style.width=p.style.height=Math.random()*3+1+'px';
+    if(Math.random()>.5)p.style.background='#ff00e5';
+    pC.appendChild(p);
+}
+
+/* MOBILE NAV */
+var mobHam=document.getElementById('mobHam');
+var mobNav=document.getElementById('mobNav');
+mobHam.addEventListener('click',function(){
+    mobHam.classList.toggle('active');
+    mobNav.classList.toggle('open');
+    document.body.style.overflow=mobNav.classList.contains('open')?'hidden':'';
+});
+function closeMobNav(){
+    mobHam.classList.remove('active');
+    mobNav.classList.remove('open');
+    document.body.style.overflow='';
+}
+document.querySelectorAll('a[href^="#"]').forEach(function(a){
+    a.addEventListener('click',function(e){
+        var h=this.getAttribute('href');
+        if(h!=='#'){e.preventDefault();var t=document.querySelector(h);if(t)t.scrollIntoView({behavior:'smooth'});}
+    });
+});
+
+/* TOAST GAME */
+function showGameToast(msg){
+    var t=document.getElementById('gToast');
+    if(!t){t=document.createElement('div');t.id='gToast';t.style.cssText='position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--neon);color:#000;padding:14px 28px;font-family:"Orbitron",sans-serif;font-size:.75rem;font-weight:700;letter-spacing:2px;z-index:9999;clip-path:polygon(10px 0,100% 0,calc(100% - 10px) 100%,0 100%);transition:transform .5s cubic-bezier(.68,-.55,.265,1.55)';document.body.appendChild(t);}
+    t.textContent=msg;
+    setTimeout(function(){t.style.transform='translateX(-50%) translateY(0)'},10);
+    clearTimeout(window._gToastTO);
+    window._gToastTO=setTimeout(function(){t.style.transform='translateX(-50%) translateY(100px)'},3000);
+}
+
+/* EDITION BUTTONS */
+document.querySelectorAll('.ed-btn').forEach(function(btn){
+    btn.addEventListener('click',function(){
+        var edition=this.closest('.ed-card').querySelector('.ed-name').textContent;
+        var price=this.closest('.ed-card').querySelector('.ed-price').textContent;
+        showGameToast('✓ ÉDITION '+edition.toUpperCase()+' — '+price+' AJOUTÉE');
+    });
+});
+
+/* HERO BUTTONS */
+document.querySelectorAll('.g-btn-neon').forEach(function(b){
+    b.addEventListener('click',function(e){e.preventDefault();showGameToast('🎮 CONNEXION AU SERVEUR...');});
+});
+document.querySelectorAll('.g-btn-outline').forEach(function(b){
+    b.addEventListener('click',function(e){e.preventDefault();showGameToast('▶ CHARGEMENT DE LA BANDE ANNONCE...');});
+});
+
+/* CTA FORM */
+var ctaForm=document.querySelector('.g-cta-form');
+if(ctaForm){
+    ctaForm.addEventListener('submit',function(e){
+        e.preventDefault();
+        var email=ctaForm.querySelector('input').value;
+        if(!email||!email.includes('@')){ctaForm.querySelector('input').style.borderColor='var(--red)';return;}
+        showGameToast('⚡ BIENVENUE DANS LA RÉSISTANCE !');
+        ctaForm.reset();
+    });
+}
+</script>
+</body>
+</html>

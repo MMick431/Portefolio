@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PULSE — Fitness App Landing</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root{
+--bg:#000;--bg2:#0a0a0a;--bg3:#111;--surface:rgba(255,255,255,.04);
+--accent:#7c3aed;--accent2:#a78bfa;--accent3:#c4b5fd;
+--cyan:#06b6d4;--pink:#ec4899;--emerald:#10b981;
+--grad1:linear-gradient(135deg,#7c3aed,#06b6d4);
+--grad2:linear-gradient(135deg,#ec4899,#7c3aed);
+--grad3:linear-gradient(135deg,#06b6d4,#10b981);
+--text:#fff;--text2:rgba(255,255,255,.6);--text3:rgba(255,255,255,.35);
+--border:rgba(255,255,255,.08);
+--radius:20px;--ease:cubic-bezier(.4,0,.2,1);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+button{cursor:pointer;border:none;outline:none;font-family:inherit;background:none}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-thumb{background:var(--accent);border-radius:10px}
+::selection{background:var(--accent);color:#fff}
+
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-20px)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(60px)}to{opacity:1;transform:translateY(0)}}
+@keyframes scaleIn{from{opacity:0;transform:scale(.8)}to{opacity:1;transform:scale(1)}}
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+@keyframes glow{0%,100%{filter:drop-shadow(0 0 30px rgba(124,58,237,.3))}50%{filter:drop-shadow(0 0 60px rgba(124,58,237,.6))}}
+@keyframes rotate3d{0%{transform:perspective(800px) rotateY(-15deg) rotateX(5deg)}50%{transform:perspective(800px) rotateY(15deg) rotateX(-5deg)}100%{transform:perspective(800px) rotateY(-15deg) rotateX(5deg)}}
+@keyframes orbit{to{transform:rotate(360deg)}}
+@keyframes pulse-ring{0%{transform:scale(1);opacity:.4}100%{transform:scale(2);opacity:0}}
+@keyframes gradient-shift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+@keyframes slide-in{from{opacity:0;transform:translateX(-50px)}to{opacity:1;transform:translateX(0)}}
+@keyframes morph{0%,100%{border-radius:42% 58% 70% 30%/45% 45% 55% 55%}25%{border-radius:73% 27% 26% 74%/53% 69% 31% 47%}50%{border-radius:28% 72% 44% 56%/49% 40% 60% 51%}75%{border-radius:40% 60% 67% 33%/37% 65% 35% 63%}}
+@keyframes typing{from{width:0}to{width:100%}}
+
+.reveal{opacity:0;transform:translateY(50px);transition:all .8s var(--ease)}
+.reveal.vis{opacity:1;transform:translateY(0)}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;width:100%;z-index:100;padding:16px 0;transition:all .4s}
+nav.scrolled{background:rgba(0,0,0,.8);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);border-bottom:1px solid var(--border)}
+.nav-c{max-width:1200px;margin:0 auto;padding:0 32px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-family:'Space Grotesk',sans-serif;font-size:1.5rem;font-weight:700;display:flex;align-items:center;gap:8px}
+.nav-logo i{color:var(--accent);font-size:1.3rem}
+.nav-links{display:flex;gap:32px;align-items:center}
+.nav-links a{font-size:.88rem;color:var(--text2);transition:color .3s;font-weight:500}
+.nav-links a:hover{color:#fff}
+.nav-cta{padding:10px 26px;background:var(--grad1);border-radius:50px;font-size:.85rem;font-weight:600;color:#fff;transition:all .3s;box-shadow:0 4px 20px rgba(124,58,237,.3)}
+.nav-cta:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(124,58,237,.5)}
+.mob-menu{display:none;font-size:1.3rem;color:#fff;width:44px;height:44px;align-items:center;justify-content:center;border-radius:10px}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden;padding-top:80px}
+.hero-bg{position:absolute;inset:0;z-index:0}
+.hero-orb{position:absolute;border-radius:50%;filter:blur(100px);opacity:.15;animation:float 8s ease-in-out infinite}
+.orb1{width:600px;height:600px;background:var(--accent);top:-200px;right:-100px;animation-delay:0s}
+.orb2{width:400px;height:400px;background:var(--cyan);bottom:-100px;left:-100px;animation-delay:2s}
+.orb3{width:300px;height:300px;background:var(--pink);top:40%;left:30%;animation-delay:4s}
+.hero-grid-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:60px 60px;opacity:.5}
+
+.hero-c{max-width:1200px;margin:0 auto;padding:0 32px;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;position:relative;z-index:1}
+.hero-content{max-width:560px}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:8px 20px;background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.2);border-radius:50px;font-size:.78rem;font-weight:600;color:var(--accent2);margin-bottom:28px;animation:fadeUp .8s var(--ease) .2s both}
+.hero-badge i{font-size:.6rem;animation:pulse-ring 2s infinite}
+.hero-h1{font-family:'Space Grotesk',sans-serif;font-size:4.2rem;font-weight:800;line-height:1.05;margin-bottom:22px;animation:fadeUp .8s var(--ease) .4s both}
+.hero-h1 .grad{background:var(--grad1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-p{font-size:1.15rem;color:var(--text2);line-height:1.7;margin-bottom:40px;animation:fadeUp .8s var(--ease) .6s both}
+.hero-btns{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:50px;animation:fadeUp .8s var(--ease) .8s both}
+.btn-main{display:inline-flex;align-items:center;gap:10px;padding:16px 36px;border-radius:60px;font-size:.95rem;font-weight:600;transition:all .4s;position:relative;overflow:hidden}
+.btn-fill{background:var(--grad1);color:#fff;box-shadow:0 8px 30px rgba(124,58,237,.35)}
+.btn-fill:hover{transform:translateY(-3px);box-shadow:0 14px 40px rgba(124,58,237,.5)}
+.btn-ghost{border:1.5px solid var(--border);color:#fff;backdrop-filter:blur(10px)}
+.btn-ghost:hover{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.15);transform:translateY(-3px)}
+.hero-trust{display:flex;align-items:center;gap:20px;animation:fadeUp .8s var(--ease) 1s both}
+.trust-avatars{display:flex}
+.trust-av{width:38px;height:38px;border-radius:50%;border:3px solid #000;margin-left:-10px;display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:700;color:#fff}
+.trust-av:first-child{margin-left:0}
+.trust-info .num{font-weight:800;font-size:1rem}
+.trust-info .lbl{font-size:.75rem;color:var(--text3)}
+
+/* PHONE MOCKUP */
+.hero-visual{display:flex;justify-content:center;align-items:center;position:relative;animation:fadeUp 1s var(--ease) .5s both}
+.phone-scene{position:relative;width:320px;perspective:1200px}
+.phone{
+    position:relative;width:280px;height:570px;
+    background:linear-gradient(145deg,#1a1a2e,#0a0a1a);
+    border-radius:44px;padding:12px;
+    border:2px solid rgba(255,255,255,.1);
+    box-shadow:0 40px 100px rgba(0,0,0,.8),0 0 80px rgba(124,58,237,.15),inset 0 1px 0 rgba(255,255,255,.1);
+    animation:rotate3d 8s ease-in-out infinite;
+    transform:perspective(800px) rotateY(-15deg) rotateX(5deg);
+}
+.phone-screen{
+    width:100%;height:100%;border-radius:34px;overflow:hidden;
+    background:linear-gradient(180deg,#1a0533,#0c0c1d);position:relative;
+}
+.phone-notch{
+    position:absolute;top:0;left:50%;transform:translateX(-50%);
+    width:120px;height:28px;background:#000;border-radius:0 0 20px 20px;z-index:5;
+}
+.phone-notch::before{content:'';position:absolute;top:10px;left:50%;transform:translateX(-50%);width:60px;height:6px;background:rgba(255,255,255,.15);border-radius:10px}
+
+.screen-content{padding:50px 20px 20px;height:100%;display:flex;flex-direction:column}
+.screen-greet{font-size:.65rem;color:var(--text3);margin-bottom:4px}
+.screen-name{font-size:1rem;font-weight:700;margin-bottom:20px}
+.screen-card{background:var(--grad1);border-radius:16px;padding:18px;margin-bottom:16px;position:relative;overflow:hidden}
+.screen-card::before{content:'';position:absolute;top:-30px;right:-30px;width:80px;height:80px;background:rgba(255,255,255,.1);border-radius:50%}
+.sc-label{font-size:.6rem;color:rgba(255,255,255,.7);margin-bottom:4px}
+.sc-val{font-size:1.5rem;font-weight:800}
+.sc-sub{font-size:.6rem;color:rgba(255,255,255,.6);margin-top:4px}
+.screen-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px}
+.ss-item{background:rgba(255,255,255,.04);border-radius:12px;padding:12px 8px;text-align:center;border:1px solid rgba(255,255,255,.06)}
+.ss-icon{font-size:.8rem;margin-bottom:6px}
+.ss-val{font-size:.85rem;font-weight:700}
+.ss-lbl{font-size:.55rem;color:var(--text3)}
+.screen-chart{flex:1;display:flex;align-items:flex-end;gap:6px;padding:10px 0}
+.sc-bar{flex:1;border-radius:6px 6px 0 0;transition:height 1s var(--ease);min-height:8px}
+
+/* FLOATING ELEMENTS */
+.float-el{position:absolute;z-index:2;animation:float 5s ease-in-out infinite}
+.fe-card{
+    background:rgba(15,15,25,.85);backdrop-filter:blur(20px);
+    border:1px solid var(--border);border-radius:16px;padding:14px 18px;
+    display:flex;align-items:center;gap:12px;box-shadow:0 20px 40px rgba(0,0,0,.4);
+}
+.fe-icon{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0}
+.fe-text{white-space:nowrap}
+.fe-title{font-size:.75rem;font-weight:600}
+.fe-sub{font-size:.6rem;color:var(--text3)}
+
+.fe1{top:15%;right:-60px;animation-delay:0s}
+.fe2{bottom:20%;left:-70px;animation-delay:1.5s}
+.fe3{top:50%;right:-80px;animation-delay:3s}
+
+/* FEATURES */
+.features{padding:120px 0;position:relative}
+.sec-c{max-width:1200px;margin:0 auto;padding:0 32px}
+.sec-head{text-align:center;margin-bottom:70px}
+.sec-tag{font-size:.75rem;font-weight:700;color:var(--accent2);text-transform:uppercase;letter-spacing:3px;margin-bottom:12px}
+.sec-h2{font-family:'Space Grotesk',sans-serif;font-size:3rem;font-weight:800;margin-bottom:16px}
+.sec-h2 .grad{background:var(--grad1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-p{color:var(--text2);font-size:1rem;max-width:550px;margin:0 auto;line-height:1.7}
+
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.feat-card{
+    background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+    padding:36px 28px;transition:all .5s var(--ease);position:relative;overflow:hidden;
+}
+.feat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;transition:height .4s}
+.feat-card:nth-child(1)::before{background:var(--grad1)}
+.feat-card:nth-child(2)::before{background:var(--grad2)}
+.feat-card:nth-child(3)::before{background:var(--grad3)}
+.feat-card:nth-child(4)::before{background:var(--grad2)}
+.feat-card:nth-child(5)::before{background:var(--grad1)}
+.feat-card:nth-child(6)::before{background:var(--grad3)}
+.feat-card:hover{transform:translateY(-8px);border-color:rgba(255,255,255,.12);box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.feat-card:hover::before{height:3px}
+.feat-icon{
+    width:56px;height:56px;border-radius:16px;display:flex;align-items:center;justify-content:center;
+    font-size:1.3rem;margin-bottom:22px;position:relative;
+}
+.feat-icon::before{content:'';position:absolute;inset:0;border-radius:inherit;opacity:.12}
+.fi-1{color:var(--accent)}.fi-1::before{background:var(--accent)}
+.fi-2{color:var(--cyan)}.fi-2::before{background:var(--cyan)}
+.fi-3{color:var(--pink)}.fi-3::before{background:var(--pink)}
+.fi-4{color:var(--emerald)}.fi-4::before{background:var(--emerald)}
+.fi-5{color:#f59e0b}.fi-5::before{background:#f59e0b}
+.fi-6{color:#ef4444}.fi-6::before{background:#ef4444}
+.feat-h3{font-size:1.1rem;font-weight:700;margin-bottom:10px}
+.feat-p{font-size:.85rem;color:var(--text2);line-height:1.7}
+
+/* APP SCREENS */
+.screens{padding:120px 0;background:var(--bg2);position:relative;overflow:hidden}
+.screens-showcase{display:flex;justify-content:center;align-items:center;gap:30px;perspective:1200px}
+.screen-mock{
+    width:220px;background:linear-gradient(145deg,#1a1a2e,#0a0a18);
+    border-radius:30px;padding:8px;border:1.5px solid rgba(255,255,255,.08);
+    transition:all .6s var(--ease);box-shadow:0 30px 80px rgba(0,0,0,.6);
+}
+.screen-mock:hover{transform:translateY(-20px) scale(1.05)!important}
+.screen-mock-inner{border-radius:24px;overflow:hidden;aspect-ratio:9/19.5;position:relative}
+.smi-bg{width:100%;height:100%;display:flex;flex-direction:column;padding:40px 16px 16px}
+.smi1{background:linear-gradient(180deg,#1a0533,#0c0c1d)}
+.smi2{background:linear-gradient(180deg,#0c1a33,#0c0c1d)}
+.smi3{background:linear-gradient(180deg,#1a3305,#0c0c1d)}
+.sm-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;font-size:.6rem;color:var(--text3)}
+.sm-title{font-size:.9rem;font-weight:700;margin-bottom:12px}
+.sm-cards{display:flex;flex-direction:column;gap:8px}
+.sm-card-i{background:rgba(255,255,255,.04);border-radius:12px;padding:12px;display:flex;align-items:center;gap:10px;border:1px solid rgba(255,255,255,.05)}
+.sm-card-ic{width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:.7rem;flex-shrink:0}
+.sm-card-t{font-size:.65rem;font-weight:600}
+.sm-card-s{font-size:.55rem;color:var(--text3)}
+.sm-ring-wrap{display:flex;justify-content:center;margin:20px 0}
+.sm-ring{width:100px;height:100px;border-radius:50%;border:6px solid rgba(255,255,255,.06);position:relative;display:flex;align-items:center;justify-content:center}
+.sm-ring::before{content:'';position:absolute;inset:-6px;border-radius:50%;border:6px solid transparent;border-top-color:var(--accent);animation:orbit 2s linear infinite}
+.sm-ring-val{font-size:1.2rem;font-weight:800}
+.sm-ring-lbl{font-size:.5rem;color:var(--text3);text-align:center}
+
+/* STATS */
+.stats{padding:100px 0}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.stat-card{text-align:center;padding:40px 20px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);transition:all .4s}
+.stat-card:hover{transform:translateY(-6px);border-color:var(--border)}
+.stat-num{font-family:'Space Grotesk',sans-serif;font-size:2.8rem;font-weight:800;margin-bottom:6px}
+.stat-num .grad{background:var(--grad1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.stat-lbl{font-size:.85rem;color:var(--text2)}
+
+/* TESTIMONIALS */
+.testimonials{padding:120px 0;background:var(--bg2)}
+.test-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.test-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:32px;transition:all .4s}
+.test-card:hover{transform:translateY(-6px);border-color:rgba(255,255,255,.1)}
+.test-stars{color:#f59e0b;font-size:.8rem;margin-bottom:16px;display:flex;gap:3px}
+.test-quote{font-size:.9rem;color:var(--text2);line-height:1.7;margin-bottom:24px;font-style:italic}
+.test-author{display:flex;align-items:center;gap:12px}
+.test-av{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;color:#fff;flex-shrink:0}
+.test-name{font-size:.88rem;font-weight:600}
+.test-role{font-size:.72rem;color:var(--text3)}
+
+/* CTA */
+.cta{padding:120px 0;position:relative;overflow:hidden}
+.cta-card{
+    max-width:900px;margin:0 auto;text-align:center;padding:80px 60px;
+    background:var(--surface);border:1px solid var(--border);border-radius:32px;
+    position:relative;overflow:hidden;
+}
+.cta-card::before{content:'';position:absolute;top:-100px;left:50%;transform:translateX(-50%);width:500px;height:500px;background:radial-gradient(circle,rgba(124,58,237,.15),transparent 70%);pointer-events:none}
+.cta h2{font-family:'Space Grotesk',sans-serif;font-size:2.8rem;font-weight:800;margin-bottom:16px;position:relative;z-index:1}
+.cta p{color:var(--text2);font-size:1rem;margin-bottom:40px;position:relative;z-index:1}
+.cta-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;position:relative;z-index:1}
+.store-btn{display:inline-flex;align-items:center;gap:12px;padding:14px 30px;background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:14px;transition:all .3s;color:#fff}
+.store-btn:hover{background:rgba(255,255,255,.1);transform:translateY(-3px);box-shadow:0 10px 30px rgba(0,0,0,.3)}
+.store-btn i{font-size:1.8rem}
+.store-btn .sb-sub{font-size:.6rem;color:var(--text3);display:block}
+.store-btn .sb-main{font-size:1rem;font-weight:600}
+
+/* FOOTER */
+footer{padding:60px 0 30px;border-top:1px solid var(--border)}
+.ft-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:40px;margin-bottom:50px}
+.ft-brand{font-family:'Space Grotesk',sans-serif;font-size:1.3rem;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.ft-brand i{color:var(--accent)}
+.ft-desc{font-size:.82rem;color:var(--text3);line-height:1.7;margin-bottom:16px}
+.ft-social{display:flex;gap:8px}
+.ft-social a{width:36px;height:36px;background:rgba(255,255,255,.04);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text3);font-size:.85rem;transition:all .3s}
+.ft-social a:hover{background:var(--accent);color:#fff;transform:translateY(-3px)}
+.ft-col h4{font-size:.85rem;font-weight:700;margin-bottom:16px}
+.ft-links{display:flex;flex-direction:column;gap:10px}
+.ft-links a{font-size:.8rem;color:var(--text3);transition:color .3s}
+.ft-links a:hover{color:var(--accent2)}
+.ft-bottom{border-top:1px solid var(--border);padding-top:24px;display:flex;justify-content:space-between;font-size:.75rem;color:var(--text3);flex-wrap:wrap;gap:10px}
+
+@media(max-width:1024px){
+    .hero-c{grid-template-columns:1fr;text-align:center;gap:50px}
+    .hero-content{max-width:100%}
+    .hero-btns,.hero-trust{justify-content:center}
+    .hero-h1{font-size:3rem}
+    .feat-grid{grid-template-columns:repeat(2,1fr)}
+    .screens-showcase{flex-wrap:wrap}
+    .stats-grid{grid-template-columns:repeat(2,1fr)}
+    .test-grid{grid-template-columns:1fr}
+    .ft-grid{grid-template-columns:repeat(2,1fr)}
+    .float-el{display:none}
+}
+@media(max-width:768px){
+    .nav-links{display:none;position:fixed;top:0;left:0;width:100%;height:100vh;background:rgba(0,0,0,.96);flex-direction:column;align-items:center;justify-content:center;gap:32px;z-index:200}
+    .nav-links.mob-show{display:flex}
+    .nav-links.mob-show a{font-size:1.3rem;color:#fff;font-weight:600}
+    .mob-menu{display:flex}
+    .hero-h1{font-size:2.3rem}
+    .hero-btns{flex-direction:column;align-items:center}
+    .sec-h2{font-size:2rem}
+    .feat-grid{grid-template-columns:1fr}
+    .stats-grid{grid-template-columns:1fr 1fr}
+    .cta-card{padding:50px 28px}
+    .cta h2{font-size:2rem}
+    .ft-grid{grid-template-columns:1fr}
+    .phone{width:240px;height:490px;border-radius:36px}
+}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+<div class="nav-c">
+    <a href="#" class="nav-logo"><i class="fas fa-bolt"></i> PULSE</a>
+    <div class="nav-links">
+        <a href="#features">Fonctionnalités</a>
+        <a href="#screens">Aperçu</a>
+        <a href="#stats">Stats</a>
+        <a href="#reviews">Avis</a>
+        <a href="#download" class="nav-cta">Télécharger</a>
+    </div>
+    <button class="mob-menu" onclick="document.querySelector('.nav-links').classList.toggle('mob-show')"><i class="fas fa-bars"></i></button>
+</div>
+</nav>
+
+<section class="hero">
+    <div class="hero-bg">
+        <div class="hero-orb orb1"></div><div class="hero-orb orb2"></div><div class="hero-orb orb3"></div>
+        <div class="hero-grid-bg"></div>
+    </div>
+    <div class="hero-c">
+        <div class="hero-content">
+            <div class="hero-badge"><i class="fas fa-circle"></i> Nouveau — Version 3.0 disponible</div>
+            <h1 class="hero-h1">Votre santé,<br><span class="grad">réinventée.</span></h1>
+            <p class="hero-p">PULSE est l'application fitness qui s'adapte à votre corps. IA personnalisée, suivi en temps réel, coaching intelligent.</p>
+            <div class="hero-btns">
+                <a href="#download" class="btn-main btn-fill"><i class="fab fa-apple"></i> App Store</a>
+                <a href="#download" class="btn-main btn-ghost"><i class="fab fa-google-play"></i> Google Play</a>
+            </div>
+            <div class="hero-trust">
+                <div class="trust-avatars">
+                    <div class="trust-av" style="background:var(--grad1)">MH</div>
+                    <div class="trust-av" style="background:var(--grad2)">SL</div>
+                    <div class="trust-av" style="background:var(--grad3)">AB</div>
+                    <div class="trust-av" style="background:#f59e0b">JP</div>
+                </div>
+                <div class="trust-info"><div class="num">50K+ utilisateurs</div><div class="lbl">⭐ 4.9 sur l'App Store</div></div>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <div class="phone-scene">
+                <div class="phone">
+                    <div class="phone-screen">
+                        <div class="phone-notch"></div>
+                        <div class="screen-content">
+                            <div class="screen-greet">Bonjour 👋</div>
+                            <div class="screen-name">Michael H.</div>
+                            <div class="screen-card">
+                                <div class="sc-label">Calories brûlées</div>
+                                <div class="sc-val">1,842</div>
+                                <div class="sc-sub">↑ 12% vs hier</div>
+                            </div>
+                            <div class="screen-stats">
+                                <div class="ss-item"><div class="ss-icon" style="color:var(--accent)"><i class="fas fa-shoe-prints"></i></div><div class="ss-val">8,432</div><div class="ss-lbl">Pas</div></div>
+                                <div class="ss-item"><div class="ss-icon" style="color:var(--cyan)"><i class="fas fa-heart-pulse"></i></div><div class="ss-val">72</div><div class="ss-lbl">BPM</div></div>
+                                <div class="ss-item"><div class="ss-icon" style="color:var(--pink)"><i class="fas fa-fire"></i></div><div class="ss-val">1.8K</div><div class="ss-lbl">Kcal</div></div>
+                            </div>
+                            <div class="screen-chart" id="screenChart"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="float-el fe1 fe-card" style="animation-delay:0s">
+                    <div class="fe-icon" style="background:rgba(124,58,237,.15);color:var(--accent)"><i class="fas fa-trophy"></i></div>
+                    <div class="fe-text"><div class="fe-title">Nouveau record!</div><div class="fe-sub">10K pas aujourd'hui</div></div>
+                </div>
+                <div class="float-el fe2 fe-card" style="animation-delay:1.5s">
+                    <div class="fe-icon" style="background:rgba(16,185,129,.15);color:var(--emerald)"><i class="fas fa-check-circle"></i></div>
+                    <div class="fe-text"><div class="fe-title">Objectif atteint</div><div class="fe-sub">Calories journalières</div></div>
+                </div>
+                <div class="float-el fe3 fe-card" style="animation-delay:3s">
+                    <div class="fe-icon" style="background:rgba(6,182,212,.15);color:var(--cyan)"><i class="fas fa-heart-pulse"></i></div>
+                    <div class="fe-text"><div class="fe-title">Rythme cardiaque</div><div class="fe-sub">72 BPM — Normal</div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="features" id="features">
+<div class="sec-c">
+    <div class="sec-head reveal"><div class="sec-tag">Fonctionnalités</div><h2 class="sec-h2">Tout ce dont vous avez <span class="grad">besoin</span></h2><p class="sec-p">Des outils puissants propulsés par l'intelligence artificielle pour transformer votre routine fitness.</p></div>
+    <div class="feat-grid">
+        <div class="feat-card reveal"><div class="feat-icon fi-1"><i class="fas fa-brain"></i></div><h3 class="feat-h3">IA Coach Personnel</h3><p class="feat-p">Un coach intelligent qui s'adapte à votre niveau et crée des programmes personnalisés en temps réel.</p></div>
+        <div class="feat-card reveal"><div class="feat-icon fi-2"><i class="fas fa-heart-pulse"></i></div><h3 class="feat-h3">Suivi Santé 360°</h3><p class="feat-p">Rythme cardiaque, sommeil, stress, SpO2. Toutes vos données de santé en un coup d'œil.</p></div>
+        <div class="feat-card reveal"><div class="feat-icon fi-3"><i class="fas fa-chart-line"></i></div><h3 class="feat-h3">Analytics Avancés</h3><p class="feat-p">Graphiques détaillés et insights pour comprendre votre progression et atteindre vos objectifs.</p></div>
+        <div class="feat-card reveal"><div class="feat-icon fi-4"><i class="fas fa-utensils"></i></div><h3 class="feat-h3">Nutrition Smart</h3><p class="feat-p">Scanner alimentaire IA, compteur de macros, et plans nutritionnels adaptés à vos besoins.</p></div>
+        <div class="feat-card reveal"><div class="feat-icon fi-5"><i class="fas fa-users"></i></div><h3 class="feat-h3">Communauté Active</h3><p class="feat-p">Rejoignez des défis, partagez vos progrès et motivez-vous avec une communauté bienveillante.</p></div>
+        <div class="feat-card reveal"><div class="feat-icon fi-6"><i class="fas fa-watch"></i></div><h3 class="feat-h3">Wearables Sync</h3><p class="feat-p">Compatible Apple Watch, Fitbit, Garmin et tous les objets connectés du marché.</p></div>
+    </div>
+</div>
+</section>
+
+<section class="screens" id="screens">
+<div class="sec-c">
+    <div class="sec-head reveal"><div class="sec-tag">Aperçu</div><h2 class="sec-h2">Une interface <span class="grad">magnifique</span></h2><p class="sec-p">Conçue pour être aussi belle que fonctionnelle. Chaque écran est pensé pour vous.</p></div>
+    <div class="screens-showcase">
+        <div class="screen-mock reveal" style="transform:perspective(800px) rotateY(15deg) scale(.9)">
+            <div class="screen-mock-inner"><div class="smi-bg smi1">
+                <div class="sm-bar"><span>9:41</span><span><i class="fas fa-signal"></i> <i class="fas fa-wifi"></i> <i class="fas fa-battery-full"></i></span></div>
+                <div class="sm-title"><i class="fas fa-dumbbell" style="color:var(--accent)"></i> Entraînements</div>
+                <div class="sm-cards">
+                    <div class="sm-card-i"><div class="sm-card-ic" style="background:rgba(124,58,237,.15);color:var(--accent)"><i class="fas fa-running"></i></div><div><div class="sm-card-t">Course à pied</div><div class="sm-card-s">5.2 km • 28 min</div></div></div>
+                    <div class="sm-card-i"><div class="sm-card-ic" style="background:rgba(6,182,212,.15);color:var(--cyan)"><i class="fas fa-person-swimming"></i></div><div><div class="sm-card-t">Natation</div><div class="sm-card-s">1.5 km • 35 min</div></div></div>
+                    <div class="sm-card-i"><div class="sm-card-ic" style="background:rgba(236,72,153,.15);color:var(--pink)"><i class="fas fa-bicycle"></i></div><div><div class="sm-card-t">Cyclisme</div><div class="sm-card-s">12 km • 42 min</div></div></div>
+                </div>
+            </div></div>
+        </div>
+        <div class="screen-mock reveal" style="transform:scale(1.05);z-index:2">
+            <div class="screen-mock-inner"><div class="smi-bg smi2">
+                <div class="sm-bar"><span>9:41</span><span><i class="fas fa-signal"></i> <i class="fas fa-wifi"></i> <i class="fas fa-battery-full"></i></span></div>
+                <div class="sm-title"><i class="fas fa-chart-pie" style="color:var(--cyan)"></i> Dashboard</div>
+                <div class="sm-ring-wrap"><div class="sm-ring"><div style="text-align:center"><div class="sm-ring-val">78%</div><div class="sm-ring-lbl">Objectif</div></div></div></div>
+                <div class="sm-cards">
+                    <div class="sm-card-i"><div class="sm-card-ic" style="background:rgba(16,185,129,.15);color:var(--emerald)"><i class="fas fa-shoe-prints"></i></div><div><div class="sm-card-t">8,432 pas</div><div class="sm-card-s">Objectif: 10,000</div></div></div>
+                    <div class="sm-card-i"><div class="sm-card-ic" style="background:rgba(245,158,11,.15);color:#f59e0b"><i class="fas fa-fire"></i></div><div><div class="sm-card-t">1,842 kcal</div><div class="sm-card-s">+12% vs hier</div></div></div>
+                </div>
+            </div></div>
+        </div>
+        <div class="screen-mock reveal" style="transform:perspective(800px) rotateY(-15deg) scale(.9)">
+            <div class="screen-mock-inner"><div class="smi-bg smi3">
+                <div class="sm-bar"><span>9:41</span><span><i class="fas fa-signal"></i> <i class="fas fa-wifi"></i> <i class="fas fa-battery-full"></i></span></div>
+                <div class="sm-title"><i class="fas fa-apple-whole" style="color:var(--emerald)"></i> Nutrition</div>
+                <div class="sm-cards">
+                    <div class="sm-card-i"><div class="sm-card-ic" style="background:rgba(16,185,129,.15);color:var(--emerald)"><i class="fas fa-egg"></i></div><div><div class="sm-card-t">Petit-déjeuner</div><div class="sm-card-s">420 kcal • 35g prot</div></div></div>
+                    <div class="sm-card-i"><div class="sm-card-ic" style="background:rgba(6,182,212,.15);color:var(--cyan)"><i class="fas fa-bowl-food"></i></div><div><div class="sm-card-t">Déjeuner</div><div class="sm-card-s">680 kcal • 42g prot</div></div></div>
+                    <div class="sm-card-i"><div class="sm-card-ic" style="background:rgba(124,58,237,.15);color:var(--accent)"><i class="fas fa-cookie-bite"></i></div><div><div class="sm-card-t">Snack</div><div class="sm-card-s">180 kcal • 8g prot</div></div></div>
+                </div>
+            </div></div>
+        </div>
+    </div>
+</div>
+</section>
+
+<section class="stats" id="stats">
+<div class="sec-c">
+    <div class="stats-grid">
+        <div class="stat-card reveal"><div class="stat-num"><span class="grad">50K+</span></div><div class="stat-lbl">Utilisateurs Actifs</div></div>
+        <div class="stat-card reveal"><div class="stat-num"><span class="grad">4.9★</span></div><div class="stat-lbl">Note App Store</div></div>
+        <div class="stat-card reveal"><div class="stat-num"><span class="grad">150+</span></div><div class="stat-lbl">Pays Disponibles</div></div>
+        <div class="stat-card reveal"><div class="stat-num"><span class="grad">12M</span></div><div class="stat-lbl">Entraînements Complétés</div></div>
+    </div>
+</div>
+</section>
+
+<section class="testimonials" id="reviews">
+<div class="sec-c">
+    <div class="sec-head reveal"><div class="sec-tag">Témoignages</div><h2 class="sec-h2">Ce qu'en disent <span class="grad">nos utilisateurs</span></h2></div>
+    <div class="test-grid">
+        <div class="test-card reveal"><div class="test-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div><p class="test-quote">"PULSE a complètement transformé ma routine fitness. L'IA coach est incroyablement précise et motivante."</p><div class="test-author"><div class="test-av" style="background:var(--grad1)">SL</div><div><div class="test-name">Sophie Laurent</div><div class="test-role">Designer • Paris</div></div></div></div>
+        <div class="test-card reveal"><div class="test-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div><p class="test-quote">"L'interface est magnifique et les données de santé sont présentées de manière claire. Je ne peux plus m'en passer!"</p><div class="test-author"><div class="test-av" style="background:var(--grad2)">MD</div><div><div class="test-name">Marc Dubois</div><div class="test-role">Développeur • Lyon</div></div></div></div>
+        <div class="test-card reveal"><div class="test-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div><p class="test-quote">"Le suivi nutritionnel avec le scanner IA est révolutionnaire. J'ai perdu 8kg en 3 mois grâce à PULSE."</p><div class="test-author"><div class="test-av" style="background:var(--grad3)">AB</div><div><div class="test-name">Alice Bernard</div><div class="test-role">Athlète • Bordeaux</div></div></div></div>
+    </div>
+</div>
+</section>
+
+<section class="cta" id="download">
+<div class="sec-c">
+    <div class="cta-card reveal">
+        <h2>Prêt à transformer<br>votre <span class="grad">santé</span> ?</h2>
+        <p>Téléchargez PULSE gratuitement et commencez votre transformation dès aujourd'hui.</p>
+        <div class="cta-btns">
+            <a href="#" class="store-btn"><i class="fab fa-apple"></i><div><span class="sb-sub">Télécharger sur</span><span class="sb-main">App Store</span></div></a>
+            <a href="#" class="store-btn"><i class="fab fa-google-play"></i><div><span class="sb-sub">Disponible sur</span><span class="sb-main">Google Play</span></div></a>
+        </div>
+    </div>
+</div>
+</section>
+
+<footer>
+<div class="sec-c">
+    <div class="ft-grid">
+        <div><div class="ft-brand"><i class="fas fa-bolt"></i> PULSE</div><p class="ft-desc">L'application fitness propulsée par l'intelligence artificielle. Votre coach personnel, partout, tout le temps.</p><div class="ft-social"><a href="#"><i class="fab fa-twitter"></i></a><a href="#"><i class="fab fa-instagram"></i></a><a href="#"><i class="fab fa-tiktok"></i></a><a href="#"><i class="fab fa-youtube"></i></a></div></div>
+        <div class="ft-col"><h4>Produit</h4><div class="ft-links"><a href="#">Fonctionnalités</a><a href="#">Tarifs</a><a href="#">Intégrations</a><a href="#">FAQ</a></div></div>
+        <div class="ft-col"><h4>Entreprise</h4><div class="ft-links"><a href="#">À propos</a><a href="#">Blog</a><a href="#">Carrières</a><a href="#">Presse</a></div></div>
+        <div class="ft-col"><h4>Légal</h4><div class="ft-links"><a href="#">Confidentialité</a><a href="#">CGU</a><a href="#">Cookies</a><a href="#">Licences</a></div></div>
+    </div>
+    <div class="ft-bottom"><span>© 2024 PULSE. Tous droits réservés.</span><span>Fait avec <i class="fas fa-heart" style="color:var(--accent)"></i></span></div>
+</div>
+</footer>
+
+<script>
+/* NAV SCROLL */
+window.addEventListener('scroll',function(){document.getElementById('nav').classList.toggle('scrolled',window.scrollY>50)});
+
+/* SCROLL REVEAL */
+var obs=new IntersectionObserver(function(e){e.forEach(function(en){if(en.isIntersecting){en.target.classList.add('vis');obs.unobserve(en.target)}})},{threshold:.12,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal').forEach(function(el){obs.observe(el)});
+
+/* SMOOTH LINKS */
+document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener('click',function(e){var t=this.getAttribute('href');if(t!=='#'){e.preventDefault();var el=document.querySelector(t);if(el)el.scrollIntoView({behavior:'smooth'})}})});
+
+/* SCREEN CHART BARS */
+var chartEl=document.getElementById('screenChart');
+if(chartEl){
+    var vals=[40,65,50,80,60,45,75,55,90,70,85,60];
+    var colors=['var(--accent)','var(--cyan)','var(--pink)','var(--emerald)','var(--accent)','var(--cyan)','var(--pink)','var(--emerald)','var(--accent)','var(--cyan)','var(--pink)','var(--emerald)'];
+    vals.forEach(function(v,i){
+        var bar=document.createElement('div');
+        bar.className='sc-bar';
+        bar.style.background=colors[i%colors.length];
+        bar.style.opacity='.6';
+        bar.style.height='0';
+        chartEl.appendChild(bar);
+        setTimeout(function(){bar.style.height=v+'%'},300+i*80);
+    });
+}
+
+/* MOBILE MENU - close when link clicked */
+document.querySelectorAll('.nav-links a').forEach(function(a){
+  a.addEventListener('click',function(){
+    document.querySelector('.nav-links').classList.remove('mob-show');
+  });
+});
+
+/* MOB MENU BUTTON - toggle icon */
+var mobBtn=document.querySelector('.mob-menu');
+if(mobBtn){
+  mobBtn.addEventListener('click',function(){
+    var nl=document.querySelector('.nav-links');
+    nl.classList.toggle('mob-show');
+    mobBtn.innerHTML=nl.classList.contains('mob-show')
+      ?'<i class="fas fa-xmark"></i>'
+      :'<i class="fas fa-bars"></i>';
+  });
+}
+
+/* STORE BUTTONS - demo toast */
+function showToast(msg){
+  var t=document.createElement('div');
+  t.style.cssText='position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#7c3aed,#06b6d4);color:#fff;padding:14px 28px;border-radius:50px;font-size:.9rem;font-weight:600;z-index:9999;box-shadow:0 10px 30px rgba(124,58,237,.4);animation:fadeUp .4s ease';
+  t.textContent=msg;
+  document.body.appendChild(t);
+  setTimeout(function(){t.remove()},3000);
+}
+document.querySelectorAll('.store-btn,.btn-fill,.btn-ghost,.nav-cta').forEach(function(b){
+  b.addEventListener('click',function(e){
+    e.preventDefault();
+    showToast('🚀 Démo — Disponible très bientôt !');
+  });
+});
+
+</script>
+</body>
+</html>
